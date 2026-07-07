@@ -280,7 +280,8 @@ label.fl{font-size:14.5px;font-family:'Prompt';font-weight:600;display:block;mar
 .pw-eye:hover{opacity:.9}
 .auth-alt{font-size:14px;color:var(--muted);margin-top:14px}
 .role-tabs{display:flex;gap:8px;margin:12px 0 14px}
-.role-tabs .rt{flex:1;padding:11px 8px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:'Prompt';font-weight:500;font-size:14px;color:var(--muted);cursor:pointer;transition:.15s}
+.role-tabs .rt{flex:1;padding:14px 8px 12px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:'Prompt';font-weight:500;font-size:14px;color:var(--muted);cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;line-height:1.25}
+.role-tabs .rt .ic{font-size:34px;line-height:1}
 .role-tabs .rt:hover{border-color:var(--blue)}
 .role-tabs .rt.active{border-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
 .auth-alt a{color:var(--blue);font-family:'Prompt';font-weight:600;cursor:pointer}
@@ -501,8 +502,8 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
     <h2 style="margin:3px 0 0"><span style="color:#2563eb">P</span><span style="color:#0d9488">I</span><span style="color:#ea580c">X</span><span style="color:#16a34a">A</span><span style="color:#7c3aed">R</span> Supervision Platform</h2>
     <p>เข้าสู่ระบบเพื่อใช้งาน</p>
     <div class="role-tabs">
-      <button type="button" class="rt active" id="rtTeacher" onclick="setLoginRole('teacher')">👩‍🏫 ครู</button>
-      <button type="button" class="rt" id="rtStaff" onclick="setLoginRole('staff')">🧑‍💼 ศึกษานิเทศก์ · ผู้ดูแล</button>
+      <button type="button" class="rt active" id="rtTeacher" onclick="setLoginRole('teacher')"><span class="ic">👩‍🏫</span><span>ครู</span></button>
+      <button type="button" class="rt" id="rtStaff" onclick="setLoginRole('staff')"><span class="ic">🧑‍💼</span><span>ศึกษานิเทศก์/แอดมิน</span></button>
     </div>
     <input type="text" id="liEmail" placeholder="ชื่อผู้ใช้" autocomplete="username">
     <div class="pw-wrap"><input type="password" id="liPass" placeholder="รหัสผ่าน" autocomplete="current-password"><button type="button" class="pw-eye" onclick="togglePw('liPass',this)">👁</button></div>
