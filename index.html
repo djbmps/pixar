@@ -637,6 +637,12 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
             <div class="sub">เปรียบเทียบผลล่าสุดกับครั้งแรก (เต็ม 5) — ดึงจากแบบประเมินจริง</div>
             <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
           </div>
+          <div class="ai-card">
+            <span class="badge" style="background:rgba(255,255,255,.2);color:#fff">✦ AI แนะนำเส้นทางพัฒนา</span>
+            <h3 style="color:#fff;margin-top:10px">เนื้อหาที่เหมาะกับคุณวันนี้</h3>
+            <div style="font-size:12.5px;opacity:.85;margin-top:2px">วิเคราะห์จากผลประเมิน AI-TPACK ล่าสุดของคุณ</div>
+            <div id="aiRecList"></div>
+          </div>
         </div>
 
         <div class="two-col">
@@ -1443,7 +1449,7 @@ function applyData(d){
     if(Array.isArray(d.users)){
       usersData=d.users.map(u=>({name:u.name,email:u.email||'',contactEmail:u.contactEmail||'',role:u.role,school:u.school,group:u.schoolGroup||groupOf(u.school),size:sizeOf(u.school),subject:u.subject||'',status:u.status||'active',createdAt:u.createdAt||''}));
     }
-    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();
+    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();
     const c=document.getElementById('supRevCount');if(c)c.textContent=reviewQueue.length;
     return true;
 }
@@ -3276,6 +3282,32 @@ function renderMediaTrack(){
 }
 
 /* ---------- CHARTS (lazy init when view shown) ---------- */
+// AI แนะนำเส้นทางพัฒนา — อิงจากผล AI-TPACK ล่าสุดของครู (ฟรี ไม่เรียก AI ภายนอก)
+function renderAIRec(){
+  const el=document.getElementById('aiRecList'); if(!el)return;
+  const REC=[
+    {n:'การใช้ AI ออกแบบใบงาน',d:'เสริมด้านเทคโนโลยี/AI',ic:'🤖',v:'knowledge'},
+    {n:'ออกแบบเนื้อหาบูรณาการสื่อดิจิทัล',d:'เสริมด้านเนื้อหา',ic:'📘',v:'knowledge'},
+    {n:'เทคนิค Active Learning ในชั้นเรียน',d:'เสริมด้านการจัดการเรียนรู้',ic:'🎯',v:'knowledge'},
+    {n:'จัดการเรียนรู้ตามธรรมชาติวิชา (PCK)',d:'เสริมด้านการสอนเนื้อหา',ic:'🧩',v:'knowledge'},
+    {n:'เลือกสื่อ OBEC Content Center ให้ตรงเนื้อหา',d:'เสริมด้านสื่อ + เนื้อหา',ic:'🎬',v:'knowledge'},
+    {n:'ผสานเทคโนโลยีกับวิธีสอน',d:'เสริมด้านเทคโนโลยี + วิธีสอน',ic:'🔗',v:'knowledge'},
+    {n:'ออกแบบบทเรียนบูรณาการ AI ครบวงจร',d:'เสริมภาพรวม AI-TPACK',ic:'✨',v:'knowledge'},
+  ];
+  const src=(typeof aitpackData!=='undefined')?aitpackData:[];
+  const mine=src.filter(r=>r.email&&CURRENT&&r.email===CURRENT.email&&r.dims&&r.dims.length===7);
+  let rows=[];
+  if(mine.length){
+    const dims=mine[0].dims.map(Number);
+    const low=dims.map((v,i)=>({i,v})).sort((a,b)=>a.v-b.v).slice(0,2).map(o=>o.i);
+    low.forEach(i=>rows.push(REC[i]));
+    rows.push({n:'นัดปรึกษา ศน. ในด้านที่ยังต้องพัฒนา',d:'จองคิวคำปรึกษาออนไลน์',ic:'📅',v:'booking'});
+  }else{
+    rows=[{n:'ทำแบบประเมิน AI-TPACK',d:'ประเมินก่อนเพื่อรับคำแนะนำเฉพาะคุณ',ic:'📝',v:'aitpack'},
+          {n:'เทคนิค Active Learning ในชั้นเรียน',d:'เนื้อหาแนะนำ',ic:'🎯',v:'knowledge'}];
+  }
+  el.innerHTML=rows.map(r=>`<div class="ai-rec" onclick="go('${r.v}')"><div class="ri">${r.ic}</div><div><div style="font-family:'Prompt';font-weight:500;font-size:13.5px">${r.n}</div><div style="font-size:12px;opacity:.8">${r.d}</div></div></div>`).join('');
+}
 const C={};
 Chart.defaults.font.family="'Sarabun',sans-serif";Chart.defaults.font.size=12;
 function ensureCharts(v){
