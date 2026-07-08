@@ -612,7 +612,7 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
         <div class="pixar-row" id="pixarRow"></div>
         <div style="text-align:center;margin-top:14px"><span class="badge b-blue" style="font-size:13px;padding:6px 16px">🔄 Continuous Improvement — วนกลับสู่ Preparation ในรอบถัดไป</span></div>
 
-        <div class="page-head" style="margin-top:34px"><h1>ส่วนหลักของระบบ</h1><p>6 โมดูลครบวงจร — แตะเพื่อเข้าใช้งาน</p></div>
+        <div class="page-head" style="margin-top:34px"><h1>ส่วนหลักของระบบ</h1><p id="featSub">6 โมดูลครบวงจร — แตะเพื่อเข้าใช้งาน</p></div>
         <div class="grid three-col" id="featGrid"></div>
 
         <!-- Showcase ครูต้นแบบ บนหน้าหลัก -->
@@ -1449,7 +1449,7 @@ function applyData(d){
     if(Array.isArray(d.users)){
       usersData=d.users.map(u=>({name:u.name,email:u.email||'',contactEmail:u.contactEmail||'',role:u.role,school:u.school,group:u.schoolGroup||groupOf(u.school),size:sizeOf(u.school),subject:u.subject||'',status:u.status||'active',createdAt:u.createdAt||''}));
     }
-    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();
+    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();
     const c=document.getElementById('supRevCount');if(c)c.textContent=reviewQueue.length;
     return true;
 }
@@ -1489,6 +1489,15 @@ const feats=[
  {i:'💬',c:'b-purple',t:'เวที PLC',d:'ชุมชนเรียนรู้ตามความสนใจ',v:'forum'},
  {i:'🗂️',c:'b-pink',t:'แฟ้มสะสมผลงาน',d:'เชื่อมมาตรฐานวิชาชีพ',v:'portfolio'},
  {i:'📝',c:'b-green',t:'สะท้อนคิด 3 ปี',d:'คำถามชี้แนะ + ติดตามผล',v:'reflect'}
+];
+// โมดูลสำหรับศึกษานิเทศก์/แอดมิน (ต่างจากของครู)
+const featsSup=[
+ {i:'📊',c:'b-blue',t:'ภาพรวมครูในความดูแล',d:'สรุปสมรรถนะครูทั้งเขต',v:'supOverview'},
+ {i:'👥',c:'b-teal',t:'ทำเนียบครู',d:'ค้นหา/กรอง + ดาวน์โหลดข้อมูล',v:'teacherDir'},
+ {i:'✅',c:'b-green',t:'ตรวจ & ให้ข้อเสนอแนะ',d:'ตรวจผลงานที่ครูส่ง',v:'supReview'},
+ {i:'🎬',c:'b-amber',t:'ติดตามการใช้สื่อ',d:'การใช้ OBEC Content Center',v:'mediaTrack'},
+ {i:'📅',c:'b-purple',t:'ตารางนิเทศ & นัดหมาย',d:'ตั้งเวลาว่าง + คิวปรึกษา',v:'supBooking'},
+ {i:'🏆',c:'b-pink',t:'ครูต้นแบบ & Best Practice',d:'คัดเลือก/เผยแพร่ผลงาน',v:'bestPractice'}
 ];
 const stats=[
  {l:'สมรรถนะเฉลี่ย',v:'4.1',d:'+0.7 จากเริ่มต้น',c:'var(--blue)',cls:'up'},
@@ -1859,8 +1868,15 @@ function buildWheel(){
 }
 /* ใช้ภาพ PIXAR.png แทนวงล้อ SVG แล้ว — ไม่เรียก buildWheel */
 
-document.getElementById('featGrid').innerHTML=feats.map(f=>
- `<div class="card feat" style="cursor:pointer" onclick="go('${f.v}')"><div class="fi ${f.c}">${f.i}</div><div><h3>${f.t}</h3><p style="font-size:13px;color:var(--muted);margin-top:4px">${f.d}</p></div></div>`).join('');
+function renderFeatGrid(){
+  const el=document.getElementById('featGrid'); if(!el)return;
+  let fx = (role==='teacher') ? feats : featsSup.slice();
+  if(role==='admin') fx=fx.concat([{i:'⚙️',c:'b-gray',t:'จัดการผู้ใช้',d:'เพิ่ม/แก้ไข/รีเซ็ตรหัส',v:'userMgmt'}]);
+  const sub=document.getElementById('featSub'); if(sub)sub.textContent=(role==='teacher'?'6 โมดูลครบวงจร':fx.length+' เมนูหลัก')+' — แตะเพื่อเข้าใช้งาน';
+  el.innerHTML=fx.map(f=>
+   `<div class="card feat" style="cursor:pointer" onclick="go('${f.v}')"><div class="fi ${f.c}">${f.i}</div><div><h3>${f.t}</h3><p style="font-size:13px;color:var(--muted);margin-top:4px">${f.d}</p></div></div>`).join('');
+}
+renderFeatGrid();
 
 document.getElementById('statGrid').innerHTML=stats.map(s=>
  `<div class="stat"><div class="bar" style="background:${s.c}"></div><div class="lbl">${s.l}</div><div class="val">${s.v}</div><div class="delta ${s.cls}">▲ ${s.d}</div></div>`).join('');
