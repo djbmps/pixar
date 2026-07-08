@@ -1830,6 +1830,9 @@ function finishLogin(user,demo,data,restored){
 
 /* ---------- NAV ---------- */
 function go(v){
+  // กันบทบาทเข้าหน้าที่ไม่ใช่ของตัวเอง
+  if(role!=='teacher' && (v==='dashboard'||v==='portfolio'||v==='reflect'||v==='mediaUse')) v='supOverview';
+  if(role==='teacher' && (v==='supOverview'||v==='teacherDir'||v==='mediaTrack'||v==='supReview'||v==='supBooking'||v==='aitpackResults'||v==='userMgmt'||v==='supKnowledge'||v==='activityLog'||v==='supSettings')) v='dashboard';
   document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.view===v));
   document.querySelectorAll('.view').forEach(s=>s.classList.toggle('active',s.id==='view-'+v));
   document.getElementById('sidebar').classList.remove('open');
