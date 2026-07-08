@@ -1079,6 +1079,13 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
         </div>
       </div>
 
+      <!-- PLC thread detail modal -->
+      <div id="thShow" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.6);align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto" onclick="if(event.target===this)closeThread()">
+        <div style="background:#fff;border-radius:18px;max-width:640px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 24px 24px">
+          <div id="thShowBody"></div>
+        </div>
+      </div>
+
       <!-- Lesson edit modal -->
       <div id="lessonEdit" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.6);align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto" onclick="if(event.target===this)closeEditLesson()">
         <div style="background:#fff;border-radius:18px;max-width:520px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 24px 26px">
@@ -1426,7 +1433,7 @@ function applyData(d){
     }
     if(Array.isArray(d.threads)){
       threads.length=0;
-      d.threads.slice().reverse().forEach(t=>threads.push({a:(t.authorName||'?').charAt(0),c:'#0d9488',n:t.authorName,title:t.title,ex:t.body,rep:+t.replies||0,lk:+t.likes||0,tm:fmtDate(t.createdAt),group:t.groupName}));
+      d.threads.slice().reverse().forEach(t=>threads.push({id:t.id,a:(t.authorName||'?').charAt(0),c:'#0d9488',n:t.authorName,title:t.title,ex:t.body,rep:+t.replies||0,lk:+t.likes||0,tm:fmtDate(t.createdAt),group:t.groupName}));
     }
     if(Array.isArray(d.forumGroups)){
       groups.length=0;
@@ -2363,8 +2370,68 @@ function renderThreads(){
   const list=activeGroup?threads.filter(t=>!t.group||t.group===activeGroup):threads;
   const el=document.getElementById('threadList');
   el.innerHTML=list.length?list.map(t=>
-   `<div class="thread"><div class="ava" style="background:${t.c}">${t.a}</div><div class="th-body"><div class="ti">${t.title}</div><div class="ex">${t.ex}</div><div class="th-meta"><span>👤 ${t.n}</span><span>💬 ${t.rep} ตอบ</span><span>❤️ ${t.lk}</span><span>🕒 ${t.tm}</span></div></div></div>`).join('')
+   `<div class="thread" style="cursor:pointer" onclick="openThread('${t.id}')"><div class="ava" style="background:${t.c}">${t.a}</div><div class="th-body"><div class="ti">${bpEsc(t.title)}</div><div class="ex">${bpEsc(t.ex||'')}</div><div class="th-meta"><span>👤 ${bpEsc(t.n||'')}</span><span>💬 ${t.rep} ตอบ</span><span>❤️ ${t.lk}</span><span>🕒 ${t.tm}</span><span style="color:var(--blue);font-weight:500">เปิดอ่าน →</span></div></div></div>`).join('')
    :'<div class="sub" style="padding:16px 0">ยังไม่มีกระทู้ในกลุ่มนี้ — เริ่มโพสต์แรกได้เลย</div>';
+}
+let curThread=null;
+async function openThread(id){
+  const t=threads.find(x=>String(x.id)===String(id)); if(!t)return;
+  curThread=t;
+  const box=document.getElementById('thShowBody'); const modal=document.getElementById('thShow');
+  const liked=isThreadLiked(id);
+  box.innerHTML=`
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:6px"><div class="ava" style="background:${t.c}">${t.a}</div>
+      <div><div style="font-family:'Prompt';font-weight:600;font-size:17px">${bpEsc(t.title)}</div>
+      <div style="font-size:12.5px;color:var(--muted)">👤 ${bpEsc(t.n||'')} · 🕒 ${t.tm} · กลุ่ม ${bpEsc(t.group||'-')}</div></div></div>
+    <p style="font-size:14.5px;line-height:1.7;margin:10px 0 6px">${bpEsc(t.ex||'(ไม่มีรายละเอียด)')}</p>
+    <div style="display:flex;gap:8px;align-items:center;margin:8px 0 4px">
+      <button class="btn btn-ghost btn-sm" id="thLikeBtn" onclick="likeThread('${t.id}')" ${liked?'disabled style="opacity:.6"':''}>❤️ ถูกใจ <span id="thLikeCount">${t.lk}</span></button>
+      <span style="font-size:13px;color:var(--muted)">💬 <span id="thRepCount">${t.rep}</span> ความเห็น</span>
+    </div>
+    <div style="border-top:1px solid var(--line);margin-top:10px;padding-top:12px">
+      <div id="thReplies" style="font-size:14px;color:var(--muted)">⏳ กำลังโหลดความเห็น...</div>
+      <textarea id="thReplyBox" placeholder="เขียนความเห็น/แลกเปลี่ยน..." style="width:100%;margin-top:10px;min-height:70px"></textarea>
+      <button class="btn btn-teal btn-sm" style="margin-top:8px" onclick="submitReply()">ส่งความเห็น</button>
+    </div>
+    <div style="margin-top:14px"><button class="btn btn-ghost" onclick="closeThread()">ปิด</button></div>`;
+  modal.style.display='flex';
+  loadReplies(id);
+}
+function closeThread(){const m=document.getElementById('thShow');if(m)m.style.display='none';}
+async function loadReplies(id){
+  const el=document.getElementById('thReplies'); if(!el)return;
+  if(!LIVE){el.innerHTML='<div style="color:var(--muted)">โหมดสาธิต — ความเห็นจะบันทึกจริงเมื่อเชื่อมฐานข้อมูล</div>';return;}
+  let res=null; try{ res=await apiPost('getReplies',{threadId:id}); }catch(e){}
+  const items=(res&&res.ok&&res.items)?res.items:[];
+  el.innerHTML=items.length?items.map(r=>`<div style="border-bottom:1px solid var(--line);padding:8px 0"><div style="font-weight:500;font-size:13.5px">👤 ${bpEsc(r.authorName||'')} <span style="font-weight:400;color:var(--muted);font-size:12px">· ${fmtDateTime(r.createdAt)}</span></div><div style="font-size:14px;margin-top:2px">${bpEsc(r.body||'')}</div></div>`).join(''):'<div style="color:var(--muted)">ยังไม่มีความเห็น — เป็นคนแรกที่แลกเปลี่ยน</div>';
+}
+async function submitReply(){
+  if(!curThread)return;
+  const bo=(document.getElementById('thReplyBox').value||'').trim();
+  if(!bo){toast('⚠️ พิมพ์ความเห็นก่อนค่ะ');return;}
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  const nm=(CURRENT&&CURRENT.name)||PROFILE[role].name;
+  document.getElementById('thReplyBox').value='';
+  const res=await apiPost('addReply',{threadId:curThread.id,authorEmail:MY_EMAIL,authorName:nm,body:bo});
+  if(res&&res.ok){
+    curThread.rep=(+curThread.rep||0)+1;
+    const rc=document.getElementById('thRepCount');if(rc)rc.textContent=curThread.rep;
+    loadReplies(curThread.id); renderThreads();
+    toast('✅ ส่งความเห็นแล้ว');
+  }else toast('⚠️ ส่งไม่สำเร็จ');
+}
+function likedKey(){return 'pixar_liked';}
+function isThreadLiked(id){try{return (JSON.parse(localStorage.getItem(likedKey())||'[]')).indexOf(String(id))>=0;}catch(e){return false;}}
+function markLiked(id){try{const a=JSON.parse(localStorage.getItem(likedKey())||'[]');if(a.indexOf(String(id))<0){a.push(String(id));localStorage.setItem(likedKey(),JSON.stringify(a));}}catch(e){}}
+async function likeThread(id){
+  if(isThreadLiked(id)){toast('คุณกดถูกใจกระทู้นี้แล้ว');return;}
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  const t=threads.find(x=>String(x.id)===String(id));
+  markLiked(id);
+  const btn=document.getElementById('thLikeBtn');if(btn){btn.disabled=true;btn.style.opacity=.6;}
+  if(t){t.lk=(+t.lk||0)+1;const lc=document.getElementById('thLikeCount');if(lc)lc.textContent=t.lk;}
+  const res=await apiPost('likeThread',{threadId:id});
+  if(res&&res.ok){renderThreads();}
 }
 async function postThread(){
   const ti=document.getElementById('ntTitle').value.trim();
