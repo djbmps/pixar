@@ -928,6 +928,11 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
           <div class="sub">ข้อมูลบันทึกจาก Google Sheet</div>
           <div class="tbl-wrap"><table class="tbl"><thead><tr><th>ครู</th><th>โรงเรียน</th><th>รอบ</th><th>คะแนนรวม</th><th>ระดับ</th><th>วันที่</th></tr></thead><tbody id="atResultRows"></tbody></table></div>
         </div>
+        <div class="card" id="atResetCard" style="margin-top:18px;border:1px solid #fecaca;background:#fef2f2;display:none">
+          <h3 style="font-size:15px;color:#b91c1c">🗑️ รีเซ็ตผลการประเมิน AI-TPACK</h3>
+          <div class="sub" style="margin:4px 0 10px">ลบผลประเมินของครู<b>ทุกคนทั้งหมด</b> (บัญชีผู้ใช้และข้อมูลอื่นยังอยู่ครบ) — ใช้เมื่อจะเริ่มเก็บข้อมูลรอบใหม่ · ย้อนกลับไม่ได้</div>
+          <button class="btn btn-primary btn-sm" style="background:#dc2626;border-color:#dc2626" onclick="resetDataUI('aitpack','ผลประเมิน AI-TPACK')">🗑️ ล้างผลประเมิน AI-TPACK ทั้งหมด</button>
+        </div>
       </section>
 
       <!-- ============ TEACHER DIRECTORY (SUPERVISOR) ============ -->
@@ -2811,6 +2816,8 @@ function submitAITPACK(){
   else{aitpackData.unshift({email:MY_EMAIL,n:PROFILE.teacher.name,school:rec.school||'-',overall:rec.overall,level:lv,round:rec.round,date:'วันนี้',dims:dimAvgs});renderAITPACKResults();toast('✅ บันทึกผลแล้ว (โหมดสาธิต)');}
 }
 function renderAITPACKResults(){
+  const rc=document.getElementById('atResetCard');
+  if(rc) rc.style.display=(role==='admin')?'block':'none';   // ปุ่มรีเซ็ต: เฉพาะแอดมิน
   const data=aitpackData;
   // นับครูไม่ซ้ำ + ใช้ผลล่าสุดของแต่ละคน (aitpackData เรียงใหม่สุดก่อน → รายการแรกของแต่ละคน = ล่าสุด)
   const byT={};data.forEach(r=>{const k=((r.email||r.n||'')+'').toLowerCase();if(!k)return;if(!byT[k])byT[k]=r;});
