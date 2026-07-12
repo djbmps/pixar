@@ -928,6 +928,11 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
           <div class="sub">ข้อมูลบันทึกจาก Google Sheet</div>
           <div class="tbl-wrap"><table class="tbl"><thead><tr><th>ครู</th><th>โรงเรียน</th><th>รอบ</th><th>คะแนนรวม</th><th>ระดับ</th><th>วันที่</th></tr></thead><tbody id="atResultRows"></tbody></table></div>
         </div>
+        <div class="card" id="atEditCard" style="margin-top:18px;border:1px solid #bfdbfe;background:#eff6ff;display:none">
+          <h3 style="font-size:15px;color:#1e40af">✏️ ปรับแต่งแบบประเมิน AI-TPACK</h3>
+          <div class="sub" style="margin:4px 0 10px">แก้ไขชื่อด้านและข้อคำถามได้เอง (คงไว้ 7 ด้านเพื่อให้กราฟและข้อมูลเดิมยังใช้ได้)</div>
+          <button class="btn btn-primary btn-sm" onclick="openATEdit()">✏️ แก้ไขข้อคำถาม AI-TPACK</button>
+        </div>
         <div class="card" id="atResetCard" style="margin-top:18px;border:1px solid #fecaca;background:#fef2f2;display:none">
           <h3 style="font-size:15px;color:#b91c1c">🗑️ รีเซ็ตผลการประเมิน AI-TPACK</h3>
           <div class="sub" style="margin:4px 0 10px">ลบผลประเมินของครู<b>ทุกคนทั้งหมด</b> (บัญชีผู้ใช้และข้อมูลอื่นยังอยู่ครบ) — ใช้เมื่อจะเริ่มเก็บข้อมูลรอบใหม่ · ย้อนกลับไม่ได้</div>
@@ -1458,6 +1463,10 @@ function applyData(d){
     }
     surveyRespAll=Array.isArray(d.surveyResponses)?d.surveyResponses:surveyRespAll;
     mySurveyDone={}; (Array.isArray(d.mySurveyResponses)?d.mySurveyResponses:[]).forEach(r=>{mySurveyDone[String(r.surveyId)]=true;});
+    if(Array.isArray(d.config)){
+      const cfg={}; d.config.forEach(c=>{cfg[c.key]=c.value;});
+      if(cfg.aitpackDims){ try{ const parsed=JSON.parse(cfg.aitpackDims); if(Array.isArray(parsed)&&parsed.length===7&&parsed.every(x=>x&&x.items&&x.items.length)) aitpackDims=parsed; }catch(e){} }
+    }
     if(Array.isArray(d.forumGroups)){
       groups.length=0;
       d.forumGroups.forEach(g=>groups.push({id:g.id,i:g.icon||'👥',c:g.color||'b-blue',n:g.name,m:+g.members||0}));
@@ -1479,7 +1488,7 @@ function applyData(d){
     if(Array.isArray(d.users)){
       usersData=d.users.map(u=>({name:u.name,email:u.email||'',contactEmail:u.contactEmail||'',role:u.role,school:u.school,group:u.schoolGroup||groupOf(u.school),size:sizeOf(u.school),subject:u.subject||'',status:u.status||'active',createdAt:u.createdAt||''}));
     }
-    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();renderSurveys();
+    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();renderSurveys();renderAITPACKForm();
     const c=document.getElementById('supRevCount');if(c)c.textContent=reviewQueue.length;
     return true;
 }
@@ -2793,7 +2802,7 @@ async function delGroup(i){
 }
 
 /* ---------- AI-TPACK SELF-ASSESSMENT ---------- */
-const aitpackDims=[
+let aitpackDims=[
  {label:'ด้านที่ 1 · ความรู้ด้านเทคโนโลยีและ AI',items:['ใช้อุปกรณ์และโปรแกรมดิจิทัลพื้นฐานเพื่อการสอนได้','รู้จักและเข้าใจหลักการทำงานเบื้องต้นของ AI (เช่น Generative AI, แชตบอต)','เรียนรู้และปรับตัวใช้เครื่องมือ AI ใหม่ ๆ ได้ด้วยตนเอง']},
  {label:'ด้านที่ 2 · ความรู้ด้านเนื้อหา',items:['มีความรู้ในเนื้อหาวิชาที่สอนอย่างลึกซึ้ง','ติดตามองค์ความรู้ใหม่ในวิชาที่สอนอยู่เสมอ','อธิบายมโนทัศน์สำคัญของวิชาได้อย่างถูกต้อง']},
  {label:'ด้านที่ 3 · ความรู้ด้านศาสตร์การสอน',items:['ออกแบบกิจกรรมการเรียนรู้ที่เน้นผู้เรียนเป็นสำคัญ','ใช้วิธีการสอนที่หลากหลายเหมาะกับผู้เรียน','วัดและประเมินผลการเรียนรู้ได้อย่างเหมาะสม']},
@@ -2836,6 +2845,8 @@ function submitAITPACK(){
 function renderAITPACKResults(){
   const rc=document.getElementById('atResetCard');
   if(rc) rc.style.display=(role==='admin')?'block':'none';   // ปุ่มรีเซ็ต: เฉพาะแอดมิน
+  const ec=document.getElementById('atEditCard');
+  if(ec) ec.style.display=(role==='admin'||role==='supervisor')?'block':'none';  // แก้ไขข้อคำถาม: ศน./แอดมิน
   const data=aitpackData;
   // นับครูไม่ซ้ำ + ใช้ผลล่าสุดของแต่ละคน (aitpackData เรียงใหม่สุดก่อน → รายการแรกของแต่ละคน = ล่าสุด)
   const byT={};data.forEach(r=>{const k=((r.email||r.n||'')+'').toLowerCase();if(!k)return;if(!byT[k])byT[k]=r;});
@@ -3391,6 +3402,52 @@ function renderMediaTrack(){
 }
 
 /* ---------- CHARTS (lazy init when view shown) ---------- */
+/* ============ ปรับแต่งข้อคำถาม AI-TPACK (แอดมิน/ศน.) ============ */
+let atEdit=null;
+function openATEdit(){ atEdit=JSON.parse(JSON.stringify(aitpackDims)); renderATEdit(); document.getElementById('svModal').style.display='flex'; }
+function atEditRead(){
+  if(!atEdit)return;
+  atEdit.forEach((d,di)=>{ const l=document.getElementById('ateL'+di); if(l)d.label=l.value;
+    d.items.forEach((it,qi)=>{ const q=document.getElementById('ateQ'+di+'_'+qi); if(q)d.items[qi]=q.value; }); });
+}
+function atAddQ(di){ atEditRead(); atEdit[di].items.push(''); renderATEdit(); }
+function atDelQ(di,qi){ atEditRead(); atEdit[di].items.splice(qi,1); if(!atEdit[di].items.length)atEdit[di].items.push(''); renderATEdit(); }
+function renderATEdit(){
+  document.getElementById('svModalBody').innerHTML=`
+    <h2 style="font-family:'Prompt';font-weight:700;font-size:19px;margin-bottom:2px">✏️ ปรับแต่งแบบประเมิน AI-TPACK</h2>
+    <div class="sub" style="margin-bottom:12px">แก้ชื่อด้านและข้อคำถามได้ (คงไว้ 7 ด้าน) · มาตรวัด 1–5</div>
+    ${atEdit.map((d,di)=>`
+      <div style="border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:#fafcff">
+        <input id="ateL${di}" value="${bpEsc(d.label)}" style="width:100%;font-weight:600;margin-bottom:8px">
+        ${d.items.map((it,qi)=>`<div style="display:flex;gap:8px;margin-bottom:6px"><span style="color:var(--muted);font-size:13px;padding-top:9px">${qi+1}.</span><input id="ateQ${di}_${qi}" value="${bpEsc(it)}" style="flex:1"><button class="btn btn-ghost btn-sm" onclick="atDelQ(${di},${qi})">✕</button></div>`).join('')}
+        <button class="btn btn-ghost btn-sm" style="margin-top:4px" onclick="atAddQ(${di})">➕ เพิ่มข้อ</button>
+      </div>`).join('')}
+    <div style="display:flex;gap:10px;margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
+      <button class="btn btn-primary" style="flex:1" onclick="saveATEdit()">💾 บันทึก</button>
+      <button class="btn btn-ghost" onclick="atRestoreDefault()">↩️ คืนค่าเริ่มต้น</button>
+      <button class="btn btn-ghost" onclick="closeSurveyModal()">ยกเลิก</button>
+    </div>`;
+}
+async function saveATEdit(){
+  atEditRead();
+  const clean=atEdit.map(d=>({label:(d.label||'').trim()||'ด้าน',items:d.items.map(x=>(x||'').trim()).filter(Boolean)}));
+  if(clean.some(d=>!d.items.length)){toast('⚠️ แต่ละด้านต้องมีอย่างน้อย 1 ข้อ');return;}
+  closeSurveyModal();
+  if(!LIVE){aitpackDims=clean;renderAITPACKForm();toast('ℹ️ โหมดสาธิต — บันทึกชั่วคราว');return;}
+  toast('⏳ กำลังบันทึก...');
+  const res=await apiPost('setConfig',{key:'aitpackDims',value:JSON.stringify(clean)});
+  if(res&&res.ok){aitpackDims=clean;renderAITPACKForm();toast('✅ บันทึกข้อคำถามใหม่แล้ว');}
+  else toast('⚠️ บันทึกไม่สำเร็จ');
+}
+async function atRestoreDefault(){
+  if(!confirm('คืนค่าข้อคำถาม AI-TPACK เป็นชุดมาตรฐานเดิม?'))return;
+  closeSurveyModal();
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  const res=await apiPost('setConfig',{key:'aitpackDims',value:''});
+  if(res&&res.ok){toast('✅ คืนค่าเริ่มต้นแล้ว — รีเฟรชหน้าเพื่อโหลดชุดมาตรฐาน');}
+  else toast('⚠️ ไม่สำเร็จ');
+}
+
 /* ============ แบบประเมินกำหนดเอง (Surveys) ============ */
 let surveysData=[], surveyRespAll=[], mySurveyDone={}, svBuild=null, svAnswerCur=null;
 function closeSurveyModal(){const m=document.getElementById('svModal');if(m)m.style.display='none';}
