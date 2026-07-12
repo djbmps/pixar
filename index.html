@@ -1245,10 +1245,12 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
             <label class="fl" style="margin-top:10px">ชื่อ-สกุล</label>
             <input type="text" id="pfName" placeholder="ชื่อ-สกุล">
             <div id="pfTeacherFields">
-              <label class="fl" style="margin-top:10px">กลุ่มโรงเรียน</label>
+              <label class="fl" style="margin-top:10px">กลุ่มโรงเรียน <span style="color:var(--muted);font-weight:400;font-size:12px">(ถ้าย้าย เลือกกลุ่มใหม่ได้)</span></label>
               <select id="pfGroup"></select>
+              <input type="text" id="pfGroupOther" placeholder="พิมพ์ชื่อกลุ่มโรงเรียน" style="display:none;margin-top:6px">
               <label class="fl" style="margin-top:10px">โรงเรียน</label>
-              <select id="pfSchool"></select>
+              <select id="pfSchool" onchange="pfSchoolChange()"></select>
+              <input type="text" id="pfSchoolOther" placeholder="พิมพ์ชื่อโรงเรียน" style="display:none;margin-top:6px">
               <label class="fl" style="margin-top:10px">กลุ่มสาระ/วิชาที่สอน</label>
               <input type="text" id="pfSubject" placeholder="เช่น คณิตศาสตร์">
               <label class="fl" style="margin-top:10px">เบอร์โทร</label>
@@ -2963,11 +2965,17 @@ async function saveContactEmail(){
   if(LIVE){toast('⏳ กำลังบันทึก...');const res=await apiPost('updateProfile',{email:MY_EMAIL,contactEmail:val.trim()});if(!(res&&res.ok)){toast('⚠️ บันทึกไม่สำเร็จ');return;}}
   CURRENT.contactEmail=val.trim();renderMyProfile();logAct('แก้ไขอีเมลติดต่อ','');toast('✅ บันทึกอีเมลติดต่อแล้ว');
 }
+function pfCurGroup(){ const s=document.getElementById('pfGroup'); if(!s)return ''; return s.value==='__other__'?((document.getElementById('pfGroupOther')||{}).value||'').trim():s.value; }
+function pfCurSchool(){ const s=document.getElementById('pfSchool'); if(!s)return ''; return s.value==='__other__'?((document.getElementById('pfSchoolOther')||{}).value||'').trim():s.value; }
+function pfGroupChange(){ const o=document.getElementById('pfGroupOther'); if(o)o.style.display=(document.getElementById('pfGroup').value==='__other__')?'block':'none'; fillPfSchools(''); }
+function pfSchoolChange(){ const o=document.getElementById('pfSchoolOther'); if(o)o.style.display=(document.getElementById('pfSchool').value==='__other__')?'block':'none'; }
 function fillPfSchools(selected){
   const sc=document.getElementById('pfSchool');if(!sc)return;
-  const g=document.getElementById('pfGroup').value;
-  const list=SCHOOLS.filter(s=>s.g===g);
-  sc.innerHTML='<option value="">— เลือกโรงเรียน —</option>'+list.map(s=>`<option ${s.n===selected?'selected':''}>${s.n}</option>`).join('');
+  const g=pfCurGroup();
+  let list=SCHOOLS.filter(s=>s.g===g).map(s=>s.n);
+  if(selected && list.indexOf(selected)<0) list=[selected].concat(list);   // เก็บโรงเรียนเดิมให้เลือกได้เสมอ
+  sc.innerHTML='<option value="">— เลือกโรงเรียน —</option>'+list.map(n=>`<option ${n===selected?'selected':''}>${n}</option>`).join('')+'<option value="__other__">➕ อื่นๆ (พิมพ์เอง)</option>';
+  pfSchoolChange();
 }
 function renderMyProfile(){
   if(!CURRENT)return;
@@ -2984,8 +2992,11 @@ function renderMyProfile(){
   const tf=document.getElementById('pfTeacherFields');if(tf)tf.style.display=(role==='teacher')?'block':'none';
   const pg=document.getElementById('pfGroup');
   if(pg){
-    pg.innerHTML='<option value="">— เลือกกลุ่มโรงเรียน —</option>'+SCHOOL_GROUPS.map(x=>`<option ${x===grp?'selected':''}>${x}</option>`).join('');
-    pg.onchange=()=>fillPfSchools('');
+    const groupsOpt=SCHOOL_GROUPS.slice(); if(grp && groupsOpt.indexOf(grp)<0) groupsOpt.unshift(grp);
+    pg.innerHTML='<option value="">— เลือกกลุ่มโรงเรียน —</option>'+groupsOpt.map(x=>`<option ${x===grp?'selected':''}>${x}</option>`).join('')+'<option value="__other__">➕ อื่นๆ (พิมพ์เอง)</option>';
+    pg.onchange=pfGroupChange;
+    const go=document.getElementById('pfGroupOther'); if(go){go.style.display='none';go.value='';}
+    const so=document.getElementById('pfSchoolOther'); if(so){so.value='';}
     fillPfSchools(school);
   }
   const info=[['ชื่อผู้ใช้',CURRENT.email],['อีเมลติดต่อ',CURRENT.contactEmail],['กลุ่มโรงเรียน',grp],['โรงเรียน',school],['ขนาดโรงเรียน',sz],['วิชาที่สอน',CURRENT.subject]];
@@ -2999,8 +3010,8 @@ async function saveMyProfile(){
   const contact=(document.getElementById('profContact').value||'').trim();
   const payload={email:MY_EMAIL,name:name,contactEmail:contact};
   if(role==='teacher'){
-    payload.schoolGroup=document.getElementById('pfGroup').value||'';
-    payload.school=document.getElementById('pfSchool').value||'';
+    payload.schoolGroup=pfCurGroup();
+    payload.school=pfCurSchool();
     payload.subject=(document.getElementById('pfSubject').value||'').trim();
     payload.phone=(document.getElementById('pfPhone').value||'').trim();
   }
