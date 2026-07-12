@@ -935,6 +935,12 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
         </div>
       </section>
 
+      <!-- ============ แบบประเมินกำหนดเอง (SURVEYS) ============ -->
+      <section class="view" id="view-surveys">
+        <div class="page-head"><h1>📋 แบบประเมินอื่นๆ</h1><p id="surveySub">แบบประเมินสำหรับงานนิเทศ — มาตรวัด 1–5</p></div>
+        <div id="surveyArea"></div>
+      </section>
+
       <!-- ============ TEACHER DIRECTORY (SUPERVISOR) ============ -->
       <section class="view" id="view-teacherDir">
         <div class="page-head"><h1>👥 ทำเนียบครู <span class="role-tag">ศึกษานิเทศก์</span></h1><p>รายชื่อครูทั้งหมดที่ลงทะเบียน — ค้นหา กรอง และดาวน์โหลดข้อมูล</p></div>
@@ -1088,6 +1094,13 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
       <div id="thShow" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.6);align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto" onclick="if(event.target===this)closeThread()">
         <div style="background:#fff;border-radius:18px;max-width:640px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 24px 24px">
           <div id="thShowBody"></div>
+        </div>
+      </div>
+
+      <!-- Survey builder / answer / result modal (ใช้กล่องเดียวกัน) -->
+      <div id="svModal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.6);align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto" onclick="if(event.target===this)closeSurveyModal()">
+        <div style="background:#fff;border-radius:18px;max-width:720px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.3);padding:22px 24px 26px">
+          <div id="svModalBody"></div>
         </div>
       </div>
 
@@ -1440,6 +1453,11 @@ function applyData(d){
       threads.length=0;
       d.threads.slice().reverse().forEach(t=>threads.push({id:t.id,a:(t.authorName||'?').charAt(0),c:'#0d9488',n:t.authorName,title:t.title,ex:t.body,rep:+t.replies||0,lk:+t.likes||0,tm:fmtDate(t.createdAt),group:t.groupName}));
     }
+    if(Array.isArray(d.surveys)){
+      surveysData=d.surveys.map(s=>{ let dims=[]; try{dims=JSON.parse(s.dims||'[]');}catch(e){} return {id:s.id,title:s.title,description:s.description,dims:dims,status:s.status,createdAt:fmtDate(s.createdAt)}; });
+    }
+    surveyRespAll=Array.isArray(d.surveyResponses)?d.surveyResponses:surveyRespAll;
+    mySurveyDone={}; (Array.isArray(d.mySurveyResponses)?d.mySurveyResponses:[]).forEach(r=>{mySurveyDone[String(r.surveyId)]=true;});
     if(Array.isArray(d.forumGroups)){
       groups.length=0;
       d.forumGroups.forEach(g=>groups.push({id:g.id,i:g.icon||'👥',c:g.color||'b-blue',n:g.name,m:+g.members||0}));
@@ -1461,7 +1479,7 @@ function applyData(d){
     if(Array.isArray(d.users)){
       usersData=d.users.map(u=>({name:u.name,email:u.email||'',contactEmail:u.contactEmail||'',role:u.role,school:u.school,group:u.schoolGroup||groupOf(u.school),size:sizeOf(u.school),subject:u.subject||'',status:u.status||'active',createdAt:u.createdAt||''}));
     }
-    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();
+    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();renderSurveys();
     const c=document.getElementById('supRevCount');if(c)c.textContent=reviewQueue.length;
     return true;
 }
@@ -1590,11 +1608,11 @@ const NAV={
   {g:null,items:[['home','🏠','หน้าหลัก'],['dashboard','📊','แดชบอร์ดสมรรถนะ']]},
   {g:'การพัฒนา',items:[['knowledge','📚','คลังสื่อ/ความรู้ (เข้าศึกษา)'],['mediaUse','📺','บันทึกการใช้สื่อ'],['booking','📅','จองคิวคำปรึกษา'],['forum','💬','เวที PLC แลกเปลี่ยนเรียนรู้']]},
   {g:'ผลงาน &amp; การสะท้อนคิด',items:[['portfolio','🗂️','แฟ้มสะสมผลงาน (ส่งผลงาน)'],['bestPractice','🏆','ผลงาน Best Practice'],['reflect','📝','สะท้อนคิด &amp; ติดตามผล']]},
-  {g:'เครื่องมือประเมิน',items:[['aitpack','📋','ประเมินสมรรถนะ AI-TPACK']]}
+  {g:'เครื่องมือประเมิน',items:[['aitpack','📋','ประเมินสมรรถนะ AI-TPACK'],['surveys','📝','แบบประเมินอื่นๆ']]}
  ],
  supervisor:[
   {g:null,items:[['home','🏠','หน้าหลัก'],['supOverview','📊','ภาพรวมครูในความดูแล'],['teacherDir','👥','ทำเนียบครู (รายชื่อ)']]},
-  {g:'จัดการเนื้อหา &amp; นิเทศ',items:[['supKnowledge','📚','จัดการคลังสื่อ'],['mediaTrack','📊','ติดตามการใช้สื่อ'],['bestPractice','🏆','ครูต้นแบบ (เพิ่ม/อนุมัติ)'],['supBooking','📅','จัดการปฏิทินนัดหมาย'],['supReview','✅','ตรวจแฟ้มผลงาน'],['aitpackResults','📈','ผลประเมิน AI-TPACK'],['forum','💬','เวที PLC']]},
+  {g:'จัดการเนื้อหา &amp; นิเทศ',items:[['supKnowledge','📚','จัดการคลังสื่อ'],['mediaTrack','📊','ติดตามการใช้สื่อ'],['bestPractice','🏆','ครูต้นแบบ (เพิ่ม/อนุมัติ)'],['supBooking','📅','จัดการปฏิทินนัดหมาย'],['supReview','✅','ตรวจแฟ้มผลงาน'],['aitpackResults','📈','ผลประเมิน AI-TPACK'],['surveys','📝','แบบประเมินอื่นๆ (สร้าง/ดูผล)'],['forum','💬','เวที PLC']]},
   {g:'ระบบ',items:[['activityLog','🕓','บันทึกการใช้งาน'],['supSettings','⚙️','ปรับแต่งระบบ']]}
  ]
 };
@@ -3038,18 +3056,16 @@ async function importMembersUI(){
   }else alert('⚠️ นำเข้าไม่สำเร็จ\n\n'+((res&&res.error)||'กรุณาลองใหม่ หรือตรวจสิทธิ์การเข้าถึงไฟล์ทะเบียน'));
 }
 async function resetDataUI(scope,label){
-  if(role!=='admin'){toast('⚠️ เฉพาะแอดมิน');return;}
-  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
-  if(!confirm('⚠️ ยืนยันล้าง: '+label+'\n\nการลบนี้ย้อนกลับไม่ได้ (บัญชีผู้ใช้ยังอยู่)\nแนะนำให้สำรอง Google Sheet ก่อน'))return;
-  const t=prompt('พิมพ์คำว่า  ล้าง  เพื่อยืนยันอีกครั้ง');
-  if(t===null)return;
-  if(t.trim()!=='ล้าง'){toast('ยกเลิก — พิมพ์คำยืนยันไม่ตรง');return;}
+  if(role!=='admin'){alert('⚠️ เฉพาะแอดมินเท่านั้นที่ล้างข้อมูลได้ (บทบาทปัจจุบัน: '+role+')');return;}
+  if(!LIVE){alert('ℹ️ ตอนนี้เป็นโหมดสาธิต ยังไม่ได้เชื่อมฐานข้อมูล จึงล้างข้อมูลจริงไม่ได้');return;}
+  if(!confirm('⚠️ ยืนยันล้าง: '+label+'\n\nการลบนี้ย้อนกลับไม่ได้ (บัญชีผู้ใช้ยังอยู่ครบ)\nแนะนำให้สำรอง Google Sheet ก่อน\n\nกด OK เพื่อไปขั้นยืนยันสุดท้าย'))return;
+  if(!confirm('ยืนยันครั้งสุดท้าย\n\nจะลบ "'+label+'" ทั้งหมดออกจากฐานข้อมูลถาวร\nกด OK เพื่อล้างข้อมูลทันที'))return;
   toast('⏳ กำลังล้างข้อมูล...');
   let res=null;
   try{ res=await apiPost('resetData',{scope:scope,byEmail:MY_EMAIL,byName:(CURRENT&&CURRENT.name)||''}); }
-  catch(err){ alert('⚠️ เชื่อมต่อไม่สำเร็จ ลองใหม่อีกครั้ง'); return; }
-  if(res&&res.ok){ await loadFromServer(); alert('✅ ล้างข้อมูลเรียบร้อย: '+label); }
-  else alert('⚠️ '+((res&&res.error)||'ล้างไม่สำเร็จ'));
+  catch(err){ alert('⚠️ เชื่อมต่อฐานข้อมูลไม่สำเร็จ\n\n'+err); return; }
+  if(res&&res.ok){ await loadFromServer(); alert('✅ ล้างข้อมูลเรียบร้อย: '+label+'\n(ล้าง '+(res.cleared||0)+' ชีต)'); }
+  else alert('⚠️ ล้างไม่สำเร็จ\n\nรายละเอียด: '+((res&&res.error)||'ไม่ทราบสาเหตุ')+'\n\nถ้าขึ้นว่า unknown action ให้ Deploy → New version ที่ Apps Script ก่อนค่ะ');
 }
 async function seedAITPACKUI(){
   if(role!=='admin'){toast('⚠️ เฉพาะแอดมิน');return;}
@@ -3375,6 +3391,184 @@ function renderMediaTrack(){
 }
 
 /* ---------- CHARTS (lazy init when view shown) ---------- */
+/* ============ แบบประเมินกำหนดเอง (Surveys) ============ */
+let surveysData=[], surveyRespAll=[], mySurveyDone={}, svBuild=null, svAnswerCur=null;
+function closeSurveyModal(){const m=document.getElementById('svModal');if(m)m.style.display='none';}
+function svOpenModal(){document.getElementById('svModal').style.display='flex';}
+
+function renderSurveys(){
+  const el=document.getElementById('surveyArea'); if(!el)return;
+  const sub=document.getElementById('surveySub');
+  const isSup=(role==='supervisor'||role==='admin');
+  if(isSup){
+    if(sub)sub.textContent='สร้างแบบประเมินเองสำหรับงานนิเทศ แล้วดูสรุปผลรายด้าน/รายคน';
+    const cnt={}; surveyRespAll.forEach(r=>{cnt[String(r.surveyId)]=(cnt[String(r.surveyId)]||0)+1;});
+    el.innerHTML=`<div style="margin-bottom:16px"><button class="btn btn-primary" onclick="openSurveyBuilder()">➕ สร้างแบบประเมินใหม่</button></div>`
+      +(surveysData.length?`<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">`+surveysData.map(s=>`
+        <div class="card" style="margin:0">
+          <div style="font-family:'Prompt';font-weight:600;font-size:15.5px">${bpEsc(s.title)}</div>
+          <div class="sub" style="margin:4px 0 8px">${bpEsc(s.description||'')||'—'}</div>
+          <div style="font-size:12.5px;color:var(--muted)">${(s.dims||[]).length} ด้าน · ${(s.dims||[]).reduce((a,d)=>a+((d.items||[]).length),0)} ข้อ · ✍️ ${cnt[String(s.id)]||0} คนทำแล้ว</div>
+          <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn btn-teal btn-sm" onclick="openSurveyResult('${s.id}')">📊 ดูผลสรุป</button>
+            <button class="btn btn-ghost btn-sm" onclick="openSurveyAnswer('${s.id}')">👁 ดูตัวอย่าง</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteSurveyUI('${s.id}')">🗑️ ลบ</button>
+          </div>
+        </div>`).join('')+`</div>`
+      :'<div class="card" style="text-align:center;color:var(--muted)">ยังไม่มีแบบประเมิน — กด “สร้างแบบประเมินใหม่” เพื่อเริ่ม</div>');
+  }else{
+    if(sub)sub.textContent='แบบประเมินที่เปิดให้ทำ — เลือกทำได้เลย';
+    const act=surveysData.filter(s=>s.status!=='inactive');
+    el.innerHTML=act.length?`<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">`+act.map(s=>{
+      const done=mySurveyDone[String(s.id)];
+      return `<div class="card" style="margin:0">
+        <div style="font-family:'Prompt';font-weight:600;font-size:15.5px">${bpEsc(s.title)}</div>
+        <div class="sub" style="margin:4px 0 8px">${bpEsc(s.description||'')||'—'}</div>
+        <div style="font-size:12.5px;color:var(--muted)">${(s.dims||[]).length} ด้าน · ${(s.dims||[]).reduce((a,d)=>a+((d.items||[]).length),0)} ข้อ${done?' · ✅ ทำแล้ว':''}</div>
+        <button class="btn ${done?'btn-ghost':'btn-primary'} btn-sm" style="margin-top:12px" onclick="openSurveyAnswer('${s.id}')">${done?'ทำอีกครั้ง':'📝 ทำแบบประเมิน'}</button>
+      </div>`;
+    }).join('')+`</div>`
+    :'<div class="card" style="text-align:center;color:var(--muted)">ยังไม่มีแบบประเมินที่เปิดให้ทำในขณะนี้</div>';
+  }
+}
+
+/* ---- ตัวสร้างแบบประเมิน ---- */
+function openSurveyBuilder(){ svBuild={title:'',description:'',dims:[{name:'ด้านที่ 1',items:['']}]}; renderBuilder(); svOpenModal(); }
+function svReadBuilder(){
+  if(!svBuild)return;
+  const t=document.getElementById('svbTitle'); if(t)svBuild.title=t.value;
+  const d=document.getElementById('svbDesc'); if(d)svBuild.description=d.value;
+  svBuild.dims.forEach((dim,di)=>{
+    const nm=document.getElementById('svbDim'+di); if(nm)dim.name=nm.value;
+    dim.items.forEach((it,qi)=>{ const q=document.getElementById('svbQ'+di+'_'+qi); if(q)dim.items[qi]=q.value; });
+  });
+}
+function svAddDim(){ svReadBuilder(); svBuild.dims.push({name:'ด้านที่ '+(svBuild.dims.length+1),items:['']}); renderBuilder(); }
+function svDelDim(di){ svReadBuilder(); svBuild.dims.splice(di,1); if(!svBuild.dims.length)svBuild.dims.push({name:'ด้านที่ 1',items:['']}); renderBuilder(); }
+function svAddQ(di){ svReadBuilder(); svBuild.dims[di].items.push(''); renderBuilder(); }
+function svDelQ(di,qi){ svReadBuilder(); svBuild.dims[di].items.splice(qi,1); if(!svBuild.dims[di].items.length)svBuild.dims[di].items.push(''); renderBuilder(); }
+function renderBuilder(){
+  const b=svBuild;
+  document.getElementById('svModalBody').innerHTML=`
+    <h2 style="font-family:'Prompt';font-weight:700;font-size:19px;margin-bottom:4px">➕ สร้างแบบประเมิน</h2>
+    <div class="sub" style="margin-bottom:12px">มาตรวัด 1–5 · แบ่งเป็นด้านและข้อคำถาม</div>
+    <label class="fl">ชื่อแบบประเมิน *</label>
+    <input id="svbTitle" value="${bpEsc(b.title)}" placeholder="เช่น แบบประเมินการจัดการเรียนรู้เชิงรุก (Active Learning)">
+    <label class="fl" style="margin-top:10px">คำอธิบาย</label>
+    <textarea id="svbDesc" placeholder="อธิบายวัตถุประสงค์การประเมิน">${bpEsc(b.description)}</textarea>
+    <div style="margin-top:14px">${b.dims.map((dim,di)=>`
+      <div style="border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:#fafcff">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+          <input id="svbDim${di}" value="${bpEsc(dim.name)}" placeholder="ชื่อด้าน เช่น การออกแบบการเรียนรู้" style="flex:1;font-weight:600">
+          <button class="btn btn-ghost btn-sm" onclick="svDelDim(${di})">🗑️ ลบด้าน</button>
+        </div>
+        ${dim.items.map((it,qi)=>`<div style="display:flex;gap:8px;margin-bottom:6px"><span style="color:var(--muted);font-size:13px;padding-top:9px">${qi+1}.</span><input id="svbQ${di}_${qi}" value="${bpEsc(it)}" placeholder="ข้อคำถาม" style="flex:1"><button class="btn btn-ghost btn-sm" onclick="svDelQ(${di},${qi})">✕</button></div>`).join('')}
+        <button class="btn btn-ghost btn-sm" style="margin-top:4px" onclick="svAddQ(${di})">➕ เพิ่มข้อคำถาม</button>
+      </div>`).join('')}
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="svAddDim()">➕ เพิ่มด้าน</button>
+    <div style="display:flex;gap:10px;margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
+      <button class="btn btn-primary" style="flex:1" onclick="saveSurvey()">💾 บันทึกแบบประเมิน</button>
+      <button class="btn btn-ghost" onclick="closeSurveyModal()">ยกเลิก</button>
+    </div>`;
+}
+async function saveSurvey(){
+  svReadBuilder();
+  const b=svBuild;
+  if(!(b.title||'').trim()){toast('⚠️ กรุณาตั้งชื่อแบบประเมิน');return;}
+  const dims=b.dims.map(d=>({name:(d.name||'').trim()||'ด้าน',items:d.items.map(x=>(x||'').trim()).filter(Boolean)})).filter(d=>d.items.length);
+  if(!dims.length){toast('⚠️ ต้องมีอย่างน้อย 1 ข้อคำถาม');return;}
+  closeSurveyModal();
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  toast('⏳ กำลังบันทึก...');
+  const res=await apiPost('addSurvey',{title:b.title.trim(),description:(b.description||'').trim(),dims:JSON.stringify(dims),byEmail:MY_EMAIL,byName:(CURRENT&&CURRENT.name)||''});
+  if(res&&res.ok){await loadFromServer();toast('✅ สร้างแบบประเมินแล้ว');go('surveys');}
+  else toast('⚠️ บันทึกไม่สำเร็จ');
+}
+async function deleteSurveyUI(id){
+  if(role!=='admin'&&role!=='supervisor')return;
+  if(!confirm('ลบแบบประเมินนี้ พร้อมคำตอบทั้งหมด? (ย้อนกลับไม่ได้)'))return;
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  const res=await apiPost('deleteSurvey',{id:id});
+  if(res&&res.ok){await loadFromServer();toast('ลบแล้ว');go('surveys');}
+  else toast('⚠️ ลบไม่สำเร็จ');
+}
+
+/* ---- ครูทำแบบประเมิน ---- */
+function openSurveyAnswer(id){
+  const s=surveysData.find(x=>String(x.id)===String(id)); if(!s)return;
+  svAnswerCur=s;
+  const preview=(role==='supervisor'||role==='admin');
+  document.getElementById('svModalBody').innerHTML=`
+    <h2 style="font-family:'Prompt';font-weight:700;font-size:19px;margin-bottom:2px">${bpEsc(s.title)}</h2>
+    <div class="sub" style="margin-bottom:6px">${bpEsc(s.description||'')}</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-bottom:12px">ให้คะแนน 1 (น้อยที่สุด) – 5 (มากที่สุด)</div>
+    ${preview?'<div class="badge b-amber" style="margin-bottom:10px">โหมดดูตัวอย่าง — คำตอบจะไม่ถูกบันทึก</div>':''}
+    ${(s.dims||[]).map((dim,di)=>`
+      <div style="margin-bottom:14px">
+        <div style="font-family:'Prompt';font-weight:600;font-size:14.5px;color:var(--blue-dark);margin-bottom:6px">${bpEsc(dim.name)}</div>
+        ${(dim.items||[]).map((it,qi)=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)">
+          <div style="font-size:14px;margin-bottom:6px">${di+1}.${qi+1} ${bpEsc(it)}</div>
+          <div style="display:flex;gap:6px">${[1,2,3,4,5].map(v=>`<label style="flex:1;text-align:center;border:1px solid var(--line);border-radius:8px;padding:7px 0;cursor:pointer;font-size:14px"><input type="radio" name="svA_${di}_${qi}" value="${v}" style="margin-right:3px">${v}</label>`).join('')}</div>
+        </div>`).join('')}
+      </div>`).join('')}
+    <div style="display:flex;gap:10px;margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
+      ${preview?'':'<button class="btn btn-primary" style="flex:1" onclick="submitSurveyAnswer()">✅ ส่งคำตอบ</button>'}
+      <button class="btn btn-ghost" onclick="closeSurveyModal()">${preview?'ปิด':'ยกเลิก'}</button>
+    </div>`;
+  svOpenModal();
+}
+async function submitSurveyAnswer(){
+  const s=svAnswerCur; if(!s)return;
+  const answers=[]; let sum=0,cntq=0,missing=0;
+  (s.dims||[]).forEach((dim,di)=>{ (dim.items||[]).forEach((it,qi)=>{
+    const sel=document.querySelector('input[name="svA_'+di+'_'+qi+'"]:checked');
+    const v=sel?+sel.value:0; answers.push(v); if(v){sum+=v;cntq++;}else missing++;
+  });});
+  if(missing){toast('⚠️ กรุณาตอบให้ครบทุกข้อ (เหลือ '+missing+' ข้อ)');return;}
+  const overall=cntq?(sum/cntq):0;
+  closeSurveyModal();
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  toast('⏳ กำลังส่งคำตอบ...');
+  const res=await apiPost('submitSurvey',{surveyId:s.id,title:s.title,teacherEmail:MY_EMAIL,teacherName:(CURRENT&&CURRENT.name)||'',school:(CURRENT&&CURRENT.school)||'',answers:JSON.stringify(answers),overall:overall.toFixed(2)});
+  if(res&&res.ok){await loadFromServer();toast('✅ ส่งแบบประเมินเรียบร้อย ขอบคุณค่ะ');go('surveys');}
+  else toast('⚠️ ส่งไม่สำเร็จ');
+}
+
+/* ---- สรุปผล (ศน.) ---- */
+async function openSurveyResult(id){
+  const s=surveysData.find(x=>String(x.id)===String(id)); if(!s)return;
+  document.getElementById('svModalBody').innerHTML=`<h2 style="font-family:'Prompt';font-weight:700;font-size:19px">📊 สรุปผล — ${bpEsc(s.title)}</h2><div class="sub" style="margin-top:10px">⏳ กำลังโหลด...</div>`;
+  svOpenModal();
+  let res=null; try{ res=await apiPost('getSurveyResponses',{surveyId:id}); }catch(e){}
+  const items=(res&&res.ok&&res.items)?res.items:[];
+  // แผนผังข้อ → ด้าน
+  const flat=[]; (s.dims||[]).forEach((dim,di)=>(dim.items||[]).forEach((it,qi)=>flat.push(di)));
+  const dimSum=(s.dims||[]).map(()=>({sum:0,n:0}));
+  let ovSum=0,ovN=0;
+  items.forEach(r=>{ let ans=[]; try{ans=JSON.parse(r.answers||'[]');}catch(e){}
+    ans.forEach((v,idx)=>{ const di=flat[idx]; if(di==null||!v)return; dimSum[di].sum+=+v; dimSum[di].n++; ovSum+=+v; ovN++; });
+  });
+  const ovAvg=ovN?(ovSum/ovN):0;
+  let html=`<h2 style="font-family:'Prompt';font-weight:700;font-size:19px">📊 สรุปผล — ${bpEsc(s.title)}</h2>
+    <div style="display:flex;gap:16px;margin:12px 0 16px;flex-wrap:wrap">
+      <div><div style="font-size:12.5px;color:var(--muted)">ผู้ทำแบบประเมิน</div><div style="font-family:'Prompt';font-weight:700;font-size:24px">${items.length} คน</div></div>
+      <div><div style="font-size:12.5px;color:var(--muted)">คะแนนเฉลี่ยรวม (เต็ม 5)</div><div style="font-family:'Prompt';font-weight:700;font-size:24px;color:var(--blue)">${ovAvg.toFixed(2)}</div></div>
+    </div>`;
+  if(!items.length){ html+='<div style="color:var(--muted)">ยังไม่มีผู้ทำแบบประเมินนี้</div>'; }
+  else{
+    html+='<div style="font-family:\'Prompt\';font-weight:600;margin-bottom:6px">คะแนนเฉลี่ยรายด้าน</div>';
+    html+=(s.dims||[]).map((dim,di)=>{ const a=dimSum[di].n?(dimSum[di].sum/dimSum[di].n):0; const pct=(a/5*100).toFixed(0);
+      return `<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:13.5px"><span>${bpEsc(dim.name)}</span><span style="font-weight:600">${a.toFixed(2)}</span></div><div style="height:9px;background:#eef2f7;border-radius:6px;margin-top:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#2563eb,#0d9488)"></div></div></div>`;
+    }).join('');
+    html+='<div style="font-family:\'Prompt\';font-weight:600;margin:14px 0 6px">ผลรายคน</div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13.5px"><thead><tr style="text-align:left;border-bottom:2px solid var(--line)"><th style="padding:6px">ครู</th><th style="padding:6px">โรงเรียน</th><th style="padding:6px">คะแนนเฉลี่ย</th><th style="padding:6px">วันที่</th></tr></thead><tbody>'
+      +items.slice().reverse().map(r=>`<tr style="border-bottom:1px solid var(--line)"><td style="padding:6px">${bpEsc(r.teacherName||'')}</td><td style="padding:6px">${bpEsc(r.school||'')}</td><td style="padding:6px;font-weight:600">${bpEsc(String(r.overall||''))}</td><td style="padding:6px">${fmtDateTime(r.createdAt)}</td></tr>`).join('')
+      +'</tbody></table></div>';
+  }
+  html+='<div style="margin-top:16px"><button class="btn btn-ghost" onclick="closeSurveyModal()">ปิด</button></div>';
+  document.getElementById('svModalBody').innerHTML=html;
+}
+
 // AI แนะนำเส้นทางพัฒนา — อิงจากผล AI-TPACK ล่าสุดของครู (ฟรี ไม่เรียก AI ภายนอก)
 function renderAIRec(){
   const el=document.getElementById('aiRecList'); if(!el)return;
