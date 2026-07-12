@@ -1494,8 +1494,15 @@ function applyData(d){
     const c=document.getElementById('supRevCount');if(c)c.textContent=reviewQueue.length;
     return true;
 }
+function cacheKey(){ return 'pixar_data_'+((MY_EMAIL||'x').toLowerCase()); }
+function cacheData(d){
+  try{ const s=JSON.stringify(d); if(s.length<3000000) localStorage.setItem(cacheKey(),s); }catch(e){}  // เก็บแคชถ้าไม่ใหญ่เกินไป
+}
+function readCache(){
+  try{ const s=localStorage.getItem(cacheKey()); if(!s)return null; const d=JSON.parse(s); return (d&&d.ok)?d:null; }catch(e){ return null; }
+}
 async function loadFromServer(){
-  try{ return applyData(await apiGet()); }
+  try{ const d=await apiGet(); if(d&&d.ok)cacheData(d); return applyData(d); }
   catch(err){ console.warn('โหลดข้อมูลไม่สำเร็จ:',err); return false; }
 }
 
@@ -1857,14 +1864,17 @@ function finishLogin(user,demo,data,restored){
   const badge=document.getElementById('connBadge');
   if(!LIVE){ badge.className='badge b-gray';badge.textContent='🟡 โหมดสาธิต'; return; }
   if(data){ // ได้ข้อมูลมาพร้อม login แล้ว (รอบเดียว ไม่ต้องโหลดซ้ำ)
+    cacheData(data);
     const ok=applyData(data);
     badge.className=ok?'badge b-green':'badge b-pink';
     badge.textContent=ok?'🟢 เชื่อมฐานข้อมูลแล้ว':'🔴 เชื่อมไม่สำเร็จ';
   }else{
-    badge.className='badge b-amber';badge.textContent='⏳ กำลังเชื่อมฐานข้อมูล...';
+    const cached=readCache();
+    if(cached){ applyData(cached); badge.className='badge b-amber'; badge.textContent='⚡ แสดงข้อมูลล่าสุด · กำลังอัปเดต...'; }
+    else{ badge.className='badge b-amber'; badge.textContent='⏳ กำลังเชื่อมฐานข้อมูล...'; }
     loadFromServer().then(ok=>{
       badge.className=ok?'badge b-green':'badge b-pink';
-      badge.textContent=ok?'🟢 เชื่อมฐานข้อมูลแล้ว':'🔴 เชื่อมไม่สำเร็จ (โหมดสาธิต)';
+      badge.textContent=ok?'🟢 เชื่อมฐานข้อมูลแล้ว':(cached?'🟢 ใช้ข้อมูลล่าสุดในเครื่อง':'🔴 เชื่อมไม่สำเร็จ (โหมดสาธิต)');
     });
   }
 }
