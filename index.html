@@ -2323,6 +2323,13 @@ function openSupDay(key){
     h+=`<div style="font-size:13px;color:var(--muted);margin-bottom:6px">เพิ่มช่วงเวลาว่างให้ครูจอง:</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">`;
     PRESET_SLOTS.forEach(t=>{ const exists=free.some(f=>f.time===t); h+=`<button class="btn ${exists?'btn-teal':'btn-ghost'} btn-sm" ${exists?'disabled':''} onclick="addAvail('${key}','${t}','free','')">${exists?'✓ ':'➕ '}${t}</button>`; });
     h+=`</div>`;
+    h+=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:8px 10px">
+      <span style="font-size:13px;color:var(--muted)">หรือกำหนดเวลาเอง:</span>
+      <input type="time" id="avStart" style="width:118px">
+      <span style="color:var(--muted)">ถึง</span>
+      <input type="time" id="avEnd" style="width:118px">
+      <button class="btn btn-teal btn-sm" onclick="addCustomAvail('${key}')">➕ เพิ่มช่วงเวลานี้</button>
+    </div>`;
     if(free.length){ h+=`<div style="font-size:13px;color:var(--muted);margin-bottom:4px">ช่วงที่เปิดไว้:</div>`; h+=free.map(f=>{const taken=bookedTimes(key).includes(f.time);return `<div class="slot" style="cursor:default"><span class="tm">${f.time}</span><span class="badge ${taken?'b-gray':'b-green'}">${taken?'มีครูจองแล้ว':'ว่าง'}</span>${taken?'':`<button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="delAvail('${f.id}')">ลบ</button>`}</div>`;}).join(''); }
     h+=`<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:10px"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">หรือทำเครื่องหมายว่าวันนี้ติดภารกิจ:</div><div style="display:flex;gap:8px"><input type="text" id="busyNote" placeholder="เหตุผล เช่น ประชุม/อบรม" style="flex:1"><button class="btn btn-teal btn-sm" onclick="markBusy('${key}')">🚫 ติดภารกิจ</button></div></div>`;
   }
@@ -2334,6 +2341,16 @@ async function clearBusy(key){
   renderBookingViews(); openSupDay(key);
   toast('ยกเลิกติดภารกิจแล้ว');
   try{ await apiPost('clearAvailability',{date:key,status:'busy'}); }catch(e){}  // ลบทุกแถวของวันนั้นในฐานข้อมูล
+}
+async function addCustomAvail(key){
+  const s=(document.getElementById('avStart')||{}).value||'';
+  const e=(document.getElementById('avEnd')||{}).value||'';
+  if(!s||!e){toast('⚠️ กรุณาเลือกเวลาเริ่มและเวลาสิ้นสุด');return;}
+  if(e<=s){toast('⚠️ เวลาสิ้นสุดต้องหลังเวลาเริ่ม');return;}
+  const t=s+' - '+e;
+  const free=availData.filter(a=>a.date===key&&a.status==='free');
+  if(free.some(f=>f.time===t)){toast('ช่วงเวลานี้เปิดไว้แล้ว');return;}
+  addAvail(key,t,'free','');
 }
 async function addAvail(key,time,status,note){
   if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
