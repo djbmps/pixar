@@ -481,6 +481,7 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
       </div>
     </div>
     <nav class="lp-links">
+      <span id="lpExtraLinks"></span>
       <a onclick="landingGallery()">🏆 คลังผลงาน Best Practice</a>
       <button class="btn btn-primary btn-sm" onclick="gotoLogin()">เข้าสู่ระบบ</button>
     </nav>
@@ -490,7 +491,7 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
     <div class="lp-hero-txt">
       <span class="lp-eyebrow">✦ การนิเทศบูรณาการ PIXAR</span>
       <h1>ระบบนิเทศออนไลน์<br><span style="color:#2563eb">P</span><span style="color:#0d9488">I</span><span style="color:#ea580c">X</span><span style="color:#16a34a">A</span><span style="color:#7c3aed">R</span> Supervision Platform</h1>
-      <p>แพลตฟอร์มนิเทศออนไลน์ครบวงจร ส่งเสริมการใช้คลังสื่อเทคโนโลยีดิจิทัล OBEC Content Center มุ่งพัฒนาสมรรถนะครูด้วยกรอบ AI-TPACK เพื่อยกระดับคุณภาพผู้เรียนอย่างต่อเนื่อง — เรียนรู้และพัฒนาได้ทุกที่ทุกเวลา</p>
+      <p id="lpIntro">แพลตฟอร์มนิเทศออนไลน์ครบวงจร ส่งเสริมการใช้คลังสื่อเทคโนโลยีดิจิทัล OBEC Content Center มุ่งพัฒนาสมรรถนะครูด้วยกรอบ AI-TPACK เพื่อยกระดับคุณภาพผู้เรียนอย่างต่อเนื่อง — เรียนรู้และพัฒนาได้ทุกที่ทุกเวลา</p>
       <div class="lp-cta">
         <button class="btn btn-primary" style="padding:12px 26px" onclick="gotoLogin()">เข้าสู่ระบบ →</button>
         <button class="lp-btn2" onclick="landingGallery()">🏆 ดูคลังผลงานครูต้นแบบ</button>
@@ -500,18 +501,7 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
   </section>
 
   <section class="lp-feats">
-    <div class="lp-feat">
-      <div class="lp-num">1</div>
-      <div class="lp-fcard"><h3>นิเทศออนไลน์ครบวงจร ด้วยรูปแบบ PIXAR</h3><p>กระบวนการนิเทศ 5 ขั้น — เตรียมความพร้อม (P) สร้างแรงบันดาลใจ (I) แลกเปลี่ยนเรียนรู้ผ่าน PLC (X) ลงมือปฏิบัติพร้อมโค้ช (A) และสะท้อนผล (R) ทำงานได้ทุกที่ทุกเวลา</p></div>
-    </div>
-    <div class="lp-feat lp-rev">
-      <div class="lp-num">2</div>
-      <div class="lp-fcard"><h3>พัฒนาสมรรถนะครูด้วยข้อมูลจริง</h3><p>ประเมินสมรรถนะครูด้วยกรอบ AI-TPACK 7 ด้าน เปรียบเทียบก่อน–หลังการนิเทศ พร้อมแดชบอร์ดและกราฟที่เห็นพัฒนาการรายบุคคลและภาพรวมทั้งเขตแบบเรียลไทม์</p></div>
-    </div>
-    <div class="lp-feat">
-      <div class="lp-num">3</div>
-      <div class="lp-fcard"><h3>เผยแพร่ผลงานครูต้นแบบสู่สาธารณะ</h3><p>คลังผลงาน Best Practice ที่ทุกคนเข้าชมและดาวน์โหลดไปใช้ได้ พร้อมนับยอดเข้าชม–ดาวน์โหลด ช่วยยกย่องและต่อยอดผลงานของครูให้เกิดประโยชน์ในวงกว้าง</p></div>
-    </div>
+    <div id="lpFeats"></div>
     <div style="text-align:center;margin-top:6px">
       <button class="btn btn-primary" style="padding:12px 30px" onclick="gotoLogin()">เริ่มใช้งาน — เข้าสู่ระบบ →</button>
     </div>
@@ -548,6 +538,7 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
 </style>
 
 <div class="login-overlay" id="login">
+  <button onclick="showLanding()" style="position:absolute;top:20px;right:24px;z-index:5;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.45);border-radius:9px;padding:8px 16px;font-family:'Prompt';font-weight:500;font-size:13.5px;cursor:pointer">← กลับหน้าแรก</button>
   <div class="login-brandbar">
     <img src="Logo-1.png" alt="โลโก้ สพป.อุดรธานี เขต 1" class="lbb-logo">
     <div class="lbb-text">
@@ -949,6 +940,11 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
           <div class="sub">สร้างกลุ่มแลกเปลี่ยนเรียนรู้ใหม่ — ครูเข้าร่วมได้ในเวที PLC</div>
           <div id="groupEditList" style="margin-top:6px"></div>
           <div style="display:flex;gap:8px;margin-top:10px"><input type="text" id="newGroup" placeholder="ชื่อกลุ่มใหม่ เช่น ครูปฐมวัย..."><button class="btn btn-teal btn-sm" onclick="addGroup()">สร้างกลุ่ม</button></div>
+        </div>
+        <div class="card" style="margin-top:18px;border:1px solid #bfdbfe;background:#f8fbff">
+          <h3>🖥️ ปรับแต่งหน้าแรก (Landing)</h3>
+          <div class="sub">แก้ข้อความแนะนำ เพิ่ม/แก้โมดูลการ์ด และเพิ่มลิงก์บนแถบเมนูของหน้าแรก</div>
+          <div id="landingEditor" style="margin-top:10px"></div>
         </div>
       </section>
 
@@ -2663,7 +2659,7 @@ const modules=[
 ];
 let supComps=['การออกแบบสื่อดิจิทัล','การใช้ AI ในการสอน','การวัดและประเมินผล','Active Learning','การจัดการชั้นเรียน'];
 
-function renderSupAll(){renderSupStats();renderSupTeachers();renderSupPriority();renderLessonList();renderBookingViews();renderAppts();renderReview();renderModules();renderCompEdit();renderGroupEdit();renderAITPACKForm();renderAITPACKResults();renderActivityLog();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderResetRequests();renderNotif();}
+function renderSupAll(){renderSupStats();renderSupTeachers();renderSupPriority();renderLessonList();renderBookingViews();renderAppts();renderReview();renderModules();renderCompEdit();renderGroupEdit();renderAITPACKForm();renderAITPACKResults();renderActivityLog();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderResetRequests();renderNotif();if(role==='supervisor'||role==='admin')renderLandingEditor();}
 
 function atOf(t){ // หาคะแนน AI-TPACK ล่าสุดของครูคนนี้
   const r=aitpackData.find(x=>(x.email&&t.email&&x.email===t.email)||x.n===t.name);
@@ -3824,11 +3820,99 @@ function toast(m){
 /* ---------- หน้าต้อนรับ + คงสถานะล็อกอินเมื่อรีเฟรชหน้า ---------- */
 let welcomeTimer=null;
 function dismissWelcome(){ gotoLogin(); }   // เผื่อโค้ดเก่าเรียก
+const LANDING_DEFAULT={
+  intro:'แพลตฟอร์มนิเทศออนไลน์ครบวงจร ส่งเสริมการใช้คลังสื่อเทคโนโลยีดิจิทัล OBEC Content Center มุ่งพัฒนาสมรรถนะครูด้วยกรอบ AI-TPACK เพื่อยกระดับคุณภาพผู้เรียนอย่างต่อเนื่อง — เรียนรู้และพัฒนาได้ทุกที่ทุกเวลา',
+  feats:[
+    {t:'นิเทศออนไลน์ครบวงจร ด้วยรูปแบบ PIXAR',d:'กระบวนการนิเทศ 5 ขั้น — เตรียมความพร้อม (P) สร้างแรงบันดาลใจ (I) แลกเปลี่ยนเรียนรู้ผ่าน PLC (X) ลงมือปฏิบัติพร้อมโค้ช (A) และสะท้อนผล (R) ทำงานได้ทุกที่ทุกเวลา'},
+    {t:'พัฒนาสมรรถนะครูด้วยข้อมูลจริง',d:'ประเมินสมรรถนะครูด้วยกรอบ AI-TPACK เปรียบเทียบก่อน–หลังการนิเทศ พร้อมแดชบอร์ดและกราฟที่เห็นพัฒนาการรายบุคคลและภาพรวมทั้งเขตแบบเรียลไทม์'},
+    {t:'เผยแพร่ผลงานครูต้นแบบสู่สาธารณะ',d:'คลังผลงาน Best Practice ที่ทุกคนเข้าชมและดาวน์โหลดไปใช้ได้ พร้อมนับยอดเข้าชม–ดาวน์โหลด ช่วยยกย่องและต่อยอดผลงานของครูให้เกิดประโยชน์ในวงกว้าง'}
+  ],
+  links:[]
+};
+let landingCfg=JSON.parse(JSON.stringify(LANDING_DEFAULT));
+function renderLandingContent(){
+  const ip=document.getElementById('lpIntro'); if(ip)ip.textContent=landingCfg.intro||LANDING_DEFAULT.intro;
+  const fe=document.getElementById('lpFeats');
+  if(fe)fe.innerHTML=(landingCfg.feats||[]).map((f,i)=>`<div class="lp-feat ${i%2?'lp-rev':''}"><div class="lp-num">${i+1}</div><div class="lp-fcard"><h3>${bpEsc(f.t||'')}</h3><p>${bpEsc(f.d||'')}</p></div></div>`).join('');
+  const xl=document.getElementById('lpExtraLinks');
+  if(xl)xl.innerHTML=(landingCfg.links||[]).map(l=>`<a href="${bpEsc(l.url||'#')}" target="_blank" rel="noopener">${bpEsc(l.label||'')}</a>`).join('');
+}
+async function loadLandingCfg(){
+  try{ const c=localStorage.getItem('pixar_landing'); if(c){ landingCfg=JSON.parse(c); renderLandingContent(); } }catch(e){}
+  if(!LIVE)return;
+  try{
+    const res=await apiPost('getLanding',{});
+    if(res&&res.ok){
+      const cfg={intro:res.intro||LANDING_DEFAULT.intro,feats:LANDING_DEFAULT.feats,links:[]};
+      try{ if(res.feats){const f=JSON.parse(res.feats); if(Array.isArray(f)&&f.length)cfg.feats=f;} }catch(e){}
+      try{ if(res.links){const l=JSON.parse(res.links); if(Array.isArray(l))cfg.links=l;} }catch(e){}
+      landingCfg=cfg; renderLandingContent();
+      try{ localStorage.setItem('pixar_landing',JSON.stringify(cfg)); }catch(e){}
+    }
+  }catch(e){}
+}
 function showLanding(){
   const lp=document.getElementById('landingPage'); if(lp)lp.style.display='block';
   const lg=document.getElementById('login'); if(lg)lg.style.display='none';
   const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none';
+  renderLandingContent(); loadLandingCfg();
   window.scrollTo(0,0);
+}
+
+/* ---- ตัวแก้ไขหน้าแรก (ศน./แอดมิน) ---- */
+let leEdit=null;
+async function renderLandingEditor(){
+  const el=document.getElementById('landingEditor'); if(!el)return;
+  if(!leEdit){
+    leEdit=JSON.parse(JSON.stringify(landingCfg));
+    if(LIVE){ try{ const res=await apiPost('getLanding',{});
+      if(res&&res.ok){ leEdit.intro=res.intro||leEdit.intro;
+        try{ if(res.feats){const f=JSON.parse(res.feats); if(Array.isArray(f)&&f.length)leEdit.feats=f;} }catch(e){}
+        try{ if(res.links){const l=JSON.parse(res.links); if(Array.isArray(l))leEdit.links=l;} }catch(e){}
+      } }catch(e){} }
+  }
+  drawLE();
+}
+function drawLE(){
+  const el=document.getElementById('landingEditor'); if(!el||!leEdit)return;
+  el.innerHTML=`
+    <label class="fl">ข้อความแนะนำ (ใต้ชื่อระบบ)</label>
+    <textarea id="leIntro" style="min-height:70px">${bpEsc(leEdit.intro||'')}</textarea>
+    <div style="font-weight:600;font-family:'Prompt';margin:14px 0 6px">โมดูลการ์ดบนหน้าแรก</div>
+    ${(leEdit.feats||[]).map((f,i)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;background:#fff"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">การ์ดที่ ${i+1}</span><button class="btn btn-ghost btn-sm" onclick="leDelFeat(${i})">🗑️ ลบ</button></div><input id="leFT${i}" value="${bpEsc(f.t||'')}" placeholder="หัวข้อ" style="margin:6px 0"><textarea id="leFD${i}" placeholder="รายละเอียด" style="min-height:56px">${bpEsc(f.d||'')}</textarea></div>`).join('')}
+    <button class="btn btn-ghost btn-sm" onclick="leAddFeat()">➕ เพิ่มการ์ด</button>
+    <div style="font-weight:600;font-family:'Prompt';margin:16px 0 6px">ลิงก์เพิ่มเติมบนแถบเมนู</div>
+    ${(leEdit.links||[]).map((l,i)=>`<div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><input id="leLL${i}" value="${bpEsc(l.label||'')}" placeholder="ชื่อลิงก์ เช่น เกี่ยวกับเรา" style="flex:1;min-width:130px"><input id="leLU${i}" value="${bpEsc(l.url||'')}" placeholder="https://..." style="flex:1.4;min-width:160px"><button class="btn btn-ghost btn-sm" onclick="leDelLink(${i})">✕</button></div>`).join('')}
+    <button class="btn btn-ghost btn-sm" onclick="leAddLink()">➕ เพิ่มลิงก์</button>
+    <div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px"><button class="btn btn-primary" onclick="saveLanding()">💾 บันทึกหน้าแรก</button> <button class="btn btn-ghost" onclick="leResetDefault()">↩️ คืนค่าเริ่มต้น</button></div>`;
+}
+function leRead(){
+  if(!leEdit)return;
+  const ii=document.getElementById('leIntro'); if(ii)leEdit.intro=ii.value;
+  (leEdit.feats||[]).forEach((f,i)=>{ const t=document.getElementById('leFT'+i),d=document.getElementById('leFD'+i); if(t)f.t=t.value; if(d)f.d=d.value; });
+  (leEdit.links||[]).forEach((l,i)=>{ const a=document.getElementById('leLL'+i),u=document.getElementById('leLU'+i); if(a)l.label=a.value; if(u)l.url=u.value; });
+}
+function leAddFeat(){ leRead(); leEdit.feats.push({t:'',d:''}); drawLE(); }
+function leDelFeat(i){ leRead(); leEdit.feats.splice(i,1); drawLE(); }
+function leAddLink(){ leRead(); leEdit.links.push({label:'',url:''}); drawLE(); }
+function leDelLink(i){ leRead(); leEdit.links.splice(i,1); drawLE(); }
+function leResetDefault(){ if(!confirm('คืนค่าหน้าแรกเป็นค่าเริ่มต้น?'))return; leEdit=JSON.parse(JSON.stringify(LANDING_DEFAULT)); drawLE(); }
+async function saveLanding(){
+  leRead();
+  const feats=(leEdit.feats||[]).map(f=>({t:(f.t||'').trim(),d:(f.d||'').trim()})).filter(f=>f.t);
+  const links=(leEdit.links||[]).map(l=>({label:(l.label||'').trim(),url:(l.url||'').trim()})).filter(l=>l.label&&l.url);
+  const intro=(leEdit.intro||'').trim();
+  if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
+  toast('⏳ กำลังบันทึกหน้าแรก...');
+  try{
+    await apiPost('setConfig',{key:'landingIntro',value:intro});
+    await apiPost('setConfig',{key:'landingFeats',value:JSON.stringify(feats)});
+    const r=await apiPost('setConfig',{key:'landingLinks',value:JSON.stringify(links)});
+    if(r&&r.ok){ landingCfg={intro:intro||LANDING_DEFAULT.intro,feats:feats.length?feats:LANDING_DEFAULT.feats,links:links};
+      try{ localStorage.setItem('pixar_landing',JSON.stringify(landingCfg)); }catch(e){}
+      toast('✅ บันทึกหน้าแรกแล้ว'); }
+    else toast('⚠️ บันทึกไม่สำเร็จ');
+  }catch(e){ toast('⚠️ เชื่อมต่อไม่สำเร็จ'); }
 }
 function gotoLogin(){
   const lp=document.getElementById('landingPage'); if(lp)lp.style.display='none';
