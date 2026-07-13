@@ -531,6 +531,7 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
 .lp-feat.lp-rev{flex-direction:row-reverse}
 .lp-num{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#0e7490);color:#fff;font-family:'Prompt';font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(30,58,138,.22)}
 .lp-fcard{flex:1;background:#fff;border:1px solid #e8edf3;border-radius:16px;padding:20px 22px;box-shadow:0 6px 20px rgba(30,58,138,.06)}
+.lp-media{margin-bottom:12px}
 .lp-fcard h3{font-family:'Prompt';font-weight:700;font-size:18px;color:#1e293b}
 .lp-fcard p{font-size:14.5px;line-height:1.75;color:#475569;margin-top:6px}
 .lp-foot{text-align:center;font-size:13px;color:#64748b;padding:20px;border-top:1px solid #e2e8f0}
@@ -3830,10 +3831,19 @@ const LANDING_DEFAULT={
   links:[]
 };
 let landingCfg=JSON.parse(JSON.stringify(LANDING_DEFAULT));
+function mediaEmbed(url){
+  url=String(url||'').trim(); if(!url)return '';
+  const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([-\w]{6,})/);
+  if(yt) return `<div class="lp-media"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen frameborder="0" style="width:100%;aspect-ratio:16/9;border-radius:12px;display:block"></iframe></div>`;
+  if(/\.(mp4|webm|ogg)(\?|$)/i.test(url)) return `<div class="lp-media"><video src="${bpEsc(url)}" controls style="width:100%;border-radius:12px;display:block"></video></div>`;
+  let img=url; const dm=url.match(/\/d\/([-\w]{20,})/)||url.match(/[?&]id=([-\w]{20,})/);
+  if(dm) img='https://drive.google.com/thumbnail?id='+dm[1]+'&sz=w1000';
+  return `<div class="lp-media"><img src="${bpEsc(img)}" onerror="this.style.display='none'" style="width:100%;border-radius:12px;display:block"></div>`;
+}
 function renderLandingContent(){
   const ip=document.getElementById('lpIntro'); if(ip)ip.textContent=landingCfg.intro||LANDING_DEFAULT.intro;
   const fe=document.getElementById('lpFeats');
-  if(fe)fe.innerHTML=(landingCfg.feats||[]).map((f,i)=>`<div class="lp-feat ${i%2?'lp-rev':''}"><div class="lp-num">${i+1}</div><div class="lp-fcard"><h3>${bpEsc(f.t||'')}</h3><p>${bpEsc(f.d||'')}</p></div></div>`).join('');
+  if(fe)fe.innerHTML=(landingCfg.feats||[]).map((f,i)=>`<div class="lp-feat ${i%2?'lp-rev':''}"><div class="lp-num">${i+1}</div><div class="lp-fcard">${mediaEmbed(f.media)}<h3>${bpEsc(f.t||'')}</h3><p>${bpEsc(f.d||'')}</p></div></div>`).join('');
   const xl=document.getElementById('lpExtraLinks');
   if(xl)xl.innerHTML=(landingCfg.links||[]).map(l=>`<a href="${bpEsc(l.url||'#')}" target="_blank" rel="noopener">${bpEsc(l.label||'')}</a>`).join('');
 }
@@ -3879,7 +3889,7 @@ function drawLE(){
     <label class="fl">ข้อความแนะนำ (ใต้ชื่อระบบ)</label>
     <textarea id="leIntro" style="min-height:70px">${bpEsc(leEdit.intro||'')}</textarea>
     <div style="font-weight:600;font-family:'Prompt';margin:14px 0 6px">โมดูลการ์ดบนหน้าแรก</div>
-    ${(leEdit.feats||[]).map((f,i)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;background:#fff"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">การ์ดที่ ${i+1}</span><button class="btn btn-ghost btn-sm" onclick="leDelFeat(${i})">🗑️ ลบ</button></div><input id="leFT${i}" value="${bpEsc(f.t||'')}" placeholder="หัวข้อ" style="margin:6px 0"><textarea id="leFD${i}" placeholder="รายละเอียด" style="min-height:56px">${bpEsc(f.d||'')}</textarea></div>`).join('')}
+    ${(leEdit.feats||[]).map((f,i)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;background:#fff"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">การ์ดที่ ${i+1}</span><button class="btn btn-ghost btn-sm" onclick="leDelFeat(${i})">🗑️ ลบ</button></div><input id="leFT${i}" value="${bpEsc(f.t||'')}" placeholder="หัวข้อ" style="margin:6px 0"><textarea id="leFD${i}" placeholder="รายละเอียด" style="min-height:56px">${bpEsc(f.d||'')}</textarea><input id="leFM${i}" value="${bpEsc(f.media||'')}" placeholder="ลิงก์ภาพ/วิดีโอ (ไม่บังคับ) — YouTube, .mp4 หรือลิงก์ภาพ/Google Drive" style="margin-top:6px">${f.media?('<div style="margin-top:6px">'+mediaEmbed(f.media)+'</div>'):''}</div>`).join('')}
     <button class="btn btn-ghost btn-sm" onclick="leAddFeat()">➕ เพิ่มการ์ด</button>
     <div style="font-weight:600;font-family:'Prompt';margin:16px 0 6px">ลิงก์เพิ่มเติมบนแถบเมนู</div>
     ${(leEdit.links||[]).map((l,i)=>`<div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><input id="leLL${i}" value="${bpEsc(l.label||'')}" placeholder="ชื่อลิงก์ เช่น เกี่ยวกับเรา" style="flex:1;min-width:130px"><input id="leLU${i}" value="${bpEsc(l.url||'')}" placeholder="https://..." style="flex:1.4;min-width:160px"><button class="btn btn-ghost btn-sm" onclick="leDelLink(${i})">✕</button></div>`).join('')}
@@ -3889,17 +3899,17 @@ function drawLE(){
 function leRead(){
   if(!leEdit)return;
   const ii=document.getElementById('leIntro'); if(ii)leEdit.intro=ii.value;
-  (leEdit.feats||[]).forEach((f,i)=>{ const t=document.getElementById('leFT'+i),d=document.getElementById('leFD'+i); if(t)f.t=t.value; if(d)f.d=d.value; });
+  (leEdit.feats||[]).forEach((f,i)=>{ const t=document.getElementById('leFT'+i),d=document.getElementById('leFD'+i),m=document.getElementById('leFM'+i); if(t)f.t=t.value; if(d)f.d=d.value; if(m)f.media=m.value.trim(); });
   (leEdit.links||[]).forEach((l,i)=>{ const a=document.getElementById('leLL'+i),u=document.getElementById('leLU'+i); if(a)l.label=a.value; if(u)l.url=u.value; });
 }
-function leAddFeat(){ leRead(); leEdit.feats.push({t:'',d:''}); drawLE(); }
+function leAddFeat(){ leRead(); leEdit.feats.push({t:'',d:'',media:''}); drawLE(); }
 function leDelFeat(i){ leRead(); leEdit.feats.splice(i,1); drawLE(); }
 function leAddLink(){ leRead(); leEdit.links.push({label:'',url:''}); drawLE(); }
 function leDelLink(i){ leRead(); leEdit.links.splice(i,1); drawLE(); }
 function leResetDefault(){ if(!confirm('คืนค่าหน้าแรกเป็นค่าเริ่มต้น?'))return; leEdit=JSON.parse(JSON.stringify(LANDING_DEFAULT)); drawLE(); }
 async function saveLanding(){
   leRead();
-  const feats=(leEdit.feats||[]).map(f=>({t:(f.t||'').trim(),d:(f.d||'').trim()})).filter(f=>f.t);
+  const feats=(leEdit.feats||[]).map(f=>({t:(f.t||'').trim(),d:(f.d||'').trim(),media:(f.media||'').trim()})).filter(f=>f.t);
   const links=(leEdit.links||[]).map(l=>({label:(l.label||'').trim(),url:(l.url||'').trim()})).filter(l=>l.label&&l.url);
   const intro=(leEdit.intro||'').trim();
   if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
