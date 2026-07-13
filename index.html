@@ -3854,8 +3854,10 @@ async function loadLandingCfg(){
     const res=await apiPost('getLanding',{});
     if(res&&res.ok){
       const cfg={intro:res.intro||LANDING_DEFAULT.intro,feats:LANDING_DEFAULT.feats,links:[]};
+      let media={}; try{ media=JSON.parse(res.media||'{}'); }catch(e){}
       try{ if(res.feats){const f=JSON.parse(res.feats); if(Array.isArray(f)&&f.length)cfg.feats=f;} }catch(e){}
       try{ if(res.links){const l=JSON.parse(res.links); if(Array.isArray(l))cfg.links=l;} }catch(e){}
+      cfg.feats=cfg.feats.map(f=>{ let m=f.media||''; if(/^@\d+$/.test(m))m=media[m.slice(1)]||''; return {t:f.t,d:f.d,media:m}; });  // แปลง @index → ภาพจริง
       landingCfg=cfg; renderLandingContent();
       try{ localStorage.setItem('pixar_landing',JSON.stringify(cfg)); }catch(e){}
     }
@@ -3877,8 +3879,10 @@ async function renderLandingEditor(){
     leEdit=JSON.parse(JSON.stringify(landingCfg));
     if(LIVE){ try{ const res=await apiPost('getLanding',{});
       if(res&&res.ok){ leEdit.intro=res.intro||leEdit.intro;
+        let media={}; try{ media=JSON.parse(res.media||'{}'); }catch(e){}
         try{ if(res.feats){const f=JSON.parse(res.feats); if(Array.isArray(f)&&f.length)leEdit.feats=f;} }catch(e){}
         try{ if(res.links){const l=JSON.parse(res.links); if(Array.isArray(l))leEdit.links=l;} }catch(e){}
+        leEdit.feats=leEdit.feats.map(f=>{ let m=f.media||''; if(/^@\d+$/.test(m))m=media[m.slice(1)]||''; return {t:f.t,d:f.d,media:m}; });
       } }catch(e){} }
   }
   drawLE();
@@ -3889,7 +3893,7 @@ function drawLE(){
     <label class="fl">ข้อความแนะนำ (ใต้ชื่อระบบ)</label>
     <textarea id="leIntro" style="min-height:70px">${bpEsc(leEdit.intro||'')}</textarea>
     <div style="font-weight:600;font-family:'Prompt';margin:14px 0 6px">โมดูลการ์ดบนหน้าแรก</div>
-    ${(leEdit.feats||[]).map((f,i)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;background:#fff"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">การ์ดที่ ${i+1}</span><button class="btn btn-ghost btn-sm" onclick="leDelFeat(${i})">🗑️ ลบ</button></div><input id="leFT${i}" value="${bpEsc(f.t||'')}" placeholder="หัวข้อ" style="margin:6px 0"><textarea id="leFD${i}" placeholder="รายละเอียด" style="min-height:56px">${bpEsc(f.d||'')}</textarea><input id="leFM${i}" value="${bpEsc(f.media||'')}" placeholder="ลิงก์ภาพ/วิดีโอ (ไม่บังคับ) — YouTube, .mp4 หรือลิงก์ภาพ/Google Drive" style="margin-top:6px">${f.media?('<div style="margin-top:6px">'+mediaEmbed(f.media)+'</div>'):''}</div>`).join('')}
+    ${(leEdit.feats||[]).map((f,i)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;background:#fff"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">การ์ดที่ ${i+1}</span><button class="btn btn-ghost btn-sm" onclick="leDelFeat(${i})">🗑️ ลบ</button></div><input id="leFT${i}" value="${bpEsc(f.t||'')}" placeholder="หัวข้อ" style="margin:6px 0"><textarea id="leFD${i}" placeholder="รายละเอียด" style="min-height:56px">${bpEsc(f.d||'')}</textarea><input id="leFM${i}" value="${(f.media||'').indexOf('data:')===0?'':bpEsc(f.media||'')}" placeholder="ลิงก์ภาพ/วิดีโอ (YouTube/.mp4/ลิงก์ภาพ)" style="margin-top:6px"><div style="display:flex;gap:8px;align-items:center;margin-top:6px"><span style="font-size:12.5px;color:var(--muted)">หรืออัปโหลดภาพ:</span><input type="file" accept="image/*" onchange="leUpload(${i},this)">${f.media?`<button class="btn btn-ghost btn-sm" onclick="leClearMedia(${i})">ลบสื่อ</button>`:''}</div>${f.media?('<div style="margin-top:6px">'+mediaEmbed(f.media)+'</div>'):''}</div>`).join('')}
     <button class="btn btn-ghost btn-sm" onclick="leAddFeat()">➕ เพิ่มการ์ด</button>
     <div style="font-weight:600;font-family:'Prompt';margin:16px 0 6px">ลิงก์เพิ่มเติมบนแถบเมนู</div>
     ${(leEdit.links||[]).map((l,i)=>`<div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><input id="leLL${i}" value="${bpEsc(l.label||'')}" placeholder="ชื่อลิงก์ เช่น เกี่ยวกับเรา" style="flex:1;min-width:130px"><input id="leLU${i}" value="${bpEsc(l.url||'')}" placeholder="https://..." style="flex:1.4;min-width:160px"><button class="btn btn-ghost btn-sm" onclick="leDelLink(${i})">✕</button></div>`).join('')}
@@ -3899,9 +3903,23 @@ function drawLE(){
 function leRead(){
   if(!leEdit)return;
   const ii=document.getElementById('leIntro'); if(ii)leEdit.intro=ii.value;
-  (leEdit.feats||[]).forEach((f,i)=>{ const t=document.getElementById('leFT'+i),d=document.getElementById('leFD'+i),m=document.getElementById('leFM'+i); if(t)f.t=t.value; if(d)f.d=d.value; if(m)f.media=m.value.trim(); });
+  (leEdit.feats||[]).forEach((f,i)=>{
+    const t=document.getElementById('leFT'+i),d=document.getElementById('leFD'+i),m=document.getElementById('leFM'+i);
+    if(t)f.t=t.value; if(d)f.d=d.value;
+    if(m){ const v=m.value.trim();
+      if(v) f.media=v;                                   // มีลิงก์ในช่อง → ใช้ลิงก์
+      else if((f.media||'').indexOf('data:')!==0) f.media='';  // ช่องว่าง & ไม่ใช่ภาพอัปโหลด → เคลียร์ (ภาพอัปโหลดคงไว้)
+    }
+  });
   (leEdit.links||[]).forEach((l,i)=>{ const a=document.getElementById('leLL'+i),u=document.getElementById('leLU'+i); if(a)l.label=a.value; if(u)l.url=u.value; });
 }
+function leUpload(i,input){
+  const f=input.files&&input.files[0]; if(!f)return;
+  const fr=new FileReader();
+  fr.onload=e=>{ const img=new Image(); img.onload=()=>{ leRead(); leEdit.feats[i].media=compressToLimit(img,900); drawLE(); toast('✅ แนบภาพแล้ว'); }; img.src=e.target.result; };
+  fr.readAsDataURL(f);
+}
+function leClearMedia(i){ leRead(); leEdit.feats[i].media=''; drawLE(); }
 function leAddFeat(){ leRead(); leEdit.feats.push({t:'',d:'',media:''}); drawLE(); }
 function leDelFeat(i){ leRead(); leEdit.feats.splice(i,1); drawLE(); }
 function leAddLink(){ leRead(); leEdit.links.push({label:'',url:''}); drawLE(); }
@@ -3909,19 +3927,26 @@ function leDelLink(i){ leRead(); leEdit.links.splice(i,1); drawLE(); }
 function leResetDefault(){ if(!confirm('คืนค่าหน้าแรกเป็นค่าเริ่มต้น?'))return; leEdit=JSON.parse(JSON.stringify(LANDING_DEFAULT)); drawLE(); }
 async function saveLanding(){
   leRead();
-  const feats=(leEdit.feats||[]).map(f=>({t:(f.t||'').trim(),d:(f.d||'').trim(),media:(f.media||'').trim()})).filter(f=>f.t);
-  const links=(leEdit.links||[]).map(l=>({label:(l.label||'').trim(),url:(l.url||'').trim()})).filter(l=>l.label&&l.url);
   const intro=(leEdit.intro||'').trim();
+  const links=(leEdit.links||[]).map(l=>({label:(l.label||'').trim(),url:(l.url||'').trim()})).filter(l=>l.label&&l.url);
+  // แยกภาพที่อัปโหลด (base64) ออกไปเก็บคนละช่อง เพื่อไม่ให้ JSON ใหญ่เกินขีดจำกัด Google Sheets
+  const uploads=[]; const localFeats=[];   // localFeats = ใช้แสดงทันทีในเครื่อง (คงภาพจริง)
+  const feats=(leEdit.feats||[]).filter(f=>(f.t||'').trim()).map((f,idx)=>{
+    let media=(f.media||'').trim(); localFeats.push({t:f.t.trim(),d:(f.d||'').trim(),media:media});
+    if(media.indexOf('data:')===0){ uploads.push({idx:idx,data:media}); return {t:f.t.trim(),d:(f.d||'').trim(),media:'@'+idx}; }
+    return {t:f.t.trim(),d:(f.d||'').trim(),media:media};
+  });
   if(!LIVE){toast('ℹ️ โหมดสาธิต');return;}
   toast('⏳ กำลังบันทึกหน้าแรก...');
   try{
     await apiPost('setConfig',{key:'landingIntro',value:intro});
     await apiPost('setConfig',{key:'landingFeats',value:JSON.stringify(feats)});
-    const r=await apiPost('setConfig',{key:'landingLinks',value:JSON.stringify(links)});
-    if(r&&r.ok){ landingCfg={intro:intro||LANDING_DEFAULT.intro,feats:feats.length?feats:LANDING_DEFAULT.feats,links:links};
-      try{ localStorage.setItem('pixar_landing',JSON.stringify(landingCfg)); }catch(e){}
-      toast('✅ บันทึกหน้าแรกแล้ว'); }
-    else toast('⚠️ บันทึกไม่สำเร็จ');
+    await apiPost('setConfig',{key:'landingLinks',value:JSON.stringify(links)});
+    for(const u of uploads){ await apiPost('setConfig',{key:'landingMedia'+u.idx,value:u.data}); }
+    for(let k=feats.length;k<feats.length+8;k++){ await apiPost('setConfig',{key:'landingMedia'+k,value:''}); }  // ล้างช่องภาพเก่าที่เกิน
+    landingCfg={intro:intro||LANDING_DEFAULT.intro,feats:localFeats.length?localFeats:LANDING_DEFAULT.feats,links:links};
+    try{ localStorage.setItem('pixar_landing',JSON.stringify(landingCfg)); }catch(e){}
+    toast('✅ บันทึกหน้าแรกแล้ว');
   }catch(e){ toast('⚠️ เชื่อมต่อไม่สำเร็จ'); }
 }
 function gotoLogin(){
