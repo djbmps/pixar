@@ -405,7 +405,13 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
           <div class="gal-sub">OBEC Content Center · สพป.อุดรธานี เขต 1 — เปิดให้ทุกท่านเข้าชมและดาวน์โหลดไปใช้</div>
         </div>
       </div>
-      <div class="gal-stat" id="galSummary"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+        <div style="display:flex;gap:8px">
+          <button onclick="galToHome()" style="background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:9px;padding:7px 14px;font-family:'Prompt';font-weight:500;font-size:13.5px;cursor:pointer">🏠 หน้าแรก</button>
+          <button onclick="galToLogin()" style="background:#fff;color:#1e3a8a;border:none;border-radius:9px;padding:7px 16px;font-family:'Prompt';font-weight:600;font-size:13.5px;cursor:pointer">เข้าสู่ระบบ</button>
+        </div>
+        <div class="gal-stat" id="galSummary"></div>
+      </div>
     </div>
   </div>
   <div class="gal-body">
@@ -464,27 +470,81 @@ footer.site{padding:24px 28px;color:var(--muted);font-size:12.5px;text-align:cen
 
 <!-- LOGIN / SSO -->
 <!-- หน้าต้อนรับก่อนเข้าสู่ระบบ -->
-<div id="welcomeSplash" style="display:none">
-  <div class="welcome-card">
-    <img src="PIXAR.png" alt="PIXAR Model" class="welcome-img">
-    <div class="welcome-hi">ยินดีต้อนรับ</div>
-    <h1 class="welcome-title">ระบบนิเทศออนไลน์<br><span style="color:#2563eb">P</span><span style="color:#0d9488">I</span><span style="color:#ea580c">X</span><span style="color:#16a34a">A</span><span style="color:#7c3aed">R</span> Supervision Platform</h1>
-    <p class="welcome-sub">มุ่งพัฒนาระดับสมรรถนะครู เพื่อยกระดับคุณภาพผู้เรียนอย่างต่อเนื่อง</p>
-    <button class="btn btn-primary" style="margin-top:18px;padding:11px 30px" onclick="dismissWelcome()">เข้าสู่ระบบ →</button>
-  </div>
+<!-- ========== หน้าแรก (Landing) แนะนำแพลตฟอร์ม ========== -->
+<div id="landingPage" style="display:none">
+  <header class="lp-nav">
+    <div class="lp-brand">
+      <img src="PIXAR.png" alt="PIXAR" onerror="this.style.display='none'">
+      <div>
+        <div class="lp-bt"><span style="color:#2563eb">P</span><span style="color:#0d9488">I</span><span style="color:#ea580c">X</span><span style="color:#16a34a">A</span><span style="color:#7c3aed">R</span> Supervision Platform</div>
+        <div class="lp-bs">ระบบนิเทศออนไลน์ · สพป.อุดรธานี เขต 1</div>
+      </div>
+    </div>
+    <nav class="lp-links">
+      <a onclick="landingGallery()">🏆 คลังผลงาน Best Practice</a>
+      <button class="btn btn-primary btn-sm" onclick="gotoLogin()">เข้าสู่ระบบ</button>
+    </nav>
+  </header>
+
+  <section class="lp-hero">
+    <div class="lp-hero-txt">
+      <span class="lp-eyebrow">✦ การนิเทศบูรณาการ PIXAR</span>
+      <h1>ระบบนิเทศออนไลน์<br><span style="color:#2563eb">P</span><span style="color:#0d9488">I</span><span style="color:#ea580c">X</span><span style="color:#16a34a">A</span><span style="color:#7c3aed">R</span> Supervision Platform</h1>
+      <p>แพลตฟอร์มนิเทศออนไลน์ครบวงจร ส่งเสริมการใช้คลังสื่อเทคโนโลยีดิจิทัล OBEC Content Center มุ่งพัฒนาสมรรถนะครูด้วยกรอบ AI-TPACK เพื่อยกระดับคุณภาพผู้เรียนอย่างต่อเนื่อง — เรียนรู้และพัฒนาได้ทุกที่ทุกเวลา</p>
+      <div class="lp-cta">
+        <button class="btn btn-primary" style="padding:12px 26px" onclick="gotoLogin()">เข้าสู่ระบบ →</button>
+        <button class="lp-btn2" onclick="landingGallery()">🏆 ดูคลังผลงานครูต้นแบบ</button>
+      </div>
+    </div>
+    <div class="lp-hero-img"><img src="PIXAR.png" alt="PIXAR Model" onerror="this.style.display='none'"></div>
+  </section>
+
+  <section class="lp-feats">
+    <div class="lp-feat">
+      <div class="lp-num">1</div>
+      <div class="lp-fcard"><h3>นิเทศออนไลน์ครบวงจร ด้วยรูปแบบ PIXAR</h3><p>กระบวนการนิเทศ 5 ขั้น — เตรียมความพร้อม (P) สร้างแรงบันดาลใจ (I) แลกเปลี่ยนเรียนรู้ผ่าน PLC (X) ลงมือปฏิบัติพร้อมโค้ช (A) และสะท้อนผล (R) ทำงานได้ทุกที่ทุกเวลา</p></div>
+    </div>
+    <div class="lp-feat lp-rev">
+      <div class="lp-num">2</div>
+      <div class="lp-fcard"><h3>พัฒนาสมรรถนะครูด้วยข้อมูลจริง</h3><p>ประเมินสมรรถนะครูด้วยกรอบ AI-TPACK 7 ด้าน เปรียบเทียบก่อน–หลังการนิเทศ พร้อมแดชบอร์ดและกราฟที่เห็นพัฒนาการรายบุคคลและภาพรวมทั้งเขตแบบเรียลไทม์</p></div>
+    </div>
+    <div class="lp-feat">
+      <div class="lp-num">3</div>
+      <div class="lp-fcard"><h3>เผยแพร่ผลงานครูต้นแบบสู่สาธารณะ</h3><p>คลังผลงาน Best Practice ที่ทุกคนเข้าชมและดาวน์โหลดไปใช้ได้ พร้อมนับยอดเข้าชม–ดาวน์โหลด ช่วยยกย่องและต่อยอดผลงานของครูให้เกิดประโยชน์ในวงกว้าง</p></div>
+    </div>
+    <div style="text-align:center;margin-top:6px">
+      <button class="btn btn-primary" style="padding:12px 30px" onclick="gotoLogin()">เริ่มใช้งาน — เข้าสู่ระบบ →</button>
+    </div>
+  </section>
+  <footer class="lp-foot">พัฒนาโดย ศน.ดวงใจ บุญมีประเสริฐ · ศึกษานิเทศก์ สพป.อุดรธานี เขต 1 · © 2569 PIXAR Supervision Platform</footer>
 </div>
 <style>
-#welcomeSplash{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;
-  background:linear-gradient(135deg,#eff6ff 0%,#e0f2fe 45%,#ccfbf1 100%);
-  transition:opacity .55s ease}
-#welcomeSplash.fade-out{opacity:0}
-#welcomeSplash .welcome-card{text-align:center;max-width:620px;animation:wlcIn .7s ease both}
-#welcomeSplash .welcome-img{width:132px;height:132px;object-fit:contain;border-radius:24px;box-shadow:0 14px 40px rgba(37,99,235,.22);background:#fff;padding:8px}
-#welcomeSplash .welcome-hi{font-family:'Prompt';font-weight:600;font-size:20px;color:#0d9488;margin-top:22px;letter-spacing:.5px}
-#welcomeSplash .welcome-title{font-family:'Prompt';font-weight:700;font-size:30px;line-height:1.35;color:#1e293b;margin:8px 0 0}
-#welcomeSplash .welcome-sub{font-family:'Sarabun';font-size:17px;color:#475569;margin:14px auto 0;max-width:480px;line-height:1.7}
-@keyframes wlcIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@media(max-width:560px){#welcomeSplash .welcome-title{font-size:23px}#welcomeSplash .welcome-sub{font-size:15px}#welcomeSplash .welcome-img{width:104px;height:104px}}
+#landingPage{position:fixed;inset:0;z-index:9999;overflow-y:auto;background:linear-gradient(180deg,#eef2ff 0%,#e0f2fe 40%,#f1f5f9 100%);font-family:'Sarabun',sans-serif}
+.lp-nav{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 28px;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border-bottom:1px solid #e2e8f0;flex-wrap:wrap}
+.lp-brand{display:flex;gap:12px;align-items:center}
+.lp-brand img{width:46px;height:46px;object-fit:contain;background:#fff;border-radius:12px;padding:4px;box-shadow:0 4px 14px rgba(37,99,235,.14)}
+.lp-bt{font-family:'Prompt';font-weight:700;font-size:18px;color:#1e293b}
+.lp-bs{font-size:12.5px;color:#64748b}
+.lp-links{display:flex;gap:14px;align-items:center}
+.lp-links a{font-family:'Prompt';font-weight:500;font-size:14px;color:#1e3a8a;cursor:pointer;text-decoration:none}
+.lp-links a:hover{text-decoration:underline}
+.lp-hero{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;padding:52px 28px 30px}
+.lp-eyebrow{display:inline-block;font-family:'Prompt';font-weight:600;font-size:13.5px;color:#0d9488;background:#ccfbf1;padding:5px 14px;border-radius:20px;margin-bottom:14px}
+.lp-hero-txt h1{font-family:'Prompt';font-weight:800;font-size:46px;line-height:1.15;color:#0f172a}
+.lp-hero-txt p{font-size:17px;line-height:1.8;color:#475569;margin-top:16px;max-width:560px}
+.lp-cta{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.lp-btn2{background:#fff;border:1.5px solid #2563eb;color:#1e3a8a;font-family:'Prompt';font-weight:600;font-size:15px;border-radius:12px;padding:12px 24px;cursor:pointer}
+.lp-btn2:hover{background:#eff6ff}
+.lp-hero-img img{width:100%;max-width:420px;display:block;margin:0 auto;border-radius:20px;filter:drop-shadow(0 18px 40px rgba(30,58,138,.18))}
+.lp-feats{max-width:1000px;margin:0 auto;padding:20px 28px 50px}
+.lp-feat{display:flex;gap:20px;align-items:center;margin-bottom:22px}
+.lp-feat.lp-rev{flex-direction:row-reverse}
+.lp-num{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#0e7490);color:#fff;font-family:'Prompt';font-weight:700;font-size:22px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(30,58,138,.22)}
+.lp-fcard{flex:1;background:#fff;border:1px solid #e8edf3;border-radius:16px;padding:20px 22px;box-shadow:0 6px 20px rgba(30,58,138,.06)}
+.lp-fcard h3{font-family:'Prompt';font-weight:700;font-size:18px;color:#1e293b}
+.lp-fcard p{font-size:14.5px;line-height:1.75;color:#475569;margin-top:6px}
+.lp-foot{text-align:center;font-size:13px;color:#64748b;padding:20px;border-top:1px solid #e2e8f0}
+@media(max-width:820px){.lp-hero{grid-template-columns:1fr;text-align:center;padding-top:34px}.lp-hero-txt p{margin-left:auto;margin-right:auto}.lp-cta{justify-content:center}.lp-hero-img{order:-1}.lp-hero-txt h1{font-size:34px}.lp-feat,.lp-feat.lp-rev{flex-direction:column;text-align:center}}
 </style>
 
 <div class="login-overlay" id="login">
@@ -3763,12 +3823,25 @@ function toast(m){
 
 /* ---------- หน้าต้อนรับ + คงสถานะล็อกอินเมื่อรีเฟรชหน้า ---------- */
 let welcomeTimer=null;
-function dismissWelcome(){
-  const w=document.getElementById('welcomeSplash');if(!w)return;
-  clearTimeout(welcomeTimer);
-  w.classList.add('fade-out');
-  setTimeout(()=>{w.style.display='none';},560);
+function dismissWelcome(){ gotoLogin(); }   // เผื่อโค้ดเก่าเรียก
+function showLanding(){
+  const lp=document.getElementById('landingPage'); if(lp)lp.style.display='block';
+  const lg=document.getElementById('login'); if(lg)lg.style.display='none';
+  const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none';
+  window.scrollTo(0,0);
 }
+function gotoLogin(){
+  const lp=document.getElementById('landingPage'); if(lp)lp.style.display='none';
+  const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none';
+  const lg=document.getElementById('login'); if(lg)lg.style.display='flex';
+  window.scrollTo(0,0);
+}
+function landingGallery(){
+  const lp=document.getElementById('landingPage'); if(lp)lp.style.display='none';
+  renderPublicGallery();
+}
+function galToLogin(){ const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none'; gotoLogin(); }
+function galToHome(){ const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none'; showLanding(); }
 /* ========== แกลเลอรีสาธารณะ (ไม่ต้องล็อกอิน) ========== */
 let galleryItems=[];
 async function renderPublicGallery(){
@@ -3861,9 +3934,8 @@ function copyGalleryLink(){ const u=galleryUrl(); if(navigator.clipboard&&naviga
     const raw=localStorage.getItem('pixar_session');
     if(raw){ const s=JSON.parse(raw); if(s&&s.user&&s.user.email){ finishLogin(s.user, !!s.demo, null, true); restored=true; } }
   }catch(e){ console.warn('คืนสถานะล็อกอินไม่สำเร็จ',e); }
-  const w=document.getElementById('welcomeSplash');
-  if(restored){ if(w)w.style.display='none'; return; }   // ล็อกอินค้างอยู่ → เข้าระบบเลย ไม่ต้องโชว์หน้าต้อนรับ
-  if(w){ w.style.display='flex'; welcomeTimer=setTimeout(dismissWelcome,4500); }  // ยังไม่ล็อกอิน → โชว์ต้อนรับ แล้วเข้าหน้า Login
+  if(restored){ const lp=document.getElementById('landingPage'); if(lp)lp.style.display='none'; const lg=document.getElementById('login'); if(lg)lg.style.display='none'; return; }   // ล็อกอินค้างอยู่ → เข้าระบบเลย
+  showLanding();   // ยังไม่ล็อกอิน → โชว์หน้าแรกแนะนำแพลตฟอร์ม
 })();
 </script>
 </body>
