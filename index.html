@@ -1561,7 +1561,7 @@ function applyData(d){
     if(Array.isArray(d.users)){
       usersData=d.users.map(u=>({name:u.name,email:u.email||'',contactEmail:u.contactEmail||'',role:u.role,school:u.school,group:u.schoolGroup||groupOf(u.school),size:sizeOf(u.school),subject:u.subject||'',status:u.status||'active',createdAt:u.createdAt||''}));
     }
-    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();renderSurveys();renderAITPACKForm();
+    renderK();renderPf();renderReview();renderAppts();renderBookingViews();renderLessonList();renderAITPACKResults();renderActivityLog();renderThreads();renderGroups();renderGroupEdit();renderMediaUse();renderMediaTrack();renderSchoolOverview();renderTeacherDir();renderUserMgmt();renderMyProfile();renderSupStats();renderSupTeachers();renderSupPriority();renderBestPractice();renderResetRequests();renderNotif();checkResetNotif();renderAIRec();renderFeatGrid();renderSurveys();renderAITPACKForm();renderTimeline();
     const c=document.getElementById('supRevCount');if(c)c.textContent=reviewQueue.length;
     return true;
 }
@@ -2631,8 +2631,36 @@ async function saveReflection(){
   toast('✅ บันทึกการสะท้อนคิดแล้ว');
   document.getElementById('rq1').value='';document.getElementById('rq2').value='';document.getElementById('rq3').value='';
 }
-document.getElementById('timeline').innerHTML=timeline.map(t=>
- `<div class="tl-item"><div class="dot" style="box-shadow:0 0 0 2px ${t.c}"></div><div class="yr" style="color:${t.c}">${t.y}</div><div style="font-family:'Prompt';font-weight:600;font-size:14px;margin:1px 0">${t.t}</div><div style="font-size:13px;color:var(--muted)">${t.d}</div></div>`).join('');
+function renderTimeline(){
+  const el=document.getElementById('timeline'); if(!el)return;
+  const me=(MY_EMAIL||'').toLowerCase();
+  const mine=(typeof aitpackData!=='undefined'?aitpackData:[]).filter(r=>(r.email||'').toLowerCase()===me);
+  const palette=['#2563eb','#0d9488','#ec4899','#7c3aed','#16a34a','#f59e0b'];
+  const byYear={};
+  mine.forEach(r=>{ const p=String(r.date||'').split('/'); const y=(p.length===3)?p[2]:''; if(!y)return; (byYear[y]=byYear[y]||[]).push(+r.overall||0); });
+  const bkYear={};
+  (typeof appts!=='undefined'?appts:[]).forEach(a=>{ const g=String(a.date||'').slice(0,4); if(!/^\d{4}$/.test(g))return; const be=parseInt(g,10)+543; bkYear[be]=(bkYear[be]||0)+1; });
+  const years=Object.keys(byYear).sort();
+  let items=[];
+  if(!years.length){
+    items.push({y:'ยังไม่มีข้อมูล',c:'#94a3b8',t:'เริ่มต้นเส้นทางของคุณ',d:'ทำแบบประเมิน AI-TPACK ครั้งแรกเพื่อบันทึกจุดเริ่มต้น จากนั้นระบบจะติดตามพัฒนาการให้อัตโนมัติทุกปี'});
+  }else{
+    let prev=null;
+    years.forEach((y,i)=>{
+      const arr=byYear[y]; const avg=arr.reduce((a,b)=>a+b,0)/arr.length;
+      const delta=(prev!==null)?(avg-prev):null;
+      const dtxt=(delta!==null)?(' ('+(delta>=0?'+':'')+delta.toFixed(2)+')'):'';
+      const bk=bkYear[y]||0;
+      const title=(i===0)?'เริ่มต้นเส้นทาง':(i===years.length-1?'ปัจจุบัน':'พัฒนาต่อเนื่อง');
+      items.push({y:'ปี พ.ศ. '+y,c:palette[i%palette.length],t:title,d:'คะแนนเฉลี่ย AI-TPACK '+avg.toFixed(2)+dtxt+' · ประเมิน '+arr.length+' ครั้ง'+(bk?(' · นัดปรึกษา '+bk+' ครั้ง'):'')});
+      prev=avg;
+    });
+  }
+  items.push({y:'คำถามทบทวน',c:'#f59e0b',t:'สะท้อนคิดเพื่อพัฒนา',d:'“มองย้อนกลับไป 1 ปี อะไรคือการเปลี่ยนแปลงที่คุณภูมิใจที่สุด?” — เขียนบันทึกด้านซ้ายเพื่อเก็บเป็นร่องรอยพัฒนาการ'});
+  el.innerHTML=items.map(t=>
+   `<div class="tl-item"><div class="dot" style="box-shadow:0 0 0 2px ${t.c}"></div><div class="yr" style="color:${t.c}">${t.y}</div><div style="font-family:'Prompt';font-weight:600;font-size:14px;margin:1px 0">${t.t}</div><div style="font-size:13px;color:var(--muted)">${t.d}</div></div>`).join('');
+}
+renderTimeline();
 
 /* tech */
 document.getElementById('techGrid').innerHTML=tech.map(t=>
@@ -3976,7 +4004,7 @@ function landingGallery(){
 function galToLogin(){ const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none'; gotoLogin(); }
 function galToHome(){ const gp=document.getElementById('galleryPage'); if(gp)gp.style.display='none'; showLanding(); }
 const PRIVACY_HTML=`
-<p>สพป.อุดรธานี เขต 1 (“ผู้ควบคุมข้อมูลส่วนบุคคล”) โดยกลุ่มนิเทศ ติดตาม และประเมินผลการจัดการศึกษา ให้ความสำคัญกับการคุ้มครองข้อมูลส่วนบุคคลของผู้ใช้งานระบบ <b>PIXAR Supervision Platform</b> และดำเนินการตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</p>
+<p>สำนักงานเขตพื้นที่การศึกษาประถมศึกษาอุดรธานี เขต 1 (“ผู้ควบคุมข้อมูลส่วนบุคคล”) โดยกลุ่มนิเทศ ติดตาม และประเมินผลการจัดการศึกษา ให้ความสำคัญกับการคุ้มครองข้อมูลส่วนบุคคลของผู้ใช้งานระบบ <b>PIXAR Supervision Platform</b> และดำเนินการตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</p>
 <h3>1. ข้อมูลส่วนบุคคลที่เก็บรวบรวม</h3>
 <ul>
 <li>ข้อมูลบัญชีและการติดต่อ: ชื่อ-สกุล ชื่อผู้ใช้ อีเมล เบอร์โทรศัพท์ โรงเรียน กลุ่มโรงเรียน กลุ่มสาระ/วิชาที่สอน และรูปโปรไฟล์ (ถ้ามี)</li>
@@ -4000,7 +4028,7 @@ const PRIVACY_HTML=`
 <h3>9. การเปลี่ยนแปลงนโยบาย</h3>
 <p>สพป.อุดรธานี เขต 1 อาจปรับปรุงนโยบายนี้เป็นครั้งคราว โดยจะประกาศฉบับปรับปรุงบนระบบนี้</p>
 <h3>10. ช่องทางการติดต่อ</h3>
-<p>กลุ่มนิเทศ ติดตาม และประเมินผลการจัดการศึกษา สพป.อุดรธานี เขต 1</p>
+<p>กลุ่มนิเทศ ติดตาม และประเมินผลการจัดการศึกษา สำนักงานเขตพื้นที่การศึกษาประถมศึกษาอุดรธานี เขต 1</p>
 <p style="color:#64748b;font-size:13px;margin-top:16px">ปรับปรุงล่าสุด: ปีการศึกษา 2569</p>`;
 function openPrivacy(){ const b=document.getElementById('privacyBody'); if(b&&!b.innerHTML)b.innerHTML=PRIVACY_HTML; const m=document.getElementById('privacyModal'); if(m)m.style.display='block'; }
 function closePrivacy(){ const m=document.getElementById('privacyModal'); if(m)m.style.display='none'; }
@@ -4096,7 +4124,7 @@ function copyGalleryLink(){ const u=galleryUrl(); if(navigator.clipboard&&naviga
     const raw=localStorage.getItem('pixar_session');
     if(raw){ const s=JSON.parse(raw); if(s&&s.user&&s.user.email){ finishLogin(s.user, !!s.demo, null, true); restored=true; } }
   }catch(e){ console.warn('คืนสถานะล็อกอินไม่สำเร็จ',e); }
-  if(restored){ const lp=document.getElementById('landingPage'); if(lp)lp.style.display='none'; const lg=document.getElementById('login'); if(lg)lg.style.display='none'; return; }   // ล็อกอินค้างอยู่ → เข้าระบบเลย
+  if(restored){ ['landingPage','login'].forEach(id=>{const x=document.getElementById(id); if(x)x.style.display='none';}); return; }   // ล็อกอินค้างอยู่ → เข้าระบบเลย
   showLanding();   // ยังไม่ล็อกอิน → โชว์หน้าแรกแนะนำแพลตฟอร์ม
 })();
 </script>
