@@ -4,120 +4,266 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E-Portfolio วPA · นางสาวดวงใจ บุญมีประเสริฐ</title>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root{
+  --navy:#12315c; --navy2:#1b4785; --teal:#0f9b8e; --teal2:#14b8a6;
+  --gold:#d99a2b; --ink:#1e293b; --muted:#64748b; --line:#e2e8f0;
+  --bg:#f5f7fb; --card:#ffffff; --soft:#eef4fb;
+  --radius:16px; --shadow:0 2px 14px rgba(18,49,92,.07);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Sarabun',sans-serif;background:linear-gradient(180deg,#f8fafc 0%,#eef2ff 280px,#f1f5f9 100%);color:#1e293b;min-height:100vh}
-a{text-decoration:none}
-/* ---- header ---- */
-.nav{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 26px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid #e2e8f0;flex-wrap:wrap}
-.brand{display:flex;gap:12px;align-items:center}
-.brand img{width:46px;height:46px;object-fit:contain;background:#fff;border-radius:11px;padding:4px;box-shadow:0 4px 12px rgba(37,99,235,.13)}
-.bt{font-family:'Prompt';font-weight:600;font-size:14.5px;line-height:1.25;max-width:500px}
-.bs{font-size:12px;color:#64748b;margin-top:1px}
-.navbtn{background:#f1f5f9;color:#334155;border:none;border-radius:9px;padding:8px 15px;font-family:'Prompt';font-weight:600;font-size:13px;cursor:pointer}
-.navbtn:hover{background:#e2e8f0}
-/* ---- hero ---- */
-.hero{padding:38px 26px 22px}
-.hero-in{max-width:1060px;margin:0 auto}
-.eyebrow{display:inline-block;font-family:'Prompt';font-weight:600;font-size:13px;color:#7c3aed;background:#ede9fe;padding:5px 14px;border-radius:20px;margin-bottom:14px}
-.hero h1{font-family:'Prompt';font-weight:800;font-size:32px;line-height:1.3;color:#0f172a}
-.owner{display:flex;gap:14px;align-items:center;margin-top:20px;background:#fff;border:1px solid #e8edf3;border-radius:14px;padding:14px 18px;max-width:580px;box-shadow:0 6px 18px rgba(30,58,138,.06)}
-.ava{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#0e7490);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Prompt';font-weight:700;font-size:23px;flex-shrink:0}
-.oname{font-family:'Prompt';font-weight:700;font-size:17px}
-.opos{font-size:13px;color:#64748b;margin-top:2px}
-.intro{font-size:15.5px;line-height:1.8;color:#475569;margin-top:16px;max-width:780px}
-/* ---- body ---- */
-.wrap{max-width:1060px;margin:0 auto;padding:6px 26px 46px}
-.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:24px}
-.mi{background:#fff;border:2px solid #e8edf3;border-radius:14px;padding:14px 15px;cursor:pointer;transition:.15s}
-.mi:hover{border-color:#93c5fd}
-.mi.on{background:#f8fbff;box-shadow:0 6px 18px rgba(30,58,138,.09)}
-.mi .ic{font-size:22px}
-.mi .gp{font-size:11.5px;color:#94a3b8;margin-top:6px}
-.mi .nm{font-family:'Prompt';font-weight:600;font-size:14px;margin-top:2px;line-height:1.35}
-.mi .ct{font-size:12px;color:#64748b;margin-top:5px}
-.sechead{margin-bottom:14px}
-.sechead h2{font-family:'Prompt';font-weight:700;font-size:20px}
-.sechead p{font-size:13.5px;color:#64748b;margin-top:3px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
-.card{background:#fff;border:1px solid #e8edf3;border-radius:16px;overflow:hidden;box-shadow:0 5px 16px rgba(30,58,138,.06);display:flex;flex-direction:column}
-.media img,.media video,.media iframe{width:100%;display:block;border:0}
-.media img{max-height:210px;object-fit:cover}
-.cb{padding:15px 17px 17px;flex:1;display:flex;flex-direction:column}
-.cb h3{font-family:'Prompt';font-weight:600;font-size:15.5px;line-height:1.45}
-.cb p{font-size:13.5px;line-height:1.7;color:#475569;margin-top:6px;flex:1;white-space:pre-wrap}
-.meta{font-size:12px;color:#94a3b8;margin-top:10px}
-.acts{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
-.btn{border:none;border-radius:9px;padding:8px 15px;font-family:'Prompt';font-weight:600;font-size:13px;cursor:pointer;display:inline-block}
-.pri{background:#2563eb;color:#fff}.pri:hover{background:#1d4ed8}
-.gh{background:#f1f5f9;color:#334155}.gh:hover{background:#e2e8f0}
-.dgr{background:#fee2e2;color:#b91c1c}
-.empty{grid-column:1/-1;text-align:center;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:14px;padding:40px 20px}
-.foot{text-align:center;font-size:12.5px;color:#64748b;margin-top:36px;padding-top:18px;border-top:1px solid #e2e8f0}
-/* ---- modal ---- */
-.modal{display:none;position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.6);overflow-y:auto;padding:26px 14px}
-.modal.open{display:block}
-.mbox{max-width:640px;margin:0 auto;background:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.3);padding:22px 24px 26px}
-.fl{display:block;font-size:13px;font-weight:600;color:#334155;margin:11px 0 4px}
-.inp{width:100%;padding:10px 13px;border:1px solid #e2e8f0;border-radius:10px;font-family:'Sarabun';font-size:14.5px;background:#fff}
-textarea.inp{min-height:84px;resize:vertical}
-.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:11px 20px;border-radius:11px;font-size:14px;z-index:80;display:none;box-shadow:0 12px 30px rgba(0,0,0,.25)}
-@media(max-width:700px){.hero h1{font-size:24px}.bt{font-size:13px}.nav{padding:12px 16px}.hero,.wrap{padding-left:16px;padding-right:16px}}
+body{font-family:'Sarabun',-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.72;font-size:16px}
+img{max-width:100%}
+a{color:var(--navy2)}
+button{font-family:inherit}
+
+/* ---------- Topbar ---------- */
+.topbar{background:linear-gradient(115deg,var(--navy) 0%,var(--navy2) 55%,#215ba8 100%);color:#fff;padding:14px 20px}
+.topbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;flex:1;min-width:240px}
+.brand-badge{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.16);display:grid;place-items:center;font-size:22px;flex:none}
+.brand h1{font-size:1.02rem;font-weight:700;line-height:1.35}
+.brand p{font-size:.8rem;opacity:.85}
+.topbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:8px 16px;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:500;white-space:nowrap}
+.topbtn:hover{background:rgba(255,255,255,.28)}
+.topbtn.on{background:var(--teal2);border-color:var(--teal2)}
+
+/* ---------- Nav ---------- */
+.nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.nav-in{max-width:1180px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;padding:0 10px;scrollbar-width:thin}
+.nav-in::-webkit-scrollbar{height:4px}
+.nav-in::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+.navbtn{background:none;border:none;border-bottom:3px solid transparent;padding:13px 14px;cursor:pointer;font-size:.9rem;color:var(--muted);white-space:nowrap;font-weight:500;display:flex;align-items:center;gap:6px}
+.navbtn:hover{color:var(--navy2);background:var(--soft)}
+.navbtn.active{color:var(--navy2);border-bottom-color:var(--teal);font-weight:600}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:26px 18px 70px}
+.page{display:none}
+.page.show{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+h2.pt{font-size:1.4rem;color:var(--navy);margin-bottom:4px;font-weight:700}
+p.ps{color:var(--muted);font-size:.9rem;margin-bottom:20px}
+h3.st{font-size:1.08rem;color:var(--navy2);margin:26px 0 12px;padding-left:12px;border-left:4px solid var(--teal);font-weight:600}
+h3.st:first-child{margin-top:0}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+
+/* ---------- Hero ---------- */
+.hero{background:linear-gradient(125deg,var(--navy) 0%,var(--navy2) 60%,#2a6cc0 100%);color:#fff;border-radius:20px;padding:32px;margin-bottom:22px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-70px;top:-70px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hero-in{display:flex;gap:28px;align-items:center;flex-wrap:wrap;position:relative;z-index:1}
+.hero-photo{width:150px;height:186px;border-radius:14px;object-fit:cover;background:rgba(255,255,255,.14);border:3px solid rgba(255,255,255,.3);flex:none}
+.hero-photo.ph{display:grid;place-items:center;font-size:54px;color:rgba(255,255,255,.6)}
+.hero-txt{flex:1;min-width:260px}
+.hero-kicker{display:inline-block;background:rgba(255,255,255,.18);padding:5px 14px;border-radius:99px;font-size:.78rem;margin-bottom:12px}
+.hero-txt h2{font-size:1.75rem;font-weight:700;line-height:1.3}
+.hero-txt .pos{font-size:1rem;opacity:.95;margin-top:4px}
+.hero-txt .org{font-size:.86rem;opacity:.8;margin-top:2px}
+.hero-round{margin-top:14px;font-size:.86rem;background:rgba(0,0,0,.16);display:inline-block;padding:6px 14px;border-radius:10px}
+.hero-vision{margin-top:14px;font-size:.92rem;font-style:italic;opacity:.94;border-left:3px solid var(--teal2);padding-left:12px}
+
+.challenge-banner{background:linear-gradient(100deg,#0f9b8e,#14b8a6);color:#fff;border-radius:16px;padding:22px 24px;margin-bottom:20px}
+.challenge-banner .lb{font-size:.8rem;opacity:.9;letter-spacing:.04em}
+.challenge-banner .tt{font-size:1.08rem;font-weight:600;margin-top:6px;line-height:1.6}
+
+/* ---------- Stats ---------- */
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;box-shadow:var(--shadow);position:relative}
+.stat .v{font-size:1.9rem;font-weight:700;color:var(--navy2);line-height:1.2}
+.stat .u{font-size:.8rem;color:var(--teal);font-weight:600}
+.stat .l{font-size:.84rem;color:var(--muted);margin-top:4px}
+
+/* ---------- Quick cards ---------- */
+.qc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;text-align:left;width:100%;box-shadow:var(--shadow);transition:.15s}
+.qc:hover{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 8px 20px rgba(18,49,92,.1)}
+.qc .ic{font-size:24px}
+.qc .t{font-weight:600;color:var(--navy);margin-top:8px;font-size:.98rem}
+.qc .d{font-size:.82rem;color:var(--muted);margin-top:3px}
+
+/* ---------- Timeline ---------- */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl-i{position:relative;padding-bottom:18px}
+.tl-i::before{content:'';position:absolute;left:-24px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--teal);border:2px solid #fff;box-shadow:0 0 0 2px var(--teal)}
+.tl-d{font-size:.78rem;color:var(--teal);font-weight:600}
+.tl-t{font-weight:600;color:var(--navy)}
+.tl-x{font-size:.88rem;color:var(--muted)}
+
+/* ---------- Tables ---------- */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:620px}
+th{background:var(--soft);color:var(--navy);text-align:left;padding:11px 13px;font-weight:600;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafcff}
+
+/* ---------- Work / evidence cards ---------- */
+.work{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px}
+.work-h{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start;background:linear-gradient(90deg,#fbfdff,#fff)}
+.work-h .wt{flex:1;font-weight:600;color:var(--navy);font-size:1.02rem}
+.code{background:var(--navy);color:#fff;font-size:.72rem;padding:3px 9px;border-radius:6px;font-weight:600;white-space:nowrap;letter-spacing:.03em}
+.chip{background:var(--soft);color:var(--navy2);font-size:.75rem;padding:3px 10px;border-radius:99px;border:1px solid #d7e5f7;white-space:nowrap}
+.work-b{padding:16px 20px}
+.fld{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;padding:7px 0;border-bottom:1px dashed #eef2f7;font-size:.9rem}
+.fld:last-child{border-bottom:none}
+.fld .k{color:var(--muted);font-weight:500}
+.fld .v{white-space:pre-wrap}
+.oo{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:12px}
+.oo>div{background:var(--soft);border-radius:10px;padding:12px;font-size:.86rem}
+.oo .lb{font-size:.74rem;color:var(--teal);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.media{margin-top:14px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#f8fafc}
+.media img{display:block;width:100%}
+.media iframe{display:block;width:100%;height:330px;border:none}
+.cap{font-size:.8rem;color:var(--muted);padding:8px 12px;background:#fff;border-top:1px solid var(--line)}
+.work-f{padding:12px 20px;background:#fbfdff;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* ---------- Buttons ---------- */
+.btn{background:var(--navy2);color:#fff;border:none;padding:9px 18px;border-radius:10px;cursor:pointer;font-size:.87rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--navy)}
+.btn.t{background:var(--teal)}.btn.t:hover{background:#0b8378}
+.btn.g{background:#fff;color:var(--navy2);border:1px solid var(--line)}.btn.g:hover{background:var(--soft)}
+.btn.r{background:#fff;color:#dc2626;border:1px solid #fecaca}.btn.r:hover{background:#fef2f2}
+.btn.sm{padding:5px 11px;font-size:.78rem;border-radius:8px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* ---------- Filters ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.inp{padding:9px 13px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:.9rem;background:#fff;color:var(--ink)}
+.inp:focus{outline:2px solid #bfdbfe;border-color:var(--navy2)}
+select.inp{cursor:pointer}
+
+/* ---------- Empty / edit ---------- */
+.empty{text-align:center;padding:34px 20px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:var(--radius);font-size:.9rem}
+.editbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.ebtn{background:#fff;border:1px solid var(--line);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:.82rem;display:grid;place-items:center;color:var(--muted)}
+.ebtn:hover{background:var(--soft);color:var(--navy2);border-color:#c7d9f0}
+.ebtn.del:hover{background:#fef2f2;color:#dc2626;border-color:#fecaca}
+.addrow{margin:10px 0 22px}
+.editing-on .edit-only{display:inline-flex}
+.edit-only{display:none}
+
+/* ---------- Modal ---------- */
+.mask{display:none;position:fixed;inset:0;background:rgba(15,30,55,.55);z-index:100;padding:18px;overflow-y:auto}
+.mask.show{display:block}
+.modal{background:#fff;border-radius:18px;max-width:760px;margin:26px auto;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+.modal.sm{max-width:420px}
+.mh{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.mh h3{font-size:1.1rem;color:var(--navy);flex:1;font-weight:600}
+.mb{padding:20px 22px;max-height:66vh;overflow-y:auto}
+.mf{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.frm label{display:block;margin-bottom:13px}
+.frm .lb{display:block;font-size:.84rem;color:var(--navy2);font-weight:600;margin-bottom:5px}
+.frm .hint{font-size:.76rem;color:var(--muted);font-weight:400}
+.frm input,.frm textarea,.frm select{width:100%;padding:10px 13px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:.92rem;color:var(--ink);background:#fff}
+.frm textarea{min-height:82px;resize:vertical;line-height:1.7}
+.frm input:focus,.frm textarea:focus,.frm select:focus{outline:2px solid #bfdbfe;border-color:var(--navy2)}
+.prev{margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.prev img{display:block;width:100%}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(90px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:99px;font-size:.88rem;z-index:200;transition:.28s;box-shadow:0 8px 24px rgba(0,0,0,.24);opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+.foot{text-align:center;color:var(--muted);font-size:.82rem;padding:26px 18px 40px;border-top:1px solid var(--line);margin-top:30px;background:#fff}
+.upd{font-size:.8rem;color:var(--muted);text-align:right;margin-bottom:10px}
+
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.subbtn{background:#fff;border:1px solid var(--line);padding:8px 16px;border-radius:99px;cursor:pointer;font-size:.87rem;color:var(--muted);font-weight:500}
+.subbtn.active{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+
+.checklist li{margin-left:20px;font-size:.9rem;padding:3px 0}
+.note{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 16px;font-size:.87rem;color:#78350f;margin-bottom:16px}
+
+@media(max-width:640px){
+  body{font-size:15px}
+  .wrap{padding:18px 13px 60px}
+  .hero{padding:22px 18px}
+  .hero-photo{width:112px;height:140px}
+  .hero-txt h2{font-size:1.35rem}
+  .fld{grid-template-columns:1fr;gap:2px}
+  .fld .k{font-size:.8rem}
+  .modal{margin:0 auto}
+  .mb{max-height:72vh}
+}
+@media print{
+  .nav,.topbar,.editbar,.addrow,.mask,.toast,.btn,.subnav,.filters{display:none!important}
+  .page{display:block!important}
+  body{background:#fff}
+  .card,.work{break-inside:avoid;box-shadow:none}
+}
 </style>
 </head>
 <body>
 
-<header class="nav">
-  <div class="brand">
-    <img src="Logo-1.png" alt="โลโก้กลุ่มนิเทศ" onerror="this.style.display='none'">
-    <div>
-      <div class="bt">กลุ่มนิเทศ ติดตาม และประเมินผลการจัดการศึกษา</div>
-      <div class="bs">สำนักงานเขตพื้นที่การศึกษาประถมศึกษาอุดรธานี เขต 1</div>
-    </div>
-  </div>
-  <div id="navRight"></div>
-</header>
-
-<section class="hero">
-  <div class="hero-in">
-    <span class="eyebrow">✦ E-Portfolio · ข้อตกลงในการพัฒนางาน (วPA)</span>
-    <h1>แฟ้มสะสมผลงานอิเล็กทรอนิกส์<br>เพื่อการประเมินผลการปฏิบัติงาน</h1>
-    <div class="owner">
-      <div class="ava">ด</div>
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="brand-badge">🎓</div>
       <div>
-        <div class="oname">นางสาวดวงใจ บุญมีประเสริฐ</div>
-        <div class="opos">ศึกษานิเทศก์ วิทยฐานะชำนาญการพิเศษ · สพป.อุดรธานี เขต 1</div>
+        <h1 id="tbTitle">E-Portfolio วPA</h1>
+        <p id="tbSub">ข้อตกลงในการพัฒนางาน · ตำแหน่งศึกษานิเทศก์</p>
       </div>
     </div>
-    <p class="intro">รวบรวมหลักฐานการปฏิบัติงานตามข้อตกลงในการพัฒนางาน (Performance Agreement : PA) จำแนกตามมาตรฐานตำแหน่งและประเด็นท้าทาย เพื่อประกอบการประเมินผลการปฏิบัติงาน ประจำปีงบประมาณ พ.ศ. 2569</p>
+    <button class="topbtn edit-only" onclick="openConfig()">⚙️ ตั้งค่าเว็บ</button>
+    <button class="topbtn" id="loginBtn" onclick="openLogin()">🔐 เข้าสู่ระบบ</button>
   </div>
-</section>
+</div>
+
+<nav class="nav"><div class="nav-in" id="navIn"></div></nav>
 
 <div class="wrap">
-  <div class="menu" id="menu"></div>
-  <div class="sechead" id="sechead"></div>
-  <div class="grid" id="grid"></div>
-  <div class="foot">จัดทำโดย นางสาวดวงใจ บุญมีประเสริฐ · ศึกษานิเทศก์ สพป.อุดรธานี เขต 1 · © 2569</div>
+  <div class="upd" id="updAt"></div>
+  <div id="pages"></div>
 </div>
 
-<!-- กล่องเพิ่ม/แก้ไขหลักฐาน -->
-<div class="modal" id="editModal" onclick="if(event.target===this)closeModal('editModal')">
-  <div class="mbox" id="editBody"></div>
+<div class="foot" id="foot"></div>
+
+<!-- ===== Login modal ===== -->
+<div class="mask" id="loginMask">
+  <div class="modal sm">
+    <div class="mh"><h3>🔐 เข้าสู่ระบบเจ้าของแฟ้ม</h3></div>
+    <div class="mb frm">
+      <p style="font-size:.86rem;color:var(--muted);margin-bottom:14px">ผู้เยี่ยมชมทั่วไปดูข้อมูลได้โดยไม่ต้องเข้าสู่ระบบ — เข้าสู่ระบบเฉพาะเมื่อต้องการแก้ไขเนื้อหา</p>
+      <label><span class="lb">ชื่อผู้ใช้</span><input id="lgUser" autocomplete="username"></label>
+      <label><span class="lb">รหัสผ่าน</span><input id="lgPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></label>
+      <div id="lgErr" style="color:#dc2626;font-size:.85rem"></div>
+    </div>
+    <div class="mf">
+      <button class="btn g" onclick="closeM('loginMask')">ยกเลิก</button>
+      <button class="btn" onclick="doLogin()">เข้าสู่ระบบ</button>
+    </div>
+  </div>
 </div>
-<!-- กล่องเข้าสู่ระบบเจ้าของแฟ้ม -->
-<div class="modal" id="loginModal" onclick="if(event.target===this)closeModal('loginModal')">
-  <div class="mbox" style="max-width:420px">
-    <h2 style="font-family:'Prompt';font-weight:700;font-size:19px">🔑 เข้าสู่ระบบเพื่อแก้ไขแฟ้ม</h2>
-    <p style="font-size:13px;color:#64748b;margin-top:4px">สำหรับเจ้าของแฟ้มผลงานเท่านั้น</p>
-    <label class="fl">ชื่อผู้ใช้</label>
-    <input id="liUser" class="inp" autocomplete="username">
-    <label class="fl">รหัสผ่าน</label>
-    <input id="liPass" class="inp" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-    <div id="liErr" style="display:none;color:#b91c1c;font-size:13px;margin-top:9px"></div>
-    <div style="display:flex;gap:10px;margin-top:16px">
-      <button class="btn pri" style="flex:1;padding:11px" onclick="doLogin()">เข้าสู่ระบบ</button>
-      <button class="btn gh" style="padding:11px 18px" onclick="closeModal('loginModal')">ยกเลิก</button>
+
+<!-- ===== Item modal ===== -->
+<div class="mask" id="itemMask">
+  <div class="modal">
+    <div class="mh"><h3 id="imTitle">แก้ไขรายการ</h3></div>
+    <div class="mb frm" id="imBody"></div>
+    <div class="mf">
+      <button class="btn r" id="imDel" onclick="delItem()">🗑 ลบ</button>
+      <span style="flex:1"></span>
+      <button class="btn g" onclick="closeM('itemMask')">ยกเลิก</button>
+      <button class="btn t" id="imSave" onclick="saveItem()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Config modal ===== -->
+<div class="mask" id="cfgMask">
+  <div class="modal">
+    <div class="mh"><h3>⚙️ ตั้งค่าข้อมูลหลักของเว็บ</h3></div>
+    <div class="mb frm" id="cfgBody"></div>
+    <div class="mf">
+      <button class="btn g" onclick="closeM('cfgMask')">ยกเลิก</button>
+      <button class="btn t" onclick="saveConfig()">💾 บันทึก</button>
     </div>
   </div>
 </div>
@@ -125,181 +271,718 @@ textarea.inp{min-height:84px;resize:vertical}
 <div class="toast" id="toast"></div>
 
 <script>
-/* ====== ตั้งค่า ======
-   ⬇️ วาง URL ของ Apps Script (Code-PA.gs) ที่ Deploy แล้ว ตรงนี้ (ลงท้ายด้วย /exec)
-   ระบบนี้ใช้ฐานข้อมูลของตัวเอง แยกจากระบบ PIXAR อย่างสมบูรณ์            */
+/* =========================================================
+   E-Portfolio วPA — frontend (single file)
+   ========================================================= */
 const API_URL = "https://script.google.com/macros/s/AKfycbwfURsePJ4vLjxPiY2AZcDnMZ90ylq6CuVaEsGoih7XnUacllrLhqj7OPcoQkBSg-gvRg/exec";
-const LIVE = /^https:\/\/script\.google\.com\//.test(API_URL);
 
-const SECTIONS=[
- {k:'s1d1',g:'ส่วนที่ 1 · มาตรฐานตำแหน่ง',n:'ด้านที่ 1 การนิเทศการศึกษา',ic:'🧭',c:'#2563eb',d:'หลักฐานการวางแผน ดำเนินการ และรายงานผลการนิเทศ ติดตาม ช่วยเหลือครูและสถานศึกษา'},
- {k:'s1d2',g:'ส่วนที่ 1 · มาตรฐานตำแหน่ง',n:'ด้านที่ 2 การส่งเสริม สนับสนุนการจัดการศึกษา',ic:'🤝',c:'#0d9488',d:'หลักฐานการส่งเสริม สนับสนุน และพัฒนาคุณภาพการจัดการศึกษาของสถานศึกษา'},
- {k:'s1d3',g:'ส่วนที่ 1 · มาตรฐานตำแหน่ง',n:'ด้านที่ 3 การพัฒนาตนเองและวิชาชีพ',ic:'📚',c:'#7c3aed',d:'หลักฐานการพัฒนาตนเอง การอบรม การเป็นวิทยากร และการพัฒนาวิชาชีพอย่างต่อเนื่อง'},
- {k:'s2',g:'ส่วนที่ 2 · ประเด็นท้าทาย',n:'ข้อตกลงที่เสนอเป็นประเด็นท้าทาย',ic:'🎯',c:'#ea580c',d:'สภาพปัญหา วิธีดำเนินการ และผลลัพธ์ของประเด็นท้าทายในการพัฒนางาน'},
- {k:'s3',g:'ผลลัพธ์ & หลักฐานเชิงประจักษ์',n:'ผลลัพธ์การดำเนินงาน / รางวัล',ic:'🏆',c:'#16a34a',d:'ผลที่เกิดกับครู ผู้เรียน และสถานศึกษา รวมถึงรางวัลและการเผยแพร่ผลงาน'}
+let CFG = {}, ITEMS = [], ME = null, PAGE = 'home', SUB = {};
+
+/* ---------- โครงสร้างเมนู 8 เมนู ---------- */
+const MENU = [
+  ['home',      '🏠', 'หน้าแรก',                     'ภาพรวมผู้รับการประเมินและผลงานสำคัญ'],
+  ['profile',   '👤', 'ข้อมูลผู้รับการประเมิน',        'ประวัติ ตำแหน่ง และภาระงาน'],
+  ['pa',        '📋', 'ข้อตกลง (PA)',                 'เป้าหมาย ตัวชี้วัด และผลลัพธ์ที่คาดหวัง'],
+  ['perf',      '📈', 'ผลการปฏิบัติงาน',              'ผลงานตามมาตรฐานตำแหน่ง 3 ด้าน'],
+  ['challenge', '🎯', 'ประเด็นท้าทาย',                 'ปัญหา วิธีดำเนินการ และผลลัพธ์'],
+  ['impact',    '🌱', 'ผลลัพธ์และผลกระทบ',            'ผลที่เกิดกับครู สถานศึกษา ผู้เรียน'],
+  ['evidence',  '🗂️', 'คลังหลักฐาน',                  'หลักฐานทั้งหมดพร้อมรหัสอ้างอิง'],
+  ['summary',   '📥', 'สรุปผลและดาวน์โหลด',           'ตารางสรุปและเอกสารฉบับเต็ม']
 ];
 
-let items=[], active='s1d1', ME=null, editId='', editMedia='';
+/* ---------- ด้านตามมาตรฐานตำแหน่ง ---------- */
+const DIMS = [
+  ['s1d1','ด้านที่ 1 การนิเทศการศึกษา'],
+  ['s1d2','ด้านที่ 2 การส่งเสริมและสนับสนุนการจัดการศึกษา'],
+  ['s1d3','ด้านที่ 3 การพัฒนาตนเองและวิชาชีพ']
+];
+const IMPACTS = [
+  ['impact.teacher','👩‍🏫','ผลที่เกิดกับครู'],
+  ['impact.school','🏫','ผลที่เกิดกับสถานศึกษา'],
+  ['impact.student','🧒','ผลที่เกิดกับผู้เรียน'],
+  ['impact.org','🏛️','ผลที่เกิดกับหน่วยงานและวิชาชีพ']
+];
+const PROFILE_GROUPS = [
+  ['profile.personal','ข้อมูลส่วนตัวและตำแหน่ง'],
+  ['profile.education','ประวัติการศึกษา'],
+  ['profile.career','ประวัติการรับราชการ'],
+  ['profile.duty','หน้าที่และภาระงาน'],
+  ['profile.area','กลุ่มโรงเรียน / พื้นที่ที่รับผิดชอบ'],
+  ['profile.contact','ช่องทางติดต่อทางราชการ'],
+  ['profile.award','รางวัลและการยอมรับ']
+];
+const EV_CATS = ['แบบข้อตกลง PA','คำสั่งมอบหมายงาน','แผน/ปฏิทินการนิเทศ','โครงการ/กิจกรรม','หนังสือราชการ',
+  'คู่มือ/เครื่องมือนิเทศ','แบบประเมิน/แบบสอบถาม','ภาพและวิดีโอกิจกรรม','บันทึกการประชุม/PLC',
+  'ผลงาน/นวัตกรรมของครู','ข้อมูลก่อน–หลัง','เสียงสะท้อน','เกียรติบัตร/รางวัล','รายงานสรุป/ภาคผนวก'];
 
-/* ====== utils ====== */
-function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',2600);}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-function openModal(id){document.getElementById(id).classList.add('open');}
-function fmtDate(s){if(!s)return'';s=String(s);const m=s.match(/(\d{4})-(\d{2})-(\d{2})/);if(m)return parseInt(m[3],10)+'/'+parseInt(m[2],10)+'/'+(parseInt(m[1],10)+543);return s;}
-async function api(action,data){
-  try{
-    const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action},data||{}))});
-    return await r.json();
-  }catch(e){ return {ok:false,error:'เชื่อมต่อไม่สำเร็จ'}; }
+/* ---------- โครงฟอร์มของแต่ละหมวด ---------- */
+const F = {
+  text:(k,l,h)=>({k,l,t:'text',h}),
+  area:(k,l,h)=>({k,l,t:'area',h}),
+  link:(k,l,h)=>({k,l:l||'ลิงก์เอกสาร / วิดีโอ',t:'text',h:h||'วาง URL จาก Google Drive, YouTube หรือเว็บอื่น'}),
+  media:()=>({k:'media',l:'ภาพประกอบ (อัปโหลด)',t:'media'}),
+  sel:(k,l,o)=>({k,l,t:'select',o})
+};
+function formSpec(section){
+  if (section === 'stat') return [F.text('title','ชื่อตัวชี้วัด เช่น ครูที่ได้รับการนิเทศ'),F.text('subtitle','ตัวเลข เช่น 214'),F.text('detail','หน่วย เช่น คน')];
+  if (section === 'timeline') return [F.text('date','ช่วงเวลา เช่น ต.ค. 2568'),F.text('title','ชื่อกิจกรรม'),F.area('detail','รายละเอียดย่อ'),F.link('link')];
+  if (section.indexOf('profile.') === 0) return [F.text('title','หัวข้อ เช่น ปริญญาโท'),F.area('subtitle','ข้อความ'),F.text('date','ปี / ช่วงเวลา (ถ้ามี)'),F.link('link','ลิงก์อ้างอิง (ถ้ามี)')];
+  if (section === 'pa.doc') return [F.text('code','รหัส เช่น PA 1.1'),F.area('title','งานที่จะปฏิบัติตาม PA'),F.area('subtitle','เป้าหมาย / ตัวชี้วัด'),F.area('detail','ผลลัพธ์ที่คาดหวัง')];
+  if (section === 'pa.map') return [F.text('code','ด้าน/ตัวชี้วัด เช่น PA 1.1'),F.area('title','งานตาม PA'),F.area('subtitle','เป้าหมาย'),F.area('detail','ผลที่เกิดขึ้นจริง'),F.text('date','รหัสหลักฐาน เช่น PA1.1-01'),F.link('link','ลิงก์เปิดหลักฐาน')];
+  if (section === 'challenge') return [F.text('code','รหัส เช่น CI-01'),F.text('title','หัวข้อ'),F.area('detail','เนื้อหา'),F.link('link'),F.media()];
+  if (section.indexOf('impact.') === 0) return [F.text('title','หัวข้อผลลัพธ์'),F.text('subtitle','ตัวเลข/ค่าที่วัดได้ (ถ้ามี)'),F.area('detail','คำอธิบายและข้อมูลยืนยัน'),F.text('code','รหัสหลักฐาน เช่น IM-01'),F.link('link'),F.media()];
+  if (section === 'evidence') return [F.text('code','รหัสหลักฐาน เช่น PA1.1-01'),F.sel('subtitle','ประเภทหลักฐาน',EV_CATS),F.text('title','ชื่อหลักฐาน'),F.area('detail','คำอธิบาย — ยืนยันอะไร เชื่อมกับตัวชี้วัดใด'),F.text('date','วันที่ / ช่วงเวลา'),F.link('link'),F.media()];
+  if (section === 'download') return [F.text('title','ชื่อเอกสาร'),F.area('detail','คำอธิบายย่อ'),F.link('link','ลิงก์ดาวน์โหลด (PDF)')];
+  /* งานตามมาตรฐานตำแหน่ง */
+  return [
+    F.text('code','รหัสหลักฐาน เช่น PA1.1-01'),
+    F.text('title','ชื่องาน / กิจกรรม'),
+    F.text('subtitle','การเชื่อมโยงกับ PA เช่น ด้านที่ 1 ตัวชี้วัด 1.1'),
+    F.area('m_objective','วัตถุประสงค์'),
+    F.text('m_target','กลุ่มเป้าหมาย'),
+    F.text('m_when','วัน เวลา และสถานที่'),
+    F.area('m_method','วิธีดำเนินงาน'),
+    F.area('m_output','ผลผลิต (Output)'),
+    F.area('m_outcome','ผลลัพธ์ (Outcome)'),
+    F.area('m_impact','ผลกระทบ (Impact)'),
+    F.text('m_verify','การตรวจสอบ / ผู้รับรอง'),
+    F.area('detail','หมายเหตุเพิ่มเติม'),
+    F.link('link'),
+    F.media()
+  ];
 }
+
+/* =========================================================
+   Utilities
+   ========================================================= */
+const $ = id => document.getElementById(id);
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function nl(s){ return esc(s).replace(/\n/g,'<br>'); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600); }
+function closeM(id){ $(id).classList.remove('show'); }
+function canEdit(){ return ME && ME.role === 'owner'; }
+function cred(){ return ME ? { user: ME.user, password: ME.password } : {}; }
+function parseMeta(m){ if(!m) return {}; try { return typeof m==='string' ? JSON.parse(m) : m; } catch(e){ return {}; } }
+
+function items(section){
+  return ITEMS.filter(i => String(i.section) === section)
+              .sort((a,b) => (Number(a.sort)||0) - (Number(b.sort)||0));
+}
+
+async function api(action, payload){
+  const body = Object.assign({ action }, payload || {});
+  const r = await fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) });
+  return r.json();
+}
+
+/* ---------- ฝังสื่อจากลิงก์ ---------- */
 function mediaEmbed(url){
-  url=String(url||'').trim(); if(!url)return '';
-  const yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([-\w]{6,})/);
-  if(yt)return `<div class="media"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen style="aspect-ratio:16/9"></iframe></div>`;
-  if(/\.(mp4|webm|ogg)(\?|$)/i.test(url))return `<div class="media"><video src="${esc(url)}" controls></video></div>`;
-  let img=url; const dm=url.match(/\/d\/([-\w]{20,})/)||url.match(/[?&]id=([-\w]{20,})/);
-  if(dm)img='https://drive.google.com/thumbnail?id='+dm[1]+'&sz=w1000';
-  return `<div class="media"><img src="${esc(img)}" onerror="this.parentElement.style.display='none'" alt=""></div>`;
+  if (!url) return '';
+  const u = String(url).trim();
+  if (u.indexOf('data:image') === 0) return `<div class="media"><img src="${esc(u)}" alt=""></div>`;
+  let m = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  if (m) return `<div class="media"><iframe src="https://www.youtube.com/embed/${m[1]}" allowfullscreen loading="lazy"></iframe></div>`;
+  m = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/) || u.match(/[?&]id=([\w-]+)/);
+  if (m) return `<div class="media"><iframe src="https://drive.google.com/file/d/${m[1]}/preview" allowfullscreen loading="lazy"></iframe></div>`;
+  if (/\.(png|jpe?g|gif|webp)(\?|$)/i.test(u)) return `<div class="media"><img src="${esc(u)}" alt="" loading="lazy"></div>`;
+  if (/\.mp4(\?|$)/i.test(u)) return `<div class="media"><video src="${esc(u)}" controls style="width:100%;display:block"></video></div>`;
+  return '';
 }
-function compress(img,maxDim){
-  let w=img.width,h=img.height;
-  if(w>h&&w>maxDim){h=Math.round(h*maxDim/w);w=maxDim;} else if(h>maxDim){w=Math.round(w*maxDim/h);h=maxDim;}
-  const c=document.createElement('canvas');c.width=w;c.height=h;
-  c.getContext('2d').drawImage(img,0,0,w,h);
-  let q=0.82,out=c.toDataURL('image/jpeg',q);
-  while(out.length>46000&&q>0.3){q-=0.08;out=c.toDataURL('image/jpeg',q);}
-  return out;
+function linkBtn(url, label){
+  if (!url) return '';
+  return `<a class="btn g sm" href="${esc(url)}" target="_blank" rel="noopener">🔗 ${esc(label||'เปิดหลักฐาน')}</a>`;
 }
 
-/* ====== render ====== */
-function canEdit(){ return !!ME && ME.role==='owner'; }
-function cred(){ return ME?{user:ME.user,password:ME.password}:{}; }   // ส่งไปยืนยันสิทธิ์กับ backend
-function renderNav(){
-  document.getElementById('navRight').innerHTML = canEdit()
-    ? `<span style="font-size:13px;color:#64748b;margin-right:10px">👋 ${esc(ME.name||'')}</span><button class="navbtn" onclick="doLogout()">ออกจากระบบ</button>`
-    : `<button class="navbtn" onclick="openModal('loginModal')">🔑 เข้าสู่ระบบเพื่อแก้ไข</button>`;
-}
-function render(){
-  renderNav();
-  document.getElementById('menu').innerHTML=SECTIONS.map(s=>{
-    const n=items.filter(i=>i.section===s.k).length;
-    return `<div class="mi ${s.k===active?'on':''}" style="${s.k===active?'border-color:'+s.c:''}" onclick="sel('${s.k}')">
-      <div class="ic">${s.ic}</div><div class="gp">${s.g}</div><div class="nm">${s.n}</div><div class="ct">${n} รายการ</div></div>`;
-  }).join('');
-  const sec=SECTIONS.find(s=>s.k===active)||SECTIONS[0];
-  document.getElementById('sechead').innerHTML=`<h2>${sec.ic} ${esc(sec.n)}</h2><p>${esc(sec.d)}</p>`
-    +(canEdit()?`<button class="btn pri" style="margin-top:11px" onclick="openEdit('')">➕ เพิ่มหลักฐาน</button>`:'');
-  const list=items.filter(i=>i.section===active);
-  document.getElementById('grid').innerHTML=list.length?list.map(it=>`
-    <div class="card">
-      ${it.media?mediaEmbed(it.media):''}
-      <div class="cb">
-        <h3>${esc(it.title||'')}</h3>
-        <p>${esc(it.detail||'')}</p>
-        <div class="meta">🗓 ${fmtDate(it.createdAt)}</div>
-        <div class="acts">
-          ${it.link?`<a class="btn pri" href="${esc(it.link)}" target="_blank" rel="noopener">🔗 เปิดหลักฐาน</a>`:''}
-          ${canEdit()?`<button class="btn gh" onclick="openEdit('${it.id}')">✏️ แก้ไข</button><button class="btn dgr" onclick="del('${it.id}')">🗑️ ลบ</button>`:''}
-        </div>
-      </div>
-    </div>`).join('')
-   :`<div class="empty">ยังไม่มีหลักฐานในหัวข้อนี้${canEdit()?' — กด “เพิ่มหลักฐาน” เพื่อเริ่มบันทึก':''}</div>`;
-}
-function sel(k){active=k;render();window.scrollTo({top:document.querySelector('.wrap').offsetTop-70,behavior:'smooth'});}
-
-/* ====== data ====== */
-async function load(){
-  try{const c=localStorage.getItem('pa_items');if(c){items=JSON.parse(c);render();}}catch(e){}
-  if(!LIVE)return;
-  const res=await api('getEPortfolio',{});
-  if(res&&res.ok&&Array.isArray(res.items)){
-    items=res.items; render();
-    try{localStorage.setItem('pa_items',JSON.stringify(items));}catch(e){}
+/* =========================================================
+   Boot
+   ========================================================= */
+(function boot(){
+  try {
+    const c = localStorage.getItem('pa_cache_v2');
+    if (c){ const d = JSON.parse(c); CFG = d.config||{}; ITEMS = d.items||[]; }
+    const s = localStorage.getItem('pa_me_v2');
+    if (s) ME = JSON.parse(s);
+  } catch(e){}
+  if (location.hash && location.hash.length > 1){
+    const h = location.hash.slice(1);
+    if (MENU.some(m => m[0] === h)) PAGE = h;
   }
+  renderAll();
+  load();
+})();
+
+async function load(){
+  try {
+    const r = await fetch(API_URL + '?action=getPA&t=' + Date.now());
+    const d = await r.json();
+    if (d && d.ok){
+      CFG = d.config || {};
+      ITEMS = d.items || [];
+      try { localStorage.setItem('pa_cache_v2', JSON.stringify({ config: CFG, items: ITEMS })); } catch(e){}
+      renderAll();
+    }
+  } catch(e){ console.warn('load failed', e); }
 }
 
-/* ====== login ====== */
-async function doLogin(){
-  const u=(document.getElementById('liUser').value||'').trim();
-  const p=document.getElementById('liPass').value||'';
-  const er=document.getElementById('liErr');
-  if(!u||!p){er.textContent='⚠️ กรอกชื่อผู้ใช้และรหัสผ่าน';er.style.display='block';return;}
-  er.style.display='none';
-  const res=await api('paLogin',{user:u,password:p});
-  if(res&&res.ok&&res.user){
-    ME={name:res.user.name,user:u,password:p,role:'owner'};   // เก็บไว้ใช้ยืนยันตอนแก้ไข
-    try{localStorage.setItem('pa_me',JSON.stringify(ME));}catch(e){}
-    closeModal('loginModal');document.getElementById('liPass').value='';
-    render();toast('✅ เข้าสู่ระบบแล้ว — แก้ไขแฟ้มได้');
-  }else{er.textContent='⚠️ '+((res&&res.error)||'เข้าสู่ระบบไม่สำเร็จ');er.style.display='block';}
-}
-function doLogout(){ME=null;try{localStorage.removeItem('pa_me');}catch(e){}render();toast('ออกจากระบบแล้ว');}
+/* =========================================================
+   Render
+   ========================================================= */
+function renderAll(){
+  document.body.classList.toggle('editing-on', !!canEdit());
+  $('tbTitle').textContent = CFG.siteTitle ? 'E-Portfolio วPA' : 'E-Portfolio วPA';
+  $('tbSub').textContent = (CFG.ownerName || '') + (CFG.ownerPosition ? ' · ' + CFG.ownerPosition : '');
+  $('loginBtn').textContent = canEdit() ? '👤 ' + (ME.name || 'เจ้าของแฟ้ม') + ' · ออกจากระบบ' : '🔐 เข้าสู่ระบบ';
+  $('loginBtn').onclick = canEdit() ? doLogout : openLogin;
+  $('loginBtn').classList.toggle('on', !!canEdit());
+  $('updAt').textContent = CFG.updatedAt ? 'ปรับปรุงข้อมูลล่าสุด: ' + CFG.updatedAt : '';
+  $('foot').innerHTML = `<div>${esc(CFG.footerNote||'')}</div><div style="margin-top:6px">${esc(CFG.ownerOrg||'')}</div>`;
 
-/* ====== edit ====== */
-function openEdit(id){
-  const it=id?items.find(x=>String(x.id)===String(id)):null;
-  editId=id||''; editMedia=(it&&it.media)||'';
-  document.getElementById('editBody').innerHTML=`
-    <h2 style="font-family:'Prompt';font-weight:700;font-size:19px">${id?'✏️ แก้ไขหลักฐาน':'➕ เพิ่มหลักฐาน'}</h2>
-    <label class="fl">หัวข้อ/ชื่อหลักฐาน *</label>
-    <input id="fT" class="inp" value="${esc((it&&it.title)||'')}" placeholder="เช่น รายงานผลการนิเทศ ภาคเรียนที่ 1/2569">
-    <label class="fl">หมวด</label>
-    <select id="fS" class="inp">${SECTIONS.map(s=>`<option value="${s.k}" ${((it&&it.section)||active)===s.k?'selected':''}>${s.n}</option>`).join('')}</select>
-    <label class="fl">รายละเอียด</label>
-    <textarea id="fD" class="inp" placeholder="อธิบายหลักฐานโดยย่อ">${esc((it&&it.detail)||'')}</textarea>
-    <label class="fl">ลิงก์หลักฐาน (Google Drive / ไฟล์ / วิดีโอ)</label>
-    <input id="fL" class="inp" value="${esc((it&&it.link)||'')}" placeholder="https://...">
-    <label class="fl">ภาพ/วิดีโอประกอบ</label>
-    <input id="fM" class="inp" value="${(editMedia.indexOf('data:')===0)?'':esc(editMedia)}" placeholder="วางลิงก์ YouTube / ลิงก์ภาพ (หรืออัปโหลดด้านล่าง)">
-    <div style="display:flex;gap:9px;align-items:center;margin-top:8px;flex-wrap:wrap">
-      <span style="font-size:12.5px;color:#64748b">หรืออัปโหลดภาพ:</span>
-      <input type="file" accept="image/*" onchange="upload(this)">
-      ${editMedia?`<button class="btn gh" onclick="clearMedia()">ลบสื่อ</button>`:''}
+  $('navIn').innerHTML = MENU.map(m =>
+    `<button class="navbtn${PAGE===m[0]?' active':''}" onclick="go('${m[0]}')"><span>${m[1]}</span>${esc(m[2])}</button>`
+  ).join('');
+
+  $('pages').innerHTML = `<div class="page show">${PAGES[PAGE] ? PAGES[PAGE]() : ''}</div>`;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function go(p){ PAGE = p; history.replaceState(null,'','#'+p); renderAll(); }
+function setSub(key, val){ SUB[key] = val; renderAll(); }
+
+/* ---------- ตัวช่วยแสดงแถบแก้ไขของแต่ละรายการ ---------- */
+function itemTools(it){
+  return `<span class="editbar edit-only">
+    <button class="ebtn" title="เลื่อนขึ้น" onclick="moveIt('${it.id}',-1)">↑</button>
+    <button class="ebtn" title="เลื่อนลง" onclick="moveIt('${it.id}',1)">↓</button>
+    <button class="ebtn" title="แก้ไข" onclick="openItem('${it.section}','${it.id}')">✏️</button>
+    <button class="ebtn del" title="ลบ" onclick="delItemNow('${it.id}')">🗑</button>
+  </span>`;
+}
+function addBtn(section, label){
+  return `<div class="addrow edit-only"><button class="btn t sm" onclick="openItem('${section}')">➕ ${esc(label||'เพิ่มรายการ')}</button></div>`;
+}
+function emptyBox(txt){ return `<div class="empty">${esc(txt)}</div>`; }
+
+/* =========================================================
+   PAGES
+   ========================================================= */
+const PAGES = {};
+
+/* ---------- 1. หน้าแรก ---------- */
+PAGES.home = function(){
+  const photo = CFG.photo
+    ? `<img class="hero-photo" src="${esc(CFG.photo)}" alt="ภาพผู้รับการประเมิน">`
+    : `<div class="hero-photo ph">👤</div>`;
+
+  const stats = items('stat');
+  const statHtml = stats.length ? `<div class="grid g4" style="margin-bottom:22px">${stats.map(s=>`
+    <div class="stat">
+      <div class="v">${esc(s.subtitle)}</div>
+      <div class="u">${esc(s.detail)}</div>
+      <div class="l">${esc(s.title)}</div>
+      <div style="margin-top:8px">${itemTools(s)}</div>
+    </div>`).join('')}</div>` : '';
+
+  const quick = MENU.filter(m=>m[0]!=='home').map(m=>`
+    <button class="qc" onclick="go('${m[0]}')">
+      <div class="ic">${m[1]}</div>
+      <div class="t">${esc(m[2])}</div>
+      <div class="d">${esc(m[3])}</div>
+    </button>`).join('');
+
+  const tl = items('timeline');
+  const tlHtml = tl.length ? `<div class="tl">${tl.map(t=>`
+    <div class="tl-i">
+      <div class="tl-d">${esc(t.date)}</div>
+      <div class="tl-t">${esc(t.title)} ${itemTools(t)}</div>
+      ${t.detail?`<div class="tl-x">${nl(t.detail)}</div>`:''}
+      ${t.link?`<div style="margin-top:5px">${linkBtn(t.link,'ดูหลักฐาน')}</div>`:''}
+    </div>`).join('')}</div>` : emptyBox('ยังไม่มีรายการไทม์ไลน์');
+
+  const dls = [
+    CFG.paFileLink ? `<a class="btn" href="${esc(CFG.paFileLink)}" target="_blank" rel="noopener">📄 ดาวน์โหลดเอกสาร PA</a>` : '',
+    CFG.reportLink ? `<a class="btn t" href="${esc(CFG.reportLink)}" target="_blank" rel="noopener">📘 รายงานสรุปผล</a>` : '',
+    `<button class="btn g" onclick="go('evidence')">🗂️ ไปคลังหลักฐาน</button>`
+  ].join('');
+
+  return `
+  <div class="hero">
+    <div class="hero-in">
+      ${photo}
+      <div class="hero-txt">
+        <div class="hero-kicker">${esc(CFG.siteTitle||'E-Portfolio เพื่อประกอบการประเมินผลการพัฒนางานตามข้อตกลง (PA)')}</div>
+        <h2>${esc(CFG.ownerName||'')}</h2>
+        <div class="pos">${esc(CFG.ownerRank||CFG.ownerPosition||'')}</div>
+        <div class="org">${esc(CFG.ownerOrg||'')}</div>
+        <div class="hero-round">📅 ${esc(CFG.round||'')}</div>
+        ${CFG.vision?`<div class="hero-vision">“${esc(CFG.vision)}”</div>`:''}
+      </div>
     </div>
-    <div id="prev" style="margin-top:9px">${editMedia?mediaEmbed(editMedia):''}</div>
-    <div style="display:flex;gap:10px;margin-top:18px;border-top:1px solid #e2e8f0;padding-top:14px">
-      <button class="btn pri" style="flex:1;padding:11px" onclick="save()">💾 บันทึก</button>
-      <button class="btn gh" style="padding:11px 18px" onclick="closeModal('editModal')">ยกเลิก</button>
-    </div>`;
-  openModal('editModal');
-}
-function upload(input){
-  const f=input.files&&input.files[0];if(!f)return;
-  const fr=new FileReader();
-  fr.onload=e=>{const img=new Image();img.onload=()=>{editMedia=compress(img,900);
-    document.getElementById('prev').innerHTML=mediaEmbed(editMedia);
-    document.getElementById('fM').value='';toast('✅ แนบภาพแล้ว');};img.src=e.target.result;};
-  fr.readAsDataURL(f);
-}
-function clearMedia(){editMedia='';document.getElementById('prev').innerHTML='';}
-async function save(){
-  const title=(document.getElementById('fT').value||'').trim();
-  if(!title){toast('⚠️ กรุณาใส่หัวข้อหลักฐาน');return;}
-  const urlM=(document.getElementById('fM').value||'').trim();
-  const payload={section:document.getElementById('fS').value,title:title,
-    detail:(document.getElementById('fD').value||'').trim(),
-    link:(document.getElementById('fL').value||'').trim(),
-    media:urlM?urlM:editMedia};
-  Object.assign(payload,cred());
-  closeModal('editModal');
-  if(!LIVE){toast('ℹ️ ยังไม่ได้เชื่อมฐานข้อมูล');return;}
-  toast('⏳ กำลังบันทึก...');
-  let res;
-  if(editId){payload.id=editId;res=await api('updateEPItem',payload);}
-  else res=await api('addEPItem',payload);
-  if(res&&res.ok){await load();toast('✅ บันทึกหลักฐานแล้ว');}
-  else toast('⚠️ บันทึกไม่สำเร็จ');
-}
-async function del(id){
-  if(!confirm('ลบหลักฐานรายการนี้? (ย้อนกลับไม่ได้)'))return;
-  const res=await api('deleteEPItem',Object.assign({id:id},cred()));
-  if(res&&res.ok){await load();toast('ลบแล้ว');}else toast('⚠️ ลบไม่สำเร็จ');
+  </div>
+
+  ${CFG.challengeTitle?`<div class="challenge-banner">
+    <div class="lb">🎯 ประเด็นท้าทาย</div>
+    <div class="tt">${esc(CFG.challengeTitle)}</div>
+  </div>`:''}
+
+  <h3 class="st">ตัวเลขผลสำเร็จสำคัญ</h3>
+  ${statHtml || emptyBox('ยังไม่มีตัวเลขผลสำเร็จ')}
+  ${addBtn('stat','เพิ่มตัวเลขผลสำเร็จ')}
+
+  <h3 class="st">เมนูลัด</h3>
+  <div class="grid g3">${quick}</div>
+
+  <h3 class="st">Timeline การดำเนินงาน</h3>
+  ${tlHtml}
+  ${addBtn('timeline','เพิ่มช่วงเวลา')}
+
+  <h3 class="st">เอกสารสำคัญ</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">${dls}</div>
+  `;
+};
+
+/* ---------- 2. ข้อมูลผู้รับการประเมิน ---------- */
+PAGES.profile = function(){
+  const blocks = PROFILE_GROUPS.map(([sec,label])=>{
+    const rows = items(sec);
+    const body = rows.length ? `<div>${rows.map(r=>`
+      <div class="fld">
+        <div class="k">${esc(r.title)}${r.date?` <span style="font-size:.78rem">(${esc(r.date)})</span>`:''}</div>
+        <div class="v">${nl(r.subtitle)} ${r.link?linkBtn(r.link,'เปิด'):''} ${itemTools(r)}</div>
+      </div>`).join('')}</div>` : emptyBox('ยังไม่มีข้อมูลในหัวข้อนี้');
+    return `<h3 class="st">${esc(label)}</h3><div class="card">${body}</div>${addBtn(sec,'เพิ่มข้อมูล')}`;
+  }).join('');
+
+  return `<h2 class="pt">ข้อมูลผู้รับการประเมิน</h2>
+  <p class="ps">ประวัติส่วนตัว การศึกษา การรับราชการ ภาระงาน และพื้นที่ที่รับผิดชอบ</p>
+  ${blocks}`;
+};
+
+/* ---------- 3. ข้อตกลงในการพัฒนางาน (PA) ---------- */
+PAGES.pa = function(){
+  const docs = items('pa.doc');
+  const tbl = docs.length ? `<div class="tw"><table>
+    <thead><tr><th style="width:90px">รหัส</th><th>งานที่จะปฏิบัติตาม PA</th><th>เป้าหมาย / ตัวชี้วัด</th><th>ผลลัพธ์ที่คาดหวัง</th><th class="edit-only" style="width:130px"></th></tr></thead>
+    <tbody>${docs.map(d=>`<tr>
+      <td><span class="code">${esc(d.code)}</span></td>
+      <td>${nl(d.title)}</td><td>${nl(d.subtitle)}</td><td>${nl(d.detail)}</td>
+      <td class="edit-only">${itemTools(d)}</td></tr>`).join('')}</tbody></table></div>`
+    : emptyBox('ยังไม่มีรายการงานตาม PA');
+
+  const maps = items('pa.map');
+  const mapTbl = maps.length ? `<div class="tw"><table>
+    <thead><tr><th style="width:100px">ด้าน/ตัวชี้วัด</th><th>งานตาม PA</th><th>เป้าหมาย</th><th>ผลที่เกิดขึ้นจริง</th><th style="width:110px">รหัสหลักฐาน</th><th style="width:110px">ลิงก์</th><th class="edit-only" style="width:130px"></th></tr></thead>
+    <tbody>${maps.map(d=>`<tr>
+      <td><span class="chip">${esc(d.code)}</span></td>
+      <td>${nl(d.title)}</td><td>${nl(d.subtitle)}</td><td>${nl(d.detail)}</td>
+      <td>${d.date?`<span class="code">${esc(d.date)}</span>`:''}</td>
+      <td>${linkBtn(d.link,'เปิด')}</td>
+      <td class="edit-only">${itemTools(d)}</td></tr>`).join('')}</tbody></table></div>`
+    : emptyBox('ยังไม่มีตารางเชื่อมโยง');
+
+  return `<h2 class="pt">ข้อตกลงในการพัฒนางาน (PA)</h2>
+  <p class="ps">${esc(CFG.round||'')}</p>
+
+  <div class="note">📌 ชื่อด้าน งาน และตัวชี้วัดในหน้านี้ควรตรงกับแบบข้อตกลง PA ฉบับที่ได้รับอนุมัติของรอบการประเมิน</div>
+
+  <h3 class="st">งานตามมาตรฐานตำแหน่ง เป้าหมาย และตัวชี้วัด</h3>
+  ${tbl}
+  ${addBtn('pa.doc','เพิ่มงานตาม PA')}
+
+  <h3 class="st">ตารางเชื่อมโยง PA กับหลักฐาน</h3>
+  ${mapTbl}
+  ${addBtn('pa.map','เพิ่มแถวเชื่อมโยง')}
+
+  <h3 class="st">เอกสารข้อตกลง</h3>
+  <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    ${CFG.paFileLink?`<a class="btn" href="${esc(CFG.paFileLink)}" target="_blank" rel="noopener">📄 เปิดแบบข้อตกลง PA (ฉบับลงนาม)</a>`:'<span style="color:var(--muted);font-size:.9rem">ยังไม่ได้ใส่ลิงก์เอกสาร PA — ตั้งค่าได้ที่ปุ่ม ⚙️ ตั้งค่าเว็บ</span>'}
+  </div>`;
+};
+
+/* ---------- 4. ผลการปฏิบัติงานตามมาตรฐานตำแหน่ง ---------- */
+PAGES.perf = function(){
+  const cur = SUB.perf || DIMS[0][0];
+  const tabs = DIMS.map(([k,l])=>`<button class="subbtn${cur===k?' active':''}" onclick="setSub('perf','${k}')">${esc(l)}</button>`).join('');
+  const list = items(cur);
+  const body = list.length ? list.map(workCard).join('') : emptyBox('ยังไม่มีผลงานในด้านนี้');
+  return `<h2 class="pt">ผลการปฏิบัติงานตามมาตรฐานตำแหน่ง</h2>
+  <p class="ps">แสดงผลงานตามรูปแบบมาตรฐาน: งาน → หลักฐาน → ผลผลิต → ผลลัพธ์ → ผลกระทบ</p>
+  <div class="subnav">${tabs}</div>
+  ${body}
+  ${addBtn(cur,'เพิ่มผลงานในด้านนี้')}`;
+};
+
+function workCard(w){
+  const m = parseMeta(w.meta);
+  const row = (k,v)=> v ? `<div class="fld"><div class="k">${k}</div><div class="v">${nl(v)}</div></div>` : '';
+  const ooBox = (lb,v)=> v ? `<div><div class="lb">${lb}</div>${nl(v)}</div>` : '';
+  const oo = [ooBox('ผลผลิต Output',m.m_output),ooBox('ผลลัพธ์ Outcome',m.m_outcome),ooBox('ผลกระทบ Impact',m.m_impact)].join('');
+  return `<div class="work">
+    <div class="work-h">
+      ${w.code?`<span class="code">${esc(w.code)}</span>`:''}
+      <div class="wt">${esc(w.title)}</div>
+      ${itemTools(w)}
+    </div>
+    <div class="work-b">
+      ${w.subtitle?`<div style="margin-bottom:10px"><span class="chip">เชื่อมโยง: ${esc(w.subtitle)}</span></div>`:''}
+      ${row('วัตถุประสงค์',m.m_objective)}
+      ${row('กลุ่มเป้าหมาย',m.m_target)}
+      ${row('วัน เวลา สถานที่',m.m_when)}
+      ${row('วิธีดำเนินงาน',m.m_method)}
+      ${oo?`<div class="oo">${oo}</div>`:''}
+      ${row('การตรวจสอบ',m.m_verify)}
+      ${w.detail?row('หมายเหตุ',w.detail):''}
+      ${mediaEmbed(w.media||w.link)}
+    </div>
+    ${w.link?`<div class="work-f">${linkBtn(w.link,'เปิดหลักฐานประกอบ')}</div>`:''}
+  </div>`;
 }
 
-/* ====== boot ====== */
-try{const m=localStorage.getItem('pa_me');if(m)ME=JSON.parse(m);}catch(e){}
-render(); load();
+/* ---------- 5. ประเด็นท้าทาย ---------- */
+PAGES.challenge = function(){
+  const list = items('challenge');
+  const body = list.length ? list.map(c=>`
+    <div class="card">
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">
+        ${c.code?`<span class="code">${esc(c.code)}</span>`:''}
+        <div style="flex:1;font-weight:600;color:var(--navy)">${esc(c.title)}</div>
+        ${itemTools(c)}
+      </div>
+      ${c.detail?`<div style="white-space:pre-wrap">${nl(c.detail)}</div>`:`<div style="color:var(--muted);font-size:.88rem">— ยังไม่ได้กรอกเนื้อหา —</div>`}
+      ${mediaEmbed(c.media||c.link)}
+      ${c.link?`<div style="margin-top:10px">${linkBtn(c.link,'เปิดหลักฐาน')}</div>`:''}
+    </div>`).join('') : emptyBox('ยังไม่มีเนื้อหาประเด็นท้าทาย');
+
+  return `<h2 class="pt">ประเด็นท้าทายในการพัฒนาผลลัพธ์การเรียนรู้ของผู้เรียน</h2>
+  <p class="ps">นำเสนอตั้งแต่สภาพปัญหา → วิธีดำเนินการ → ผลลัพธ์ → หลักฐาน</p>
+  ${CFG.challengeTitle?`<div class="challenge-banner"><div class="lb">ชื่อประเด็นท้าทาย</div><div class="tt">${esc(CFG.challengeTitle)}</div></div>`:''}
+  ${body}
+  ${addBtn('challenge','เพิ่มหัวข้อ')}`;
+};
+
+/* ---------- 6. ผลลัพธ์และผลกระทบ ---------- */
+PAGES.impact = function(){
+  const blocks = IMPACTS.map(([sec,ic,label])=>{
+    const rows = items(sec);
+    const body = rows.length ? `<div class="grid g2">${rows.map(r=>`
+      <div class="card" style="margin:0">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          ${r.code?`<span class="code">${esc(r.code)}</span>`:''}
+          <div style="flex:1;font-weight:600;color:var(--navy)">${esc(r.title)}</div>
+          ${itemTools(r)}
+        </div>
+        ${r.subtitle?`<div style="font-size:1.5rem;font-weight:700;color:var(--teal);margin:6px 0">${esc(r.subtitle)}</div>`:''}
+        ${r.detail?`<div style="font-size:.9rem;white-space:pre-wrap">${nl(r.detail)}</div>`:''}
+        ${mediaEmbed(r.media||'')}
+        ${r.link?`<div style="margin-top:10px">${linkBtn(r.link,'ข้อมูลยืนยัน')}</div>`:''}
+      </div>`).join('')}</div>` : emptyBox('ยังไม่มีข้อมูลในหมวดนี้');
+    return `<h3 class="st">${ic} ${esc(label)}</h3>${body}${addBtn(sec,'เพิ่มผลลัพธ์')}`;
+  }).join('');
+
+  return `<h2 class="pt">ผลลัพธ์และผลกระทบ</h2>
+  <p class="ps">แสดงการเปลี่ยนแปลงที่เกิดขึ้นจริงกับครู สถานศึกษา ผู้เรียน และหน่วยงาน</p>
+  ${blocks}`;
+};
+
+/* ---------- 7. คลังหลักฐาน ---------- */
+let EVQ = '', EVC = '';
+PAGES.evidence = function(){
+  const all = items('evidence');
+  const cats = Array.from(new Set(all.map(e=>String(e.subtitle||'')).filter(Boolean)));
+  const list = all.filter(e=>{
+    if (EVC && String(e.subtitle) !== EVC) return false;
+    if (!EVQ) return true;
+    const q = EVQ.toLowerCase();
+    return [e.code,e.title,e.detail,e.subtitle].some(x=>String(x||'').toLowerCase().includes(q));
+  });
+
+  const body = list.length ? `<div class="grid g2">${list.map(e=>`
+    <div class="card" style="margin:0">
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:6px">
+        ${e.code?`<span class="code">${esc(e.code)}</span>`:''}
+        <div style="flex:1"></div>
+        ${itemTools(e)}
+      </div>
+      <div style="font-weight:600;color:var(--navy)">${esc(e.title)}</div>
+      <div style="margin:6px 0;display:flex;gap:6px;flex-wrap:wrap">
+        ${e.subtitle?`<span class="chip">${esc(e.subtitle)}</span>`:''}
+        ${e.date?`<span class="chip">📅 ${esc(e.date)}</span>`:''}
+      </div>
+      ${e.detail?`<div style="font-size:.89rem;color:var(--ink);white-space:pre-wrap">${nl(e.detail)}</div>`:''}
+      ${mediaEmbed(e.media||'')}
+      ${e.link?`<div style="margin-top:10px">${linkBtn(e.link,'เปิดหลักฐาน')}</div>`:''}
+    </div>`).join('')}</div>` : emptyBox('ไม่พบหลักฐานตามเงื่อนไขที่เลือก');
+
+  return `<h2 class="pt">คลังหลักฐาน</h2>
+  <p class="ps">หลักฐานทุกชิ้นมีรหัสอ้างอิง ประเภท และคำอธิบายว่ายืนยันอะไร · ทั้งหมด ${all.length} รายการ</p>
+  <div class="filters">
+    <input class="inp" style="flex:1;min-width:200px" placeholder="🔍 ค้นหารหัส ชื่อ หรือคำอธิบาย" value="${esc(EVQ)}" oninput="EVQ=this.value;renderAll();document.querySelector('.filters .inp').focus()">
+    <select class="inp" onchange="EVC=this.value;renderAll()">
+      <option value="">ทุกประเภท</option>
+      ${cats.map(c=>`<option value="${esc(c)}"${EVC===c?' selected':''}>${esc(c)}</option>`).join('')}
+    </select>
+    ${(EVQ||EVC)?`<button class="btn g sm" onclick="EVQ='';EVC='';renderAll()">ล้างตัวกรอง</button>`:''}
+  </div>
+  ${addBtn('evidence','เพิ่มหลักฐาน')}
+  ${body}`;
+};
+
+/* ---------- 8. สรุปผลและดาวน์โหลด ---------- */
+PAGES.summary = function(){
+  const maps = items('pa.map');
+  const sum = maps.length ? `<div class="tw"><table>
+    <thead><tr><th style="width:100px">ด้าน/ตัวชี้วัด</th><th>เป้าหมาย</th><th>ผลที่เกิดขึ้นจริง</th><th style="width:110px">หลักฐาน</th></tr></thead>
+    <tbody>${maps.map(d=>`<tr>
+      <td><span class="chip">${esc(d.code)}</span></td>
+      <td>${nl(d.subtitle)}</td><td>${nl(d.detail)}</td>
+      <td>${d.date?`<span class="code">${esc(d.date)}</span>`:''}</td></tr>`).join('')}</tbody></table></div>`
+    : emptyBox('ยังไม่มีข้อมูลสรุป — เพิ่มได้ที่หน้า “ข้อตกลง (PA)” → ตารางเชื่อมโยง');
+
+  const dls = items('download');
+  const dlHtml = dls.length ? `<div class="grid g2">${dls.map(d=>`
+    <div class="card" style="margin:0;display:flex;gap:12px;align-items:flex-start">
+      <div style="font-size:26px">📄</div>
+      <div style="flex:1">
+        <div style="font-weight:600;color:var(--navy)">${esc(d.title)}</div>
+        ${d.detail?`<div style="font-size:.86rem;color:var(--muted)">${nl(d.detail)}</div>`:''}
+        <div style="margin-top:8px">${linkBtn(d.link,'ดาวน์โหลด')}</div>
+      </div>
+      ${itemTools(d)}
+    </div>`).join('')}</div>` : emptyBox('ยังไม่มีไฟล์ดาวน์โหลด');
+
+  const url = location.origin + location.pathname;
+  const qrSrc = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(CFG.qrLink || url);
+
+  const CHK = ['ชื่อด้าน งาน และตัวชี้วัดตรงกับ PA ฉบับอนุมัติ','ทุกตัวชี้วัดมีผลการดำเนินงานและหลักฐานรองรับ',
+    'ทุกหลักฐานมีรหัส ชื่อ และคำอธิบาย','ผลลัพธ์เชิงปริมาณมีแหล่งข้อมูลตรวจสอบได้',
+    'ลิงก์ไฟล์เปิดสิทธิ์ให้ผู้ประเมินเข้าถึงได้','เอกสารสำคัญดาวน์โหลดเป็น PDF ได้',
+    'เปิดดูได้ทั้งคอมพิวเตอร์ แท็บเล็ต และโทรศัพท์','ไม่มีข้อมูลส่วนบุคคลของผู้เรียนเกินความจำเป็น'];
+
+  return `<h2 class="pt">สรุปผลและดาวน์โหลด</h2>
+  <p class="ps">ตารางสรุปเปรียบเทียบเป้าหมายกับผลที่เกิดขึ้นจริง พร้อมเอกสารฉบับเต็ม</p>
+
+  <h3 class="st">ตารางสรุปผลตามข้อตกลง</h3>
+  ${sum}
+
+  <h3 class="st">เอกสารสำหรับดาวน์โหลด</h3>
+  ${dlHtml}
+  ${addBtn('download','เพิ่มไฟล์ดาวน์โหลด')}
+
+  <h3 class="st">เข้าถึงเว็บไซต์นี้</h3>
+  <div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+    <img src="${esc(qrSrc)}" alt="QR Code เว็บไซต์" style="width:150px;height:150px;border-radius:12px;border:1px solid var(--line)" onerror="this.style.display='none'">
+    <div style="flex:1;min-width:220px">
+      <div style="font-weight:600;color:var(--navy);margin-bottom:6px">สแกนเพื่อเปิดเว็บไซต์</div>
+      <div style="font-size:.85rem;color:var(--muted);word-break:break-all">${esc(CFG.qrLink||url)}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn g sm" onclick="navigator.clipboard.writeText('${esc(CFG.qrLink||url)}').then(()=>toast('คัดลอกลิงก์แล้ว'))">📋 คัดลอกลิงก์</button>
+        <button class="btn g sm" onclick="window.print()">🖨️ พิมพ์ / บันทึกเป็น PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="st">รายการตรวจสอบก่อนเผยแพร่</h3>
+  <div class="card"><ul class="checklist">${CHK.map(c=>`<li>${esc(c)}</li>`).join('')}</ul></div>`;
+};
+
+/* =========================================================
+   Login
+   ========================================================= */
+function openLogin(){ $('lgErr').textContent=''; $('lgUser').value=''; $('lgPass').value=''; $('loginMask').classList.add('show'); setTimeout(()=>$('lgUser').focus(),80); }
+async function doLogin(){
+  const u = $('lgUser').value.trim(), p = $('lgPass').value;
+  if (!u || !p){ $('lgErr').textContent='กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'; return; }
+  $('lgErr').textContent='กำลังตรวจสอบ…';
+  try {
+    const d = await api('paLogin', { user:u, password:p });
+    if (d && d.ok){
+      ME = Object.assign({}, d.user, { password:p });
+      try { localStorage.setItem('pa_me_v2', JSON.stringify(ME)); } catch(e){}
+      closeM('loginMask'); renderAll(); toast('เข้าสู่ระบบแล้ว — แก้ไขเนื้อหาได้ทุกหน้า');
+    } else { $('lgErr').textContent = (d && d.error) || 'เข้าสู่ระบบไม่สำเร็จ'; }
+  } catch(e){ $('lgErr').textContent = 'เชื่อมต่อไม่ได้ กรุณาลองใหม่'; }
+}
+function doLogout(){
+  if (!confirm('ออกจากระบบ?')) return;
+  ME = null; try { localStorage.removeItem('pa_me_v2'); } catch(e){}
+  renderAll(); toast('ออกจากระบบแล้ว');
+}
+
+/* =========================================================
+   Item editor
+   ========================================================= */
+let EDIT = { section:'', id:'', media:'' };
+
+function openItem(section, id){
+  if (!canEdit()) return;
+  const it = id ? ITEMS.find(x=>String(x.id)===String(id)) : null;
+  const m = it ? parseMeta(it.meta) : {};
+  EDIT = { section, id: id||'', media: it ? String(it.media||'') : '' };
+
+  const spec = formSpec(section);
+  const val = k => {
+    if (k.indexOf('m_') === 0) return m[k] || '';
+    return it ? String(it[k]==null?'':it[k]) : '';
+  };
+  $('imTitle').textContent = (id?'✏️ แก้ไข':'➕ เพิ่ม') + ' · ' + sectionLabel(section);
+  $('imDel').style.display = id ? '' : 'none';
+
+  $('imBody').innerHTML = spec.map(f=>{
+    const v = val(f.k);
+    if (f.t === 'area')   return `<label><span class="lb">${esc(f.l)}${f.h?` <span class="hint">${esc(f.h)}</span>`:''}</span><textarea id="f_${f.k}">${esc(v)}</textarea></label>`;
+    if (f.t === 'select') return `<label><span class="lb">${esc(f.l)}</span><select id="f_${f.k}"><option value="">— เลือก —</option>${f.o.map(o=>`<option${v===o?' selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
+    if (f.t === 'media')  return `<label><span class="lb">${esc(f.l)} <span class="hint">ระบบย่อขนาดภาพอัตโนมัติ</span></span>
+        <input type="file" accept="image/*" onchange="uploadImg(this)">
+        <div id="mvPrev">${EDIT.media?`<div class="prev"><img src="${esc(EDIT.media)}"></div><button type="button" class="btn r sm" style="margin-top:8px" onclick="clearImg()">ลบภาพนี้</button>`:''}</div></label>`;
+    return `<label><span class="lb">${esc(f.l)}${f.h?` <span class="hint">${esc(f.h)}</span>`:''}</span><input id="f_${f.k}" value="${esc(v)}"></label>`;
+  }).join('');
+
+  $('itemMask').classList.add('show');
+}
+function sectionLabel(sec){
+  const d = DIMS.find(x=>x[0]===sec); if (d) return d[1];
+  const i = IMPACTS.find(x=>x[0]===sec); if (i) return i[2];
+  const p = PROFILE_GROUPS.find(x=>x[0]===sec); if (p) return p[1];
+  return ({stat:'ตัวเลขผลสำเร็จ',timeline:'ไทม์ไลน์','pa.doc':'งานตาม PA','pa.map':'ตารางเชื่อมโยง',
+           challenge:'ประเด็นท้าทาย',evidence:'คลังหลักฐาน',download:'ไฟล์ดาวน์โหลด'})[sec] || sec;
+}
+
+async function uploadImg(input){
+  const f = input.files && input.files[0]; if (!f) return;
+  toast('กำลังย่อขนาดภาพ…');
+  try {
+    const data = await compress(f, 1400);
+    EDIT.media = data;
+    $('mvPrev').innerHTML = `<div class="prev"><img src="${data}"></div><button type="button" class="btn r sm" style="margin-top:8px" onclick="clearImg()">ลบภาพนี้</button>`;
+    toast('เตรียมภาพแล้ว — กดบันทึกเพื่อจัดเก็บ');
+  } catch(e){ toast('อ่านไฟล์ภาพไม่สำเร็จ'); }
+  input.value = '';
+}
+function clearImg(){ EDIT.media=''; $('mvPrev').innerHTML=''; }
+function compress(file, maxDim){
+  return new Promise((res, rej)=>{
+    const fr = new FileReader();
+    fr.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        const sc = Math.min(1, maxDim / Math.max(w,h));
+        w = Math.round(w*sc); h = Math.round(h*sc);
+        const cv = document.createElement('canvas'); cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        let q = 0.82, out = cv.toDataURL('image/jpeg', q);
+        while (out.length > 45000 && q > 0.25){ q -= 0.1; out = cv.toDataURL('image/jpeg', q); }
+        if (out.length > 45000){
+          const cv2 = document.createElement('canvas');
+          cv2.width = Math.round(w*0.6); cv2.height = Math.round(h*0.6);
+          cv2.getContext('2d').drawImage(img,0,0,cv2.width,cv2.height);
+          out = cv2.toDataURL('image/jpeg', 0.6);
+        }
+        res(out);
+      };
+      img.onerror = rej; img.src = fr.result;
+    };
+    fr.onerror = rej; fr.readAsDataURL(file);
+  });
+}
+
+async function saveItem(){
+  if (!canEdit()) return;
+  const spec = formSpec(EDIT.section);
+  const payload = Object.assign({ section: EDIT.section, media: EDIT.media }, cred());
+  const meta = {};
+  spec.forEach(f=>{
+    if (f.t === 'media') return;
+    const el = $('f_'+f.k); if (!el) return;
+    if (f.k.indexOf('m_') === 0) meta[f.k] = el.value;
+    else payload[f.k] = el.value;
+  });
+  if (Object.keys(meta).length) payload.meta = meta;
+  if (!String(payload.title||'').trim() && !String(payload.code||'').trim()){ toast('กรุณากรอกชื่อรายการ'); return; }
+
+  $('imSave').disabled = true; $('imSave').textContent = 'กำลังบันทึก…';
+  try {
+    let d;
+    if (EDIT.id){ payload.id = EDIT.id; d = await api('updateItem', payload); }
+    else d = await api('addItem', payload);
+    if (d && d.ok){ closeM('itemMask'); await load(); toast('บันทึกแล้ว'); }
+    else toast((d && d.error) || 'บันทึกไม่สำเร็จ');
+  } catch(e){ toast('เชื่อมต่อไม่ได้'); }
+  $('imSave').disabled = false; $('imSave').textContent = '💾 บันทึก';
+}
+async function delItem(){
+  if (!EDIT.id) return;
+  if (!confirm('ลบรายการนี้?')) return;
+  const d = await api('deleteItem', Object.assign({ id: EDIT.id }, cred()));
+  if (d && d.ok){ closeM('itemMask'); await load(); toast('ลบแล้ว'); } else toast('ลบไม่สำเร็จ');
+}
+async function delItemNow(id){
+  if (!canEdit()) return;
+  if (!confirm('ลบรายการนี้?')) return;
+  const d = await api('deleteItem', Object.assign({ id }, cred()));
+  if (d && d.ok){ await load(); toast('ลบแล้ว'); } else toast('ลบไม่สำเร็จ');
+}
+async function moveIt(id, dir){
+  if (!canEdit()) return;
+  const d = await api('moveItem', Object.assign({ id, dir }, cred()));
+  if (d && d.ok) await load(); else toast('เลื่อนลำดับไม่ได้');
+}
+
+/* =========================================================
+   Config editor
+   ========================================================= */
+const CFG_FIELDS = [
+  ['siteTitle','ข้อความบนแบนเนอร์','text'],
+  ['ownerName','ชื่อ–นามสกุล','text'],
+  ['ownerPosition','ตำแหน่ง','text'],
+  ['ownerRank','ตำแหน่งและวิทยฐานะ','text'],
+  ['ownerOrg','สังกัด','text'],
+  ['round','รอบการประเมิน','text'],
+  ['vision','วิสัยทัศน์ / แนวคิดในการปฏิบัติงาน','area'],
+  ['challengeTitle','ชื่อประเด็นท้าทาย','area'],
+  ['paFileLink','ลิงก์เอกสาร PA (ฉบับลงนาม)','text'],
+  ['reportLink','ลิงก์รายงานสรุปผล','text'],
+  ['qrLink','ลิงก์สำหรับ QR Code (เว้นว่าง = ใช้ URL หน้านี้)','text'],
+  ['footerNote','ข้อความท้ายเว็บ','text']
+];
+let CFGPHOTO = null;
+function openConfig(){
+  if (!canEdit()) return;
+  CFGPHOTO = null;
+  $('cfgBody').innerHTML = `
+    <label><span class="lb">ภาพผู้รับการประเมิน <span class="hint">แนะนำภาพแนวตั้ง</span></span>
+      <input type="file" accept="image/*" onchange="cfgPhoto(this)">
+      <div id="cfgPrev">${CFG.photo?`<div class="prev" style="max-width:170px"><img src="${esc(CFG.photo)}"></div><button type="button" class="btn r sm" style="margin-top:8px" onclick="cfgClearPhoto()">ลบภาพ</button>`:''}</div>
+    </label>` +
+    CFG_FIELDS.map(([k,l,t])=> t==='area'
+      ? `<label><span class="lb">${esc(l)}</span><textarea id="c_${k}">${esc(CFG[k]||'')}</textarea></label>`
+      : `<label><span class="lb">${esc(l)}</span><input id="c_${k}" value="${esc(CFG[k]||'')}"></label>`
+    ).join('');
+  $('cfgMask').classList.add('show');
+}
+async function cfgPhoto(input){
+  const f = input.files && input.files[0]; if (!f) return;
+  toast('กำลังย่อขนาดภาพ…');
+  try {
+    CFGPHOTO = await compress(f, 900);
+    $('cfgPrev').innerHTML = `<div class="prev" style="max-width:170px"><img src="${CFGPHOTO}"></div><button type="button" class="btn r sm" style="margin-top:8px" onclick="cfgClearPhoto()">ลบภาพ</button>`;
+  } catch(e){ toast('อ่านไฟล์ภาพไม่สำเร็จ'); }
+  input.value = '';
+}
+function cfgClearPhoto(){ CFGPHOTO = ''; $('cfgPrev').innerHTML = ''; }
+async function saveConfig(){
+  if (!canEdit()) return;
+  const entries = {};
+  CFG_FIELDS.forEach(([k])=>{ const el = $('c_'+k); if (el) entries[k] = el.value; });
+  if (CFGPHOTO !== null) entries.photo = CFGPHOTO;
+  const d = await api('saveConfig', Object.assign({ entries }, cred()));
+  if (d && d.ok){ closeM('cfgMask'); await load(); toast('บันทึกการตั้งค่าแล้ว'); }
+  else toast((d && d.error) || 'บันทึกไม่สำเร็จ');
+}
+
+/* ปิด modal เมื่อคลิกพื้นหลัง */
+document.querySelectorAll('.mask').forEach(m=>{
+  m.addEventListener('click', e=>{ if (e.target === m) m.classList.remove('show'); });
+});
+document.addEventListener('keydown', e=>{ if (e.key === 'Escape') document.querySelectorAll('.mask.show').forEach(m=>m.classList.remove('show')); });
 </script>
 </body>
 </html>
