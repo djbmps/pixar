@@ -277,6 +277,7 @@ select.inp{cursor:pointer}
 const API_URL = "https://script.google.com/macros/s/AKfycbwfURsePJ4vLjxPiY2AZcDnMZ90ylq6CuVaEsGoih7XnUacllrLhqj7OPcoQkBSg-gvRg/exec";
 
 let CFG = {}, ITEMS = [], ME = null, PAGE = 'home', SUB = {};
+const PAGES = {};   // ประกาศไว้ก่อน เพราะ boot() เรียกใช้ตั้งแต่ต้นไฟล์
 
 /* ---------- โครงสร้างเมนู 8 เมนู ---------- */
 const MENU = [
@@ -396,7 +397,7 @@ function linkBtn(url, label){
 /* =========================================================
    Boot
    ========================================================= */
-(function boot(){
+function boot(){
   try {
     const c = localStorage.getItem('pa_cache_v2');
     if (c){ const d = JSON.parse(c); CFG = d.config||{}; ITEMS = d.items||[]; }
@@ -409,7 +410,7 @@ function linkBtn(url, label){
   }
   renderAll();
   load();
-})();
+}
 
 async function load(){
   try {
@@ -464,8 +465,6 @@ function emptyBox(txt){ return `<div class="empty">${esc(txt)}</div>`; }
 /* =========================================================
    PAGES
    ========================================================= */
-const PAGES = {};
-
 /* ---------- 1. หน้าแรก ---------- */
 PAGES.home = function(){
   const photo = CFG.photo
@@ -983,6 +982,9 @@ document.querySelectorAll('.mask').forEach(m=>{
   m.addEventListener('click', e=>{ if (e.target === m) m.classList.remove('show'); });
 });
 document.addEventListener('keydown', e=>{ if (e.key === 'Escape') document.querySelectorAll('.mask.show').forEach(m=>m.classList.remove('show')); });
+
+/* เริ่มทำงาน (เรียกท้ายสุด เพื่อให้ทุกฟังก์ชันถูกประกาศครบก่อน) */
+boot();
 </script>
 </body>
 </html>
