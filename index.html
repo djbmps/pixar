@@ -2660,7 +2660,8 @@ function renderTimeline(){
   el.innerHTML=items.map(t=>
    `<div class="tl-item"><div class="dot" style="box-shadow:0 0 0 2px ${t.c}"></div><div class="yr" style="color:${t.c}">${t.y}</div><div style="font-family:'Prompt';font-weight:600;font-size:14px;margin:1px 0">${t.t}</div><div style="font-size:13px;color:var(--muted)">${t.d}</div></div>`).join('');
 }
-renderTimeline();
+/* หมายเหตุ: ไม่เรียก renderTimeline() ตรงนี้ เพราะ aitpackData ยังไม่ถูกประกาศ
+   (จะเรียกอัตโนมัติในชุด render หลังโหลดข้อมูลแล้ว) */
 
 /* tech */
 document.getElementById('techGrid').innerHTML=tech.map(t=>
